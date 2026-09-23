@@ -11,6 +11,7 @@
     lang: { ar: "English", en: "العربية" },
     home: { ar: "عن المشروع", en: "About the project" },
     report: { ar: "أبلغ عن احتيال", en: "Report a scam" },
+    help: { ar: "وقع الاحتيال بالفعل", en: "It already happened" },
     title: { ar: "افحص رسالة", en: "Check a message" },
     lead: {
       ar: "الصق رسالة أو رابطًا أو رقمًا، فيقارنه أَصْلي بسجل القنوات الرسمية الكويتية وبتغذية الاحتيال المؤكدة ويشرح لك سبب الحكم.",

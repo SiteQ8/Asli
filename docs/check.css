@@ -149,3 +149,72 @@
   color: var(--ink);
   font: inherit;
 }
+
+/* The page for someone who has already been hit. Order and reach matter more than polish. */
+
+.urgent-call {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.urgent-card {
+  padding: 16px 18px;
+  border: 1.5px solid var(--fake);
+  border-radius: 3px;
+  background: var(--fake-bg);
+}
+
+.urgent-what {
+  font-size: 1.2em;
+  font-weight: 700;
+  color: var(--fake);
+}
+
+.urgent-why { margin-top: 6px; font-size: 0.95em; }
+
+.urgent-number {
+  font-size: 1.15em;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.steps { counter-reset: step; margin-top: 36px; padding: 0; list-style: none; }
+
+.step {
+  counter-increment: step;
+  position: relative;
+  padding: 18px 0 18px 0;
+  padding-inline-start: 52px;
+  border-top: 1px solid var(--rule);
+}
+
+.step::before {
+  content: counter(step);
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block-start: 20px;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 1.5px solid var(--foil);
+  border-radius: 50%;
+  color: var(--foil);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+html[lang="ar"] .step::before { content: counter(step, arabic-indic); }
+
+.step h2 { font-size: 1.25em; }
+.step p { margin-top: 6px; }
+.step .btn { display: inline-block; margin-top: 10px; }
+
+.numbers-block, .limits { margin-top: 44px; padding-top: 24px; border-top: 1px solid var(--rule); }
+.numbers-block h2, .limits h2 { font-size: 1.4em; }
+.numbers-block p, .limits p { margin-top: 8px; max-width: var(--measure); }
+.numbers-block .data-links a { font-variant-numeric: tabular-nums; }
+.numbers-block .src { margin-top: 2px; }
