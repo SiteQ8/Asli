@@ -40,8 +40,29 @@ Asli is new, but most of its engine already exists in these public repositories:
 | `feed/entries/` | One JSON file per confirmed scam indicator, with evidence and two approvals. See [feed/README.md](feed/README.md) |
 | `docs/` | The site: the write-up, the check page, and the published data under `docs/data/` |
 | `docs/checker.js` | The checking logic itself, the same code in the browser and in the tests |
-| `tools/` | Builders and verifiers, all on the Node standard library |
+| `watch/` | The certificate watch: how it works, and a public state file that holds hashes rather than names |
+| `tools/` | Builders, the watcher, the scorer and the verifiers, all on the Node standard library |
 | `tests/` | 36 checks that fail the build on a bad entry, a stale file or a broken translation |
+
+## Detection
+
+Every public TLS certificate is written to a certificate transparency log, so a
+scam site announces itself hours before the first message goes out. A scheduled
+job reads those logs, scores each name against the registry, and raises the ones
+that borrow a Kuwaiti brand.
+
+The scoring is conservative on purpose: a name scores nothing unless it carries a
+brand the registry knows, so `nbkkuwait.example` and `b0ubyan-kw.example` are
+raised while `nbkwealth.ch` and `kibble.example` are left alone. An official
+domain always scores zero, so the watch can never flag the channels it protects.
+
+Candidate names are not published. A name that borrows a brand is not yet a scam,
+and an unreviewed accusation would harm whoever owns it. The public state file
+keeps a hash per name so the watcher does not repeat itself, logs carry counts
+only, and candidates go to a private review queue if one is configured. What
+becomes public is a listing, after two reviewers approve it with evidence. The
+whole method, including every threshold and word list, is in this repository and
+covered by tests. See [watch/README.md](watch/README.md).
 
 ## Working on it
 
@@ -51,6 +72,7 @@ Every word on the site and in both PROJECT files comes from one file, `docs/cont
 node --test                             # everything: content, registry, feed, checker, generated files
 node tools/build-data.mjs               # rebuild docs/data after editing registry/ or feed/
 node tools/build-project-md.mjs         # rebuild PROJECT.md and PROJECT.ar.md after editing content.js
+node tools/ct-watch.mjs --days 2         # read the certificate logs and score what is new
 node tools/verify-domains.mjs           # confirm every listed official domain still answers
 node tools/check-links.mjs              # confirm every cited source is still reachable
 ```

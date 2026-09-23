@@ -1,0 +1,73 @@
+# The watch
+
+Every public TLS certificate is written to a certificate transparency log. A scam
+site usually gets its certificate hours before the first message goes out, so the
+logs are where Asli looks first.
+
+`tools/ct-watch.mjs` reads those logs through crt.sh, scores every name against
+the registry with `tools/lookalike.mjs`, and writes the ones that borrow a
+Kuwaiti brand. It runs on a schedule in GitHub Actions.
+
+## What is public here, and what is not
+
+A name that borrows a brand is not yet a scam. It might be the body's own new
+service, a reseller, a fan page, or a company that happens to share three
+letters. Publishing an unreviewed accusation would do real harm to whoever owns
+the name, and it would also tell the scammer exactly what was spotted.
+
+So:
+
+- **Candidate names are never written to this repository.** They stay on the
+  runner and go to a private review queue if one is configured.
+- **`seen.json` holds hashes, not names.** It stops the watcher from looking at
+  the same name twice. A hash tells you nothing about the name behind it.
+- **Logs and job summaries carry counts only.** How many queries ran, how many
+  names were read, how many candidates came out.
+- **The method is completely open.** The scoring, the thresholds, the queries and
+  the word lists are all in this repository and covered by tests.
+
+What eventually becomes public is a listing in the scam feed, after two reviewers
+have approved it with evidence, under [the listing policy](../LISTING-POLICY.md).
+
+## How a name is scored
+
+A name scores nothing unless it carries a brand the registry knows. Keyword noise
+on its own never produces a candidate, because a queue full of false positives is
+a queue nobody reviews.
+
+| Signal | Points |
+| --- | --- |
+| Carries an official domain as a label, such as `moi.gov.kw.pay.example` | 50 |
+| Brand written with swapped characters, such as `nbk` as `nbk` with a zero | 45 |
+| Brand as a whole label, or glued to a common word | 40 |
+| Brand inside a longer label, for brands of five letters or more | 35 |
+| Action words: login, verify, pay, fine, wallet, customs and so on | 15 each, up to 30 |
+| Punycode, so the name can imitate other letters | 20 |
+| Free hosting such as workers.dev or pages.dev | 15 |
+| Points at Kuwait in the name | 10 |
+| Cheap top level domain such as .top or .xyz | 10 |
+| Two or more hyphens | 10 |
+| Digits mixed into the name | 5 |
+
+50 points makes it a candidate. An official domain from the registry always
+scores zero, so the watch can never flag the very channels it protects.
+
+## Running it by hand
+
+```sh
+node tools/ct-watch.mjs --days 2                    # a real run
+node tools/ct-watch.mjs --fixture names.json --dry-run   # offline, no state change
+```
+
+The fixture form takes a JSON array of names and never touches the network, which
+is how the tests exercise it.
+
+## Turning on the private queue
+
+The workflow posts candidates to a private repository when two secrets are set:
+
+- `REVIEW_REPO`, for example `SiteQ8/asli-review`
+- `REVIEW_TOKEN`, a token that can open issues there and nothing else
+
+Without them the workflow still runs and reports counts, and the candidate file
+is discarded at the end of the job rather than published.
