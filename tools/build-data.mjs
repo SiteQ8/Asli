@@ -34,6 +34,12 @@ export function readRegistry() {
     .map((f) => JSON.parse(readFileSync(join(dir, f), "utf8")));
 }
 
+export function readWatch() {
+  const path = join(ROOT, "watch/seen.json");
+  if (!existsSync(path)) return { hashes: [], updated: null };
+  return JSON.parse(readFileSync(path, "utf8"));
+}
+
 export function readFeed() {
   const dir = join(ROOT, "feed/entries");
   if (!existsSync(dir)) return [];
@@ -55,6 +61,7 @@ function csvCell(value) {
 
 export function build() {
   const bodies = readRegistry();
+  const watch = readWatch();
   const feed = readFeed().map((e) => ({ ...e, id: indicatorId(e) }));
   const domains = feed.filter((e) => e.type === "domain");
   const numbers = feed.filter((e) => e.type === "number");
@@ -168,6 +175,7 @@ export function build() {
         sectors: [...new Set(bodies.map((b) => b.sector))].sort()
       },
       feed: { total: feed.length, domains: domains.length, numbers: numbers.length, senders: senders.length },
+      watch: { namesChecked: watch.hashes.length, updated: watch.updated },
       formats: ["feed.json", "feed.csv", "feed.txt", "hosts.txt", "adguard.txt", "rpz.zone", "feed.stix2.json", "feed.misp.json"]
     },
     null,

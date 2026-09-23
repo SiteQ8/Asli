@@ -1,0 +1,64 @@
+name: Certificate watch
+
+on:
+  schedule:
+    - cron: "13 */6 * * *"
+  workflow_dispatch:
+    inputs:
+      days:
+        description: How many days of certificate logs to read
+        required: false
+        default: "2"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: certificate-watch
+  cancel-in-progress: false
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    env:
+      REVIEW_REPO: ${{ secrets.REVIEW_REPO }}
+      REVIEW_TOKEN: ${{ secrets.REVIEW_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      # Candidate names are written to the runner only. They never reach a log,
+      # an artifact or this repository. See watch/README.md.
+      - name: Read certificate transparency and score the names
+        id: watch
+        run: node tools/ct-watch.mjs --days "${{ github.event.inputs.days || '2' }}" --out "$RUNNER_TEMP/candidates.json"
+
+      - name: Send new candidates to the private review queue
+        if: env.REVIEW_REPO != '' && steps.watch.outputs.candidates != '0'
+        run: node tools/post-candidates.mjs "$RUNNER_TEMP/candidates.json"
+
+      - name: Say so when no private queue is configured
+        if: env.REVIEW_REPO == '' && steps.watch.outputs.candidates != '0'
+        run: |
+          echo "Candidates were found but there is no private review queue configured," >> "$GITHUB_STEP_SUMMARY"
+          echo "so they were discarded rather than published. Set REVIEW_REPO and REVIEW_TOKEN to receive them." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Record what has been checked, as hashes
+        run: |
+          node tools/build-data.mjs
+          git config user.name "SiteQ8"
+          git config user.email "311682+SiteQ8@users.noreply.github.com"
+          git add watch/seen.json docs/data
+          if git diff --cached --quiet; then
+            echo "Nothing new to record."
+          else
+            git commit -m "Watch: ${{ steps.watch.outputs.candidates }} new candidates from the certificate logs"
+            git push
+          fi
+
+      - name: Leave nothing behind
+        if: always()
+        run: rm -f "$RUNNER_TEMP/candidates.json"
