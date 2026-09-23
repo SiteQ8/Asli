@@ -12,6 +12,7 @@
     node tools/ct-watch.mjs --days 3             how far back to look
     node tools/ct-watch.mjs --fixture file.json  no network, read names from a file
     node tools/ct-watch.mjs --dry-run            do not update the seen list
+    node tools/ct-watch.mjs --budget 480         stop querying after this many seconds
 
   What is published and what is not:
 
@@ -58,14 +59,37 @@ export function queriesFor(bodies) {
   return [...out].sort();
 }
 
-async function crtsh(query, days) {
-  const url = `https://crt.sh/?q=${encodeURIComponent(query)}&output=json&exclude=expired`;
+/* crt.sh answers 502 and 503 under load, so a single failure means nothing. */
+async function fetchRows(url, attempt = 1) {
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), 60000);
+  const timer = setTimeout(() => controller.abort(), 30000);
   try {
     const res = await fetch(url, { headers: { "user-agent": UA, accept: "application/json" }, signal: controller.signal });
-    if (!res.ok) return { query, ok: false, names: [], why: "http " + res.status };
-    const rows = await res.json();
+    if (res.ok) return { ok: true, rows: await res.json() };
+    if ([429, 500, 502, 503, 504].includes(res.status) && attempt < 3) {
+      clearTimeout(timer);
+      await sleep(attempt * 8000);
+      return fetchRows(url, attempt + 1);
+    }
+    return { ok: false, rows: [], why: "http " + res.status };
+  } catch (error) {
+    if (attempt < 3) {
+      clearTimeout(timer);
+      await sleep(attempt * 8000);
+      return fetchRows(url, attempt + 1);
+    }
+    return { ok: false, rows: [], why: String(error.message || error).slice(0, 60) };
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function crtsh(query, days) {
+  const url = `https://crt.sh/?q=${encodeURIComponent(query)}&output=json&exclude=expired`;
+  try {
+    const answer = await fetchRows(url);
+    if (!answer.ok) return { query, ok: false, names: [], why: answer.why };
+    const rows = answer.rows;
     const cutoff = Date.now() - days * 24 * 60 * 60 * 1000;
     const names = new Map();
     for (const row of rows) {
@@ -82,8 +106,6 @@ async function crtsh(query, days) {
     return { query, ok: true, names: [...names.entries()].map(([name, meta]) => ({ name, ...meta })), why: "" };
   } catch (error) {
     return { query, ok: false, names: [], why: String(error.message || error).slice(0, 60) };
-  } finally {
-    clearTimeout(timer);
   }
 }
 
@@ -121,7 +143,12 @@ function arg(name, fallback) {
 }
 
 async function main() {
-  const days = Number(arg("--days", "2"));
+  /*
+    Fourteen days by default. These brands do not see a new certificate every
+    day, and a name already looked at costs nothing because the seen list makes
+    the second sighting free.
+  */
+  const days = Number(arg("--days", "14"));
   const out = arg("--out", join(process.cwd(), "candidates.json"));
   const fixture = arg("--fixture", null);
   const dryRun = process.argv.includes("--dry-run");
@@ -131,12 +158,24 @@ async function main() {
   let found = [];
   let queriesRun = 0;
   let queriesFailed = 0;
+  let queriesSkipped = 0;
 
   if (fixture) {
     found = JSON.parse(readFileSync(fixture, "utf8")).map((n) => (typeof n === "string" ? { name: n } : n));
   } else {
+    /*
+      crt.sh is free and often busy, so a run works to a time budget rather than
+      to a query list. Whatever is left over comes round on the next run, and the
+      seen list means no name is examined twice.
+    */
+    const budget = Number(arg("--budget", "480")) * 1000;
+    const started = Date.now();
     const queries = queriesFor(bodies);
     for (const query of queries) {
+      if (Date.now() - started > budget) {
+        queriesSkipped = queries.length - queriesRun;
+        break;
+      }
       const result = await crtsh(query, days);
       queriesRun++;
       if (!result.ok) queriesFailed++;
@@ -167,7 +206,7 @@ async function main() {
 
   /* Counts only. Names never go to a public log. */
   const summary = [
-    `Queries run: ${queriesRun}${queriesFailed ? `, failed: ${queriesFailed}` : ""}`,
+    `Queries run: ${queriesRun}${queriesFailed ? `, failed: ${queriesFailed}` : ""}${queriesSkipped ? `, left for the next run: ${queriesSkipped}` : ""}`,
     `Names seen in the logs: ${found.length}`,
     `New candidates for review: ${candidates.length}`,
     `Names already known: ${(seenFile.hashes || []).length} to ${seen.length}`

@@ -46,11 +46,17 @@ a queue nobody reviews.
 | Free hosting such as workers.dev or pages.dev | 15 |
 | Points at Kuwait in the name | 10 |
 | Cheap top level domain such as .top or .xyz | 10 |
-| Two or more hyphens | 10 |
 | Digits mixed into the name | 5 |
 
 50 points makes it a candidate. An official domain from the registry always
-scores zero, so the watch can never flag the very channels it protects.
+scores zero, so the watch can never flag the very channels it protects, and an
+official domain that appears as a label only counts when other labels follow it,
+so a country variant such as a bank's Turkish site stays clear while
+`moi.gov.kw.pay.example` does not.
+
+Signals are removed when they prove noisy. Counting hyphens was one: it flagged
+long infrastructure hostnames belonging to the banks themselves, which is exactly
+the kind of noise that makes a review queue useless.
 
 ## Running it by hand
 
