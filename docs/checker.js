@@ -211,6 +211,17 @@
       if (bankRule && !already) broken.push(bankRule);
     }
 
+    /*
+      A number the body publishes itself is worth knowing about, in both
+      directions: the one in the message may match, or the body may publish
+      numbers and this is not one of them. Neither settles the verdict on its
+      own, because a registry entry lists what a body publishes, not every
+      number it owns.
+    */
+    var published = claimed && (claimed.hotlines || []).length ? claimed.hotlines.map(function (h) { return h.number; }) : [];
+    var matchedNumbers = foundPhones.filter(function (n) { return published.indexOf(n) >= 0; });
+    var unpublishedNumbers = published.length ? foundPhones.filter(function (n) { return published.indexOf(n) < 0; }) : [];
+
     var pressure = hasAny(body, PRESSURE.ar) || hasAny(body, PRESSURE.en);
 
     /*
@@ -234,6 +245,9 @@
       lookalike: lookalike,
       unknown: unknown,
       broken: broken,
+      published: published,
+      matchedNumbers: matchedNumbers,
+      unpublishedNumbers: unpublishedNumbers,
       pressure: pressure,
       verdict: verdict
     };

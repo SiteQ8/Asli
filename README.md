@@ -46,7 +46,7 @@ Asli is new, but most of its engine already exists in these public repositories:
 | `watch/` | The certificate watch: how it works, and a public state file that holds hashes rather than names |
 | `mcp/` | An MCP server so assistants can check messages and domains against the registry. See [mcp/README.md](mcp/README.md) |
 | `tools/` | Builders, the watcher, the scorer and the verifiers, all on the Node standard library |
-| `tests/` | 77 checks that fail the build on a bad entry, a stale file or a broken translation |
+| `tests/` | 80 checks that fail the build on a bad entry, a stale file or a broken translation |
 
 ## Detection
 
@@ -79,6 +79,7 @@ node tools/build-project-md.mjs         # rebuild PROJECT.md and PROJECT.ar.md a
 node tools/ct-watch.mjs --days 2         # read the certificate logs and score what is new
 node mcp/asli-mcp.mjs --local           # run the MCP server against the local data
 node tools/verify-domains.mjs           # confirm every listed official domain still answers
+node tools/find-contacts.mjs            # collect contact numbers bodies publish, as proposals to review
 node tools/check-links.mjs              # confirm every cited source is still reachable
 ```
 
