@@ -10,7 +10,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import vm from "node:vm";
 import { ROOT, read } from "../tools/lib.mjs";
-import { build, readRegistry, readFeed } from "../tools/build-data.mjs";
+import { build, readRegistry, readFeed, committedDate } from "../tools/build-data.mjs";
 
 function loadChecker() {
   const sandbox = {};
@@ -122,10 +122,46 @@ test("no official registry domain can ever be listed in the scam feed", () => {
 });
 
 test("the published data files are up to date", () => {
-  const files = build();
+  const files = build(committedDate());
   for (const [name, content] of Object.entries(files)) {
     assert.equal(read(`docs/data/${name}`), content, `docs/data/${name} is stale. Run: node tools/build-data.mjs`);
   }
+});
+
+test("an expired listing drops out of every published format on the next build", () => {
+  const entry = {
+    type: "domain",
+    value: "expired-scam.example",
+    listed: "2026-01-01",
+    expires: "2026-04-01",
+    reason: "test entry",
+    evidence: [{ kind: "note", note: "test" }],
+    approvals: ["a", "b"]
+  };
+  const before = build("2026-03-01", { feed: [entry] });
+  assert.ok(before["feed.json"].includes("expired-scam.example"), "still active before its expiry");
+  assert.ok(before["hosts.txt"].includes("expired-scam.example"));
+
+  const after = build("2026-04-01", { feed: [entry] });
+  for (const [name, content] of Object.entries(after)) {
+    if (name === "registry.json") continue;
+    assert.ok(!content.includes("expired-scam.example"), `${name} still carries an expired listing`);
+  }
+  assert.equal(JSON.parse(after["meta.json"]).feed.expiredAndRemoved, 1, "the removal is counted in the open");
+});
+
+test("a listing dated in the future is not published early", () => {
+  const entry = {
+    type: "domain", value: "future.example", listed: "2026-12-01", expires: "2027-03-01",
+    reason: "test", evidence: [{ kind: "note", note: "test" }], approvals: ["a", "b"]
+  };
+  assert.ok(!build("2026-10-01", { feed: [entry] })["feed.json"].includes("future.example"));
+});
+
+test("the build date is what the files say they were generated on", () => {
+  const files = build("2026-10-05", { feed: [] });
+  assert.equal(JSON.parse(files["meta.json"]).generated, "2026-10-05T00:00:00Z");
+  assert.equal(JSON.parse(files["feed.json"]).generated, "2026-10-05T00:00:00Z");
 });
 
 test("a fake ministry domain is caught as impersonation", () => {

@@ -59,14 +59,34 @@ function csvCell(value) {
   return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
 }
 
-export function build() {
-  const bodies = readRegistry();
-  const watch = readWatch();
-  const feed = readFeed().map((e) => ({ ...e, id: indicatorId(e) }));
+/*
+  The build date decides two things: what "generated" says, and which listings
+  are still active. A listing is published while the build date is before its
+  expiry, so an expired entry drops out of every format on the next build
+  without anyone having to remember to remove it.
+*/
+export function today() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+/* The date the committed files were built on, so a check compares like with like. */
+export function committedDate() {
+  const path = join(OUT, "meta.json");
+  if (!existsSync(path)) return today();
+  const meta = JSON.parse(readFileSync(path, "utf8"));
+  return String(meta.generated || "").slice(0, 10) || today();
+}
+
+export function build(date = today(), overrides = {}) {
+  const bodies = overrides.bodies || readRegistry();
+  const watch = overrides.watch || readWatch();
+  const all = (overrides.feed || readFeed()).map((e) => ({ ...e, id: indicatorId(e) }));
+  const feed = all.filter((e) => e.listed <= date && date < e.expires);
+  const expired = all.filter((e) => e.expires <= date).length;
   const domains = feed.filter((e) => e.type === "domain");
   const numbers = feed.filter((e) => e.type === "number");
   const senders = feed.filter((e) => e.type === "sender");
-  const stamp = "2026-09-23T00:00:00Z";
+  const stamp = `${date}T00:00:00Z`;
   const files = {};
 
   files["registry.json"] = JSON.stringify(
@@ -174,7 +194,7 @@ export function build() {
         policies: bodies.reduce((n, b) => n + (b.policies || []).length, 0),
         sectors: [...new Set(bodies.map((b) => b.sector))].sort()
       },
-      feed: { total: feed.length, domains: domains.length, numbers: numbers.length, senders: senders.length },
+      feed: { total: feed.length, domains: domains.length, numbers: numbers.length, senders: senders.length, expiredAndRemoved: expired },
       watch: { namesChecked: watch.hashes.length, updated: watch.updated },
       formats: ["feed.json", "feed.csv", "feed.txt", "hosts.txt", "adguard.txt", "rpz.zone", "feed.stix2.json", "feed.misp.json"]
     },
@@ -187,7 +207,12 @@ export function build() {
 
 function main() {
   const check = process.argv.includes("--check");
-  const files = build();
+  const flag = process.argv.indexOf("--date");
+  const given = flag > -1 ? process.argv[flag + 1] : process.env.ASLI_BUILD_DATE;
+  /* A check rebuilds as of the committed build date, so a listing expiring overnight
+     does not fail an unrelated change. The scheduled job rebuilds as of today. */
+  const date = given || (check ? committedDate() : today());
+  const files = build(date);
   mkdirSync(OUT, { recursive: true });
   let stale = 0;
   for (const [name, content] of Object.entries(files)) {

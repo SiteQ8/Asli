@@ -19,7 +19,7 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Check every listed official domain still resolves and answers
+      - name: Check every official domain still answers and every entry is within 90 days
         id: check
         run: node tools/verify-domains.mjs --report report.md
 
@@ -29,6 +29,6 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh issue create \
-            --title "A listed official domain stopped answering" \
+            --title "Registry needs attention: a domain stopped answering or an entry is overdue" \
             --label registry \
             --body-file report.md
