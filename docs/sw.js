@@ -15,7 +15,7 @@
   domains belong to the Ministry of Interior, and a stale answer beats no answer
   when someone is deciding whether to pay.
 */
-const VERSION = "asli-v0.4.0";
+const VERSION = "asli-v0.5.0";
 const SHELL = VERSION + "-shell";
 const DATA = VERSION + "-data";
 
@@ -24,6 +24,7 @@ const PRECACHE = [
   "index.html",
   "check.html",
   "report.html",
+  "help.html",
   "style.css",
   "check.css",
   "content.js",
@@ -33,6 +34,7 @@ const PRECACHE = [
   "checker.js",
   "check.js",
   "report.js",
+  "help.js",
   "redact.js",
   "favicon.svg",
   "manifest.webmanifest",

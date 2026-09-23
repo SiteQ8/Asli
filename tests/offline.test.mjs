@@ -40,7 +40,7 @@ test("every file the worker precaches actually exists", () => {
 });
 
 test("the worker precaches the data the checker needs to answer offline", () => {
-  for (const file of ["data/registry.json", "checker.js", "check.html", "check.js"]) {
+  for (const file of ["data/registry.json", "checker.js", "check.html", "check.js", "help.html", "help.js"]) {
     assert.ok(sw.includes(`"${file}"`), `${file} must be available offline`);
   }
 });
@@ -91,6 +91,17 @@ test("the manifest points at icons that exist at the sizes it claims", () => {
 test("the check page stays under the weight the project promised", () => {
   const weight = gzipped(["check.html", "style.css", "check.css", "checker.js", "check.js", "offline.js", "data/registry.json"]);
   assert.ok(weight < BUDGET, `the check page is ${Math.round(weight / 1024)} KB compressed, over the ${BUDGET / 1024} KB budget`);
+});
+
+test("the page for someone already scammed loads fast and works offline", () => {
+  const weight = gzipped(["help.html", "style.css", "check.css", "help.js", "offline.js"]);
+  assert.ok(weight < BUDGET, `the help page is ${Math.round(weight / 1024)} KB compressed, over the ${BUDGET / 1024} KB budget`);
+  const html = read("docs/help.html");
+  assert.ok(html.includes('src="offline.js"'), "it must survive a lost connection");
+  const js = read("docs/help.js");
+  assert.ok(js.includes("moi.gov.kw"), "the reporting number must come from the ministry's own page");
+  assert.ok(js.includes("97283939"), "the cybercrime line must be on the page");
+  assert.ok(js.includes("tel:+96597283939"), "the number must be tappable on a phone");
 });
 
 test("the report page stays under the same budget", () => {

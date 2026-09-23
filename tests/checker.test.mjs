@@ -186,7 +186,8 @@ test("a listed indicator outranks everything else", () => {
 });
 
 test("every recorded number carries its source, its date and how it was checked", () => {
-  const KUWAITI = /^(1\d{6}|[2569]\d{7})$/;
+  /* Kuwaiti numbers, plus the short emergency codes that official bodies publish. */
+  const KUWAITI = /^(1\d{2}|1\d{6}|[2569]\d{7})$/;
   let recorded = 0;
   for (const b of bodies) {
     for (const h of b.hotlines || []) {
@@ -228,9 +229,18 @@ test("an unpublished number on its own is not enough to call something a scam", 
 });
 
 test("a body with no recorded numbers never accuses a number of being wrong", () => {
-  const result = Checker.check({ text: "Ministry of Interior: call 55512345 about your fine", channel: "sms" }, data);
+  const withoutNumbers = bodies.find((b) => !(b.hotlines || []).length);
+  assert.ok(withoutNumbers, "this test needs a body with nothing on file");
+  const claim = withoutNumbers.claims.en[0];
+  const result = Checker.check({ text: `${claim}: call 55512345 about your case`, channel: "sms" }, data);
   /* The array crosses a vm realm, so compare its contents rather than the object. */
   assert.equal(result.unpublishedNumbers.length, 0, "silence is the honest answer when nothing is on file");
+});
+
+test("the ministry's own published numbers are recognised", () => {
+  const result = Checker.check({ text: "Ministry of Interior: report it on 97283939", channel: "sms" }, data);
+  assert.ok(result.published.includes("97283939"), "the cybercrime line should be on file");
+  assert.ok(result.matchedNumbers.includes("97283939"));
 });
 
 test("phone numbers are read with or without the country code", () => {

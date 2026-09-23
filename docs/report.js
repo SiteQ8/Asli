@@ -16,6 +16,7 @@
     skip: { ar: "انتقل إلى النموذج", en: "Skip to the form" },
     lang: { ar: "English", en: "العربية" },
     check: { ar: "افحص رسالة", en: "Check a message" },
+    help: { ar: "وقع الاحتيال بالفعل", en: "It already happened" },
     home: { ar: "عن المشروع", en: "About the project" },
     title: { ar: "أبلغ عن احتيال", en: "Report a scam" },
     lead: {

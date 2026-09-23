@@ -6,6 +6,7 @@ Kuwait's open scam shield: a verified registry of the genuine official channels 
 
 - Check a message: [asli.3li.info/check.html](https://asli.3li.info/check.html)
 - Report a scam: [asli.3li.info/report.html](https://asli.3li.info/report.html), which cleans your own details off the message before anything leaves your device
+- Already been scammed: [asli.3li.info/help.html](https://asli.3li.info/help.html), the first hour in order, with every number taken from the body that published it
 - About the project: [asli.3li.info](https://asli.3li.info/)
 - Install it on a phone: open the check page and add it to the home screen, then it works offline
 - The data: [registry.json](https://asli.3li.info/data/registry.json), [feed.json](https://asli.3li.info/data/feed.json), [meta.json](https://asli.3li.info/data/meta.json)
@@ -46,7 +47,7 @@ Asli is new, but most of its engine already exists in these public repositories:
 | `watch/` | The certificate watch: how it works, and a public state file that holds hashes rather than names |
 | `mcp/` | An MCP server so assistants can check messages and domains against the registry. See [mcp/README.md](mcp/README.md) |
 | `tools/` | Builders, the watcher, the scorer and the verifiers, all on the Node standard library |
-| `tests/` | 80 checks that fail the build on a bad entry, a stale file or a broken translation |
+| `tests/` | 84 checks that fail the build on a bad entry, a stale file or a broken translation |
 
 ## Detection
 
