@@ -19,8 +19,11 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Run the content tests
+      - name: Run the tests
         run: node --test
 
       - name: Check that PROJECT.md and PROJECT.ar.md are up to date
         run: node tools/build-project-md.mjs --check
+
+      - name: Check that the published data matches the registry and the feed
+        run: node tools/build-data.mjs --check

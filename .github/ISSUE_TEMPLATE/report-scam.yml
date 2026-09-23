@@ -1,0 +1,66 @@
+name: Report a scam
+description: Report a scam message, link, number or sender name that targets people in Kuwait
+title: "Scam report: "
+labels: ["scam report", "needs review"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Nothing is listed on a report alone. Two reviewers check every report against the evidence.
+        Do not include your own name, civil ID, account number or phone number anywhere in this form.
+  - type: dropdown
+    id: type
+    attributes:
+      label: What are you reporting
+      options:
+        - A link or domain
+        - A phone number
+        - An SMS sender name
+        - A whole message with several of these
+    validations:
+      required: true
+  - type: textarea
+    id: indicator
+    attributes:
+      label: The link, number or sender name
+      description: One per line. Write it exactly as it appeared.
+      placeholder: |
+        example-scam.test
+        +965 0000 0000
+    validations:
+      required: true
+  - type: dropdown
+    id: channel
+    attributes:
+      label: How it arrived
+      options: [Text message, WhatsApp, iMessage, Email, Call, Social media, Inside an app, Other]
+    validations:
+      required: true
+  - type: textarea
+    id: message
+    attributes:
+      label: The message text
+      description: Paste it with your own details removed. Keep the original language.
+    validations:
+      required: true
+  - type: input
+    id: impersonates
+    attributes:
+      label: Who does it pretend to be
+      placeholder: Ministry of Interior, a bank, a courier, and so on
+  - type: input
+    id: seen
+    attributes:
+      label: When you received it
+      placeholder: 2026-10-05
+    validations:
+      required: true
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: Before you send
+      options:
+        - label: I removed my own personal details from everything above
+          required: true
+        - label: I understand this report is public
+          required: true

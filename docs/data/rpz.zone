@@ -1,0 +1,3 @@
+$TTL 300
+@ SOA asli.3li.info. abuse.asli.3li.info. 2026092301 3600 600 86400 300
+  NS localhost.

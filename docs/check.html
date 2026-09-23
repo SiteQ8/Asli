@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>افحص رسالة | أَصْلي</title>
+<meta name="description" content="الصق رسالة أو رابطًا أو رقمًا ليقارنه أَصْلي بسجل القنوات الرسمية الكويتية وبتغذية الاحتيال المؤكدة، ويجري الفحص داخل متصفحك ولا تغادر الرسالة جهازك.">
+<meta name="author" content="Ali AlEnezi">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#EEF3F1" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0D1B18" media="(prefers-color-scheme: dark)">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://asli.3li.info/check.html">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Asli">
+<meta property="og:title" content="افحص رسالة | Check a message">
+<meta property="og:description" content="Paste a message and Asli checks it against Kuwait's registry of genuine official channels. The check runs in your browser.">
+<meta property="og:url" content="https://asli.3li.info/check.html">
+<meta property="og:image" content="https://asli.3li.info/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@700&amp;family=Markazi+Text:wght@400..700&amp;display=swap">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="check.css">
+</head>
+<body class="check-page">
+<a class="skip" href="#form" data-t="skip">انتقل إلى الفحص</a>
+
+<header class="masthead">
+  <a class="brand" href="./"><span class="brand-ar" lang="ar">أَصْلي</span><span class="brand-en" lang="en">Asli</span></a>
+  <div class="bar-actions">
+    <button id="lang" class="lang" type="button"><span data-t="lang">English</span></button>
+    <a class="repo" href="./" data-t="home">عن المشروع</a>
+  </div>
+</header>
+
+<main class="wrap check-main">
+  <h1 data-t="title">افحص رسالة</h1>
+  <p class="lead" data-t="lead"></p>
+
+  <p class="privacy-note" data-t="privacy"></p>
+
+  <form id="form" class="check-form" autocomplete="off">
+    <label class="field">
+      <span class="small-label" data-t="labelText"></span>
+      <textarea id="text" rows="6" spellcheck="false" data-t-placeholder="placeholder"></textarea>
+    </label>
+
+    <div class="field">
+      <span class="small-label" data-t="labelChannel"></span>
+      <div id="channels" class="chips" role="radiogroup" data-t-aria="labelChannel"></div>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn primary" data-t="run"></button>
+      <button type="button" id="clear" class="btn" data-t="clear"></button>
+      <span id="dataState" class="data-state" aria-live="polite"></span>
+    </div>
+  </form>
+
+  <section id="result" class="result" aria-live="polite" hidden></section>
+
+  <section class="reuse-data">
+    <h2 data-t="dataTitle"></h2>
+    <p data-t="dataLead"></p>
+    <ul id="dataLinks" class="data-links"></ul>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p data-t="footer"></p>
+    <p class="foot-links">
+      <a href="https://github.com/SiteQ8/Asli" data-t="source"></a>
+      <a href="https://github.com/SiteQ8/Asli/blob/main/LISTING-POLICY.md" data-t="policy"></a>
+      <a href="https://github.com/SiteQ8/Asli/blob/main/PRIVACY.md" data-t="privacyDoc"></a>
+    </p>
+  </div>
+</footer>
+
+<script src="checker.js"></script>
+<script src="check.js"></script>
+</body>
+</html>

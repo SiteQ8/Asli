@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/SiteQ8/Asli/security/advisories/new
+    about: Report privately through GitHub, not in a public issue.
+  - name: Listing policy
+    url: https://github.com/SiteQ8/Asli/blob/main/LISTING-POLICY.md
+    about: What can be listed, what is never listed, and how expiry works.

@@ -1,0 +1,34 @@
+{
+  "id": "zain",
+  "sector": "telecom",
+  "name": {
+    "ar": "زين الكويت",
+    "en": "Zain Kuwait"
+  },
+  "claims": {
+    "ar": [
+      "زين الكويت"
+    ],
+    "en": [
+      "zain kuwait"
+    ]
+  },
+  "tokens": [
+    "zain"
+  ],
+  "domains": [
+    "kw.zain.com"
+  ],
+  "apps": [],
+  "senders": [],
+  "hotlines": [],
+  "policies": [],
+  "sources": [
+    "https://kw.zain.com/"
+  ],
+  "verified": "2026-09-23",
+  "note": {
+    "ar": "تُفحص النطاقات بالتحقق من استجابتها على HTTPS في تاريخ التحقق المذكور، أما أسماء المرسلين والخطوط الساخنة فلم تُوثَّق بعد.",
+    "en": "Domains are checked by confirming they resolve and answer over HTTPS on the verification date. Sender names and hotlines are not documented yet."
+  }
+}

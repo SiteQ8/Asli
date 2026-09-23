@@ -1,0 +1,33 @@
+{
+  "schema": "asli.meta.v1",
+  "generated": "2026-09-23T00:00:00Z",
+  "site": "https://asli.3li.info",
+  "registry": {
+    "bodies": 25,
+    "domains": 25,
+    "apps": 2,
+    "policies": 12,
+    "sectors": [
+      "association",
+      "bank",
+      "government",
+      "telecom"
+    ]
+  },
+  "feed": {
+    "total": 0,
+    "domains": 0,
+    "numbers": 0,
+    "senders": 0
+  },
+  "formats": [
+    "feed.json",
+    "feed.csv",
+    "feed.txt",
+    "hosts.txt",
+    "adguard.txt",
+    "rpz.zone",
+    "feed.stix2.json",
+    "feed.misp.json"
+  ]
+}
