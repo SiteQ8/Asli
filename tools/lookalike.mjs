@@ -26,7 +26,9 @@ export const INTENT = [
   "account", "payment", "pay", "fine", "fines", "violation", "wallet", "otp",
   "refund", "customs", "delivery", "parcel", "shipment", "invoice", "recovery",
   "unlock", "reactivate", "suspended", "confirm", "identity", "kyc", "fee", "fees",
-  "charge", "charges", "renew", "renewal", "tracking", "track", "claim"
+  "charge", "charges", "renew", "renewal", "tracking", "track", "claim",
+  "clearance", "shipping", "release", "package", "duty", "duties", "vat", "tax",
+  "case", "court", "summons", "notice", "warrant", "subsidy", "grant"
 ];
 
 /* Hosts that hand out free subdomains, which is where phishing kits tend to live. */
@@ -162,7 +164,9 @@ export function score(name, bodies) {
   if (!owner) return out;
 
   const parts = partsOf(host);
-  const intent = [...new Set(parts.filter((p) => INTENT.includes(p)))];
+  /* A brand that is also an action word, such as customs, must not score twice. */
+  const brand = best ? best.token : null;
+  const intent = [...new Set(parts.filter((p) => INTENT.includes(p) && p !== brand))];
   if (intent.length) {
     points += Math.min(30, intent.length * 15);
     out.reasons.push("uses action words: " + intent.join(", "));

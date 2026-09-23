@@ -1,0 +1,24 @@
+{
+  "name": "أَصْلي | Asli",
+  "short_name": "أَصْلي",
+  "description": "افحص أي رسالة أمام سجل القنوات الرسمية الكويتية، ويعمل الفحص دون اتصال. Check any message against Kuwait's registry of genuine official channels, offline.",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "./check.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#EEF3F1",
+  "theme_color": "#EEF3F1",
+  "categories": ["utilities", "security"],
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ],
+  "shortcuts": [
+    { "name": "افحص رسالة", "short_name": "افحص", "url": "./check.html" },
+    { "name": "أبلغ عن احتيال", "short_name": "أبلغ", "url": "./report.html" }
+  ]
+}

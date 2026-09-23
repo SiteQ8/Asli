@@ -76,6 +76,75 @@
       }
     },
     {
+      "id": "aramex",
+      "sector": "courier",
+      "name": {
+        "ar": "أرامكس",
+        "en": "Aramex"
+      },
+      "claims": {
+        "ar": [
+          "أرامكس"
+        ],
+        "en": [
+          "aramex"
+        ]
+      },
+      "tokens": [
+        "aramex"
+      ],
+      "domains": [
+        "aramex.com"
+      ],
+      "apps": [],
+      "senders": [],
+      "hotlines": [],
+      "policies": [],
+      "sources": [
+        "https://aramex.com/"
+      ],
+      "verified": "2026-09-23",
+      "note": {
+        "ar": "تُفحص النطاقات بالتحقق من استجابتها على HTTPS في تاريخ التحقق المذكور، أما أسماء المرسلين والخطوط الساخنة فلم تُوثَّق بعد.",
+        "en": "Domains are checked by confirming they resolve and answer over HTTPS on the verification date. Sender names and hotlines are not documented yet."
+      }
+    },
+    {
+      "id": "baladia",
+      "sector": "government",
+      "name": {
+        "ar": "بلدية الكويت",
+        "en": "Kuwait Municipality"
+      },
+      "claims": {
+        "ar": [
+          "بلدية الكويت",
+          "البلدية"
+        ],
+        "en": [
+          "kuwait municipality"
+        ]
+      },
+      "tokens": [
+        "baladia"
+      ],
+      "domains": [
+        "baladia.gov.kw"
+      ],
+      "apps": [],
+      "senders": [],
+      "hotlines": [],
+      "policies": [],
+      "sources": [
+        "https://baladia.gov.kw/"
+      ],
+      "verified": "2026-09-23",
+      "note": {
+        "ar": "تُفحص النطاقات بالتحقق من استجابتها على HTTPS في تاريخ التحقق المذكور، أما أسماء المرسلين والخطوط الساخنة فلم تُوثَّق بعد.",
+        "en": "Domains are checked by confirming they resolve and answer over HTTPS on the verification date. Sender names and hotlines are not documented yet."
+      }
+    },
+    {
       "id": "boubyan",
       "sector": "bank",
       "name": {
@@ -395,6 +464,77 @@
       }
     },
     {
+      "id": "customs",
+      "sector": "government",
+      "name": {
+        "ar": "الإدارة العامة للجمارك",
+        "en": "General Administration of Customs"
+      },
+      "claims": {
+        "ar": [
+          "الجمارك",
+          "الإدارة العامة للجمارك"
+        ],
+        "en": [
+          "kuwait customs",
+          "general administration of customs"
+        ]
+      },
+      "tokens": [
+        "kwcustoms",
+        "kuwaitcustoms"
+      ],
+      "domains": [
+        "customs.gov.kw"
+      ],
+      "apps": [],
+      "senders": [],
+      "hotlines": [],
+      "policies": [],
+      "sources": [
+        "https://customs.gov.kw/"
+      ],
+      "verified": "2026-09-23",
+      "note": {
+        "ar": "تُفحص النطاقات بالتحقق من استجابتها على HTTPS في تاريخ التحقق المذكور، أما أسماء المرسلين والخطوط الساخنة فلم تُوثَّق بعد.",
+        "en": "Domains are checked by confirming they resolve and answer over HTTPS on the verification date. Sender names and hotlines are not documented yet."
+      }
+    },
+    {
+      "id": "dhl",
+      "sector": "courier",
+      "name": {
+        "ar": "دي إتش إل",
+        "en": "DHL"
+      },
+      "claims": {
+        "ar": [
+          "دي إتش إل"
+        ],
+        "en": [
+          "dhl"
+        ]
+      },
+      "tokens": [
+        "dhl"
+      ],
+      "domains": [
+        "dhl.com"
+      ],
+      "apps": [],
+      "senders": [],
+      "hotlines": [],
+      "policies": [],
+      "sources": [
+        "https://dhl.com/"
+      ],
+      "verified": "2026-09-23",
+      "note": {
+        "ar": "تُفحص النطاقات بالتحقق من استجابتها على HTTPS في تاريخ التحقق المذكور، أما أسماء المرسلين والخطوط الساخنة فلم تُوثَّق بعد.",
+        "en": "Domains are checked by confirming they resolve and answer over HTTPS on the verification date. Sender names and hotlines are not documented yet."
+      }
+    },
+    {
       "id": "egov",
       "sector": "government",
       "name": {
@@ -421,6 +561,40 @@
       "policies": [],
       "sources": [
         "https://e.gov.kw/"
+      ],
+      "verified": "2026-09-23",
+      "note": {
+        "ar": "تُفحص النطاقات بالتحقق من استجابتها على HTTPS في تاريخ التحقق المذكور، أما أسماء المرسلين والخطوط الساخنة فلم تُوثَّق بعد.",
+        "en": "Domains are checked by confirming they resolve and answer over HTTPS on the verification date. Sender names and hotlines are not documented yet."
+      }
+    },
+    {
+      "id": "fedex",
+      "sector": "courier",
+      "name": {
+        "ar": "فيديكس",
+        "en": "FedEx"
+      },
+      "claims": {
+        "ar": [
+          "فيديكس"
+        ],
+        "en": [
+          "fedex"
+        ]
+      },
+      "tokens": [
+        "fedex"
+      ],
+      "domains": [
+        "fedex.com"
+      ],
+      "apps": [],
+      "senders": [],
+      "hotlines": [],
+      "policies": [],
+      "sources": [
+        "https://fedex.com/"
       ],
       "verified": "2026-09-23",
       "note": {
@@ -680,6 +854,41 @@
       }
     },
     {
+      "id": "kuwait-airways",
+      "sector": "airline",
+      "name": {
+        "ar": "الخطوط الجوية الكويتية",
+        "en": "Kuwait Airways"
+      },
+      "claims": {
+        "ar": [
+          "الخطوط الجوية الكويتية",
+          "الكويتية"
+        ],
+        "en": [
+          "kuwait airways"
+        ]
+      },
+      "tokens": [
+        "kuwaitairways"
+      ],
+      "domains": [
+        "kuwaitairways.com"
+      ],
+      "apps": [],
+      "senders": [],
+      "hotlines": [],
+      "policies": [],
+      "sources": [
+        "https://kuwaitairways.com/"
+      ],
+      "verified": "2026-09-23",
+      "note": {
+        "ar": "تُفحص النطاقات بالتحقق من استجابتها على HTTPS في تاريخ التحقق المذكور، أما أسماء المرسلين والخطوط الساخنة فلم تُوثَّق بعد.",
+        "en": "Domains are checked by confirming they resolve and answer over HTTPS on the verification date. Sender names and hotlines are not documented yet."
+      }
+    },
+    {
       "id": "manpower",
       "sector": "government",
       "name": {
@@ -818,6 +1027,40 @@
       }
     },
     {
+      "id": "moe",
+      "sector": "government",
+      "name": {
+        "ar": "وزارة التربية",
+        "en": "Ministry of Education"
+      },
+      "claims": {
+        "ar": [
+          "وزارة التربية"
+        ],
+        "en": [
+          "ministry of education"
+        ]
+      },
+      "tokens": [
+        "moe"
+      ],
+      "domains": [
+        "moe.edu.kw"
+      ],
+      "apps": [],
+      "senders": [],
+      "hotlines": [],
+      "policies": [],
+      "sources": [
+        "https://moe.edu.kw/"
+      ],
+      "verified": "2026-09-23",
+      "note": {
+        "ar": "تُفحص النطاقات بالتحقق من استجابتها على HTTPS في تاريخ التحقق المذكور، أما أسماء المرسلين والخطوط الساخنة فلم تُوثَّق بعد.",
+        "en": "Domains are checked by confirming they resolve and answer over HTTPS on the verification date. Sender names and hotlines are not documented yet."
+      }
+    },
+    {
       "id": "mof",
       "sector": "government",
       "name": {
@@ -945,6 +1188,40 @@
       ],
       "sources": [
         "https://moi.gov.kw/"
+      ],
+      "verified": "2026-09-23",
+      "note": {
+        "ar": "تُفحص النطاقات بالتحقق من استجابتها على HTTPS في تاريخ التحقق المذكور، أما أسماء المرسلين والخطوط الساخنة فلم تُوثَّق بعد.",
+        "en": "Domains are checked by confirming they resolve and answer over HTTPS on the verification date. Sender names and hotlines are not documented yet."
+      }
+    },
+    {
+      "id": "moj",
+      "sector": "government",
+      "name": {
+        "ar": "وزارة العدل",
+        "en": "Ministry of Justice"
+      },
+      "claims": {
+        "ar": [
+          "وزارة العدل"
+        ],
+        "en": [
+          "ministry of justice"
+        ]
+      },
+      "tokens": [
+        "moj"
+      ],
+      "domains": [
+        "moj.gov.kw"
+      ],
+      "apps": [],
+      "senders": [],
+      "hotlines": [],
+      "policies": [],
+      "sources": [
+        "https://moj.gov.kw/"
       ],
       "verified": "2026-09-23",
       "note": {
@@ -1192,6 +1469,76 @@
       }
     },
     {
+      "id": "pifss",
+      "sector": "government",
+      "name": {
+        "ar": "المؤسسة العامة للتأمينات الاجتماعية",
+        "en": "Public Institution for Social Security"
+      },
+      "claims": {
+        "ar": [
+          "التأمينات الاجتماعية"
+        ],
+        "en": [
+          "social security",
+          "pifss"
+        ]
+      },
+      "tokens": [
+        "pifss"
+      ],
+      "domains": [
+        "pifss.gov.kw"
+      ],
+      "apps": [],
+      "senders": [],
+      "hotlines": [],
+      "policies": [],
+      "sources": [
+        "https://pifss.gov.kw/"
+      ],
+      "verified": "2026-09-23",
+      "note": {
+        "ar": "تُفحص النطاقات بالتحقق من استجابتها على HTTPS في تاريخ التحقق المذكور، أما أسماء المرسلين والخطوط الساخنة فلم تُوثَّق بعد.",
+        "en": "Domains are checked by confirming they resolve and answer over HTTPS on the verification date. Sender names and hotlines are not documented yet."
+      }
+    },
+    {
+      "id": "smsa",
+      "sector": "courier",
+      "name": {
+        "ar": "سمسا إكسبرس",
+        "en": "SMSA Express"
+      },
+      "claims": {
+        "ar": [
+          "سمسا"
+        ],
+        "en": [
+          "smsa express"
+        ]
+      },
+      "tokens": [
+        "smsa",
+        "smsaexpress"
+      ],
+      "domains": [
+        "smsaexpress.com"
+      ],
+      "apps": [],
+      "senders": [],
+      "hotlines": [],
+      "policies": [],
+      "sources": [
+        "https://smsaexpress.com/"
+      ],
+      "verified": "2026-09-23",
+      "note": {
+        "ar": "تُفحص النطاقات بالتحقق من استجابتها على HTTPS في تاريخ التحقق المذكور، أما أسماء المرسلين والخطوط الساخنة فلم تُوثَّق بعد.",
+        "en": "Domains are checked by confirming they resolve and answer over HTTPS on the verification date. Sender names and hotlines are not documented yet."
+      }
+    },
+    {
       "id": "stc",
       "sector": "telecom",
       "name": {
@@ -1218,6 +1565,40 @@
       "policies": [],
       "sources": [
         "https://stc.com.kw/"
+      ],
+      "verified": "2026-09-23",
+      "note": {
+        "ar": "تُفحص النطاقات بالتحقق من استجابتها على HTTPS في تاريخ التحقق المذكور، أما أسماء المرسلين والخطوط الساخنة فلم تُوثَّق بعد.",
+        "en": "Domains are checked by confirming they resolve and answer over HTTPS on the verification date. Sender names and hotlines are not documented yet."
+      }
+    },
+    {
+      "id": "ups",
+      "sector": "courier",
+      "name": {
+        "ar": "يو بي إس",
+        "en": "UPS"
+      },
+      "claims": {
+        "ar": [
+          "يو بي إس"
+        ],
+        "en": [
+          "ups"
+        ]
+      },
+      "tokens": [
+        "ups"
+      ],
+      "domains": [
+        "ups.com"
+      ],
+      "apps": [],
+      "senders": [],
+      "hotlines": [],
+      "policies": [],
+      "sources": [
+        "https://ups.com/"
       ],
       "verified": "2026-09-23",
       "note": {

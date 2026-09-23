@@ -2,11 +2,12 @@
 
 Kuwait's open scam shield: a verified registry of the genuine official channels and a reviewed feed of confirmed scam links and numbers, so anyone can check a message in seconds and any bank, telco or app can plug it in.
 
-**Status: version 0.2, September 2026.** The registry of genuine official channels is live with 25 Kuwaiti bodies, the check page runs in the browser against it, and the data is published in nine files. The scam feed exists in all eight formats and is deliberately empty: nothing is listed until two reviewers approve it with evidence.
+**Status: version 0.4, September 2026.** The registry of genuine official channels is live with 36 Kuwaiti bodies, including the ministries, nine banks, the telcos, the couriers and customs. The check page runs in the browser against it and keeps working with no connection, the report page cleans a message on the device, a scheduled job watches certificate transparency for lookalikes, and an MCP server gives assistants the same answers. The scam feed exists in all eight formats and is deliberately empty: nothing is listed until two reviewers approve it with evidence.
 
 - Check a message: [asli.3li.info/check.html](https://asli.3li.info/check.html)
 - Report a scam: [asli.3li.info/report.html](https://asli.3li.info/report.html), which cleans your own details off the message before anything leaves your device
 - About the project: [asli.3li.info](https://asli.3li.info/)
+- Install it on a phone: open the check page and add it to the home screen, then it works offline
 - The data: [registry.json](https://asli.3li.info/data/registry.json), [feed.json](https://asli.3li.info/data/feed.json), [meta.json](https://asli.3li.info/data/meta.json)
 - The same text to read offline: [PROJECT.md](PROJECT.md) in English, [PROJECT.ar.md](PROJECT.ar.md) in Arabic
 - Rules: [listing policy](LISTING-POLICY.md), [appeals](APPEALS.md), [privacy](PRIVACY.md), [security](SECURITY.md), [contributing](CONTRIBUTING.md)
@@ -45,7 +46,7 @@ Asli is new, but most of its engine already exists in these public repositories:
 | `watch/` | The certificate watch: how it works, and a public state file that holds hashes rather than names |
 | `mcp/` | An MCP server so assistants can check messages and domains against the registry. See [mcp/README.md](mcp/README.md) |
 | `tools/` | Builders, the watcher, the scorer and the verifiers, all on the Node standard library |
-| `tests/` | 67 checks that fail the build on a bad entry, a stale file or a broken translation |
+| `tests/` | 77 checks that fail the build on a bad entry, a stale file or a broken translation |
 
 ## Detection
 
@@ -72,7 +73,7 @@ covered by tests. See [watch/README.md](watch/README.md).
 Every word on the site and in both PROJECT files comes from one file, `docs/content.js`, as an Arabic and English pair. The tests enforce that pairing, so the two languages cannot drift apart. The published data under `docs/data/` is generated, never hand edited.
 
 ```sh
-node --test                             # everything: content, registry, feed, checker, generated files
+node --test                             # everything: content, registry, feed, checker, offline shell, generated files
 node tools/build-data.mjs               # rebuild docs/data after editing registry/ or feed/
 node tools/build-project-md.mjs         # rebuild PROJECT.md and PROJECT.ar.md after editing content.js
 node tools/ct-watch.mjs --days 2         # read the certificate logs and score what is new

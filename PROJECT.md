@@ -1,6 +1,6 @@
 # Asli | Kuwait's open scam shield
 
-Version 0.2, September 2026. The registry and the check page work now, and the scam feed stays empty until the first reviewed listing
+Version 0.4, September 2026. The registry holds 36 official bodies, the check page works with no connection, and the scam feed stays empty until the first reviewed listing
 
 > This file is generated from the site's content file. Do not edit it by hand.
 
@@ -368,6 +368,6 @@ What happens next, in order.
 
 ---
 
-An open-source project by Ali AlEnezi. Version 0.2, September 2026, released under the MIT licence. The registry and the feed are released under CC BY 4.0.
+An open-source project by Ali AlEnezi. Version 0.4, September 2026, released under the MIT licence. The registry and the feed are released under CC BY 4.0.
 
 [Source code](https://github.com/SiteQ8/Asli)
