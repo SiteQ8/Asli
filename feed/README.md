@@ -33,6 +33,10 @@ Rules the tests enforce:
 
 - `expires` must be after `listed`. Nothing is listed forever, because domains
   change hands and a stale listing punishes whoever owns the name next.
+- Expiry is enforced by the build, not by memory. An entry is published only
+  while the build date sits between `listed` and `expires`, and the scheduled job
+  rebuilds as of today, so an expired listing leaves every format within a day.
+  `meta.json` counts how many were removed that way.
 - Two approvals are required. One person, or one agent, cannot list anything.
 - Evidence is required, and it is what an appeal is judged against.
 - An official domain from the registry can never appear here.

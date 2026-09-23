@@ -29,6 +29,14 @@ An indicator goes in the scam feed only when all of these hold:
 Every listing expires after 90 days unless it is confirmed again. Domains change
 hands, and a listing that outlives the scam punishes the next owner.
 
+This is enforced by the build rather than left to memory: an expired entry drops
+out of all eight published formats on the next daily rebuild, whether or not
+anyone remembers it, and the removal is counted in `meta.json`.
+
+The registry has a matching promise in the other direction. Every official entry
+is re-verified within 90 days, and a weekly job opens an issue for any entry that
+is overdue or any official domain that stops answering.
+
 ## Removal and appeal
 
 Anyone can ask for a listing to be removed, including the owner of the domain.

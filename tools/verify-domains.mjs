@@ -52,16 +52,40 @@ for (const job of jobs) {
 const bad = results.filter((r) => !r.ok);
 console.log(`\n${results.length - bad.length} of ${results.length} listed domains answered`);
 
+/*
+  The registry promises re-verification every 90 days. An entry past that date
+  is not wrong, but it is no longer vouched for, and the report says so.
+*/
+const STALE_DAYS = 90;
+const now = Date.now();
+const stale = bodies.filter((b) => (now - Date.parse(b.verified + "T00:00:00Z")) / 86400000 > STALE_DAYS);
+if (stale.length) {
+  console.log(`${stale.length} entries were last verified more than ${STALE_DAYS} days ago: ${stale.map((b) => b.id).join(", ")}`);
+}
+
 const reportFlag = process.argv.indexOf("--report");
 if (reportFlag > -1 && process.argv[reportFlag + 1]) {
-  const lines = [
-    "These domains are listed in the registry as genuine official channels, and they stopped answering:",
-    "",
-    ...bad.map((r) => `- \`${r.host}\` (${r.body}): ${r.how}`),
-    "",
-    "A domain that stops answering is reviewed, not deleted. Check whether the body moved, whether it is an outage, and whether the name is at risk of being taken over."
-  ];
+  const lines = [];
+  if (bad.length) {
+    lines.push(
+      "These domains are listed in the registry as genuine official channels, and they stopped answering:",
+      "",
+      ...bad.map((r) => `- \`${r.host}\` (${r.body}): ${r.how}`),
+      "",
+      "A domain that stops answering is reviewed, not deleted. Check whether the body moved, whether it is an outage, and whether the name is at risk of being taken over.",
+      ""
+    );
+  }
+  if (stale.length) {
+    lines.push(
+      `These entries are past the ${STALE_DAYS} day re-verification the registry promises:`,
+      "",
+      ...stale.map((b) => `- \`${b.id}\`, last verified ${b.verified}`),
+      "",
+      "Open each body's own site, confirm the domains, apps and numbers are still theirs, and update the verified date."
+    );
+  }
   writeFileSync(process.argv[reportFlag + 1], lines.join("\n") + "\n");
 }
 
-if (bad.length) process.exit(1);
+if (bad.length || stale.length) process.exit(1);

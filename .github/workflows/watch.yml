@@ -46,7 +46,8 @@ jobs:
           echo "Candidates were found but there is no private review queue configured," >> "$GITHUB_STEP_SUMMARY"
           echo "so they were discarded rather than published. Set REVIEW_REPO and REVIEW_TOKEN to receive them." >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Record what has been checked, as hashes
+      # Rebuilding as of today is also what removes expired listings from every format.
+      - name: Record what has been checked, as hashes, and drop expired listings
         run: |
           node tools/build-data.mjs
           git config user.name "SiteQ8"

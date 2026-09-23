@@ -47,7 +47,7 @@ Asli is new, but most of its engine already exists in these public repositories:
 | `watch/` | The certificate watch: how it works, and a public state file that holds hashes rather than names |
 | `mcp/` | An MCP server so assistants can check messages and domains against the registry. See [mcp/README.md](mcp/README.md) |
 | `tools/` | Builders, the watcher, the scorer and the verifiers, all on the Node standard library |
-| `tests/` | 84 checks that fail the build on a bad entry, a stale file or a broken translation |
+| `tests/` | 87 checks that fail the build on a bad entry, a stale file or a broken translation |
 
 ## Detection
 
