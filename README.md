@@ -43,8 +43,9 @@ Asli is new, but most of its engine already exists in these public repositories:
 | `docs/checker.js` | The checking logic itself, the same code in the browser and in the tests |
 | `docs/redact.js` | On-device redaction for reports: civil ID, IBAN, card and account numbers and email addresses go, the scam's own links and numbers stay |
 | `watch/` | The certificate watch: how it works, and a public state file that holds hashes rather than names |
+| `mcp/` | An MCP server so assistants can check messages and domains against the registry. See [mcp/README.md](mcp/README.md) |
 | `tools/` | Builders, the watcher, the scorer and the verifiers, all on the Node standard library |
-| `tests/` | 60 checks that fail the build on a bad entry, a stale file or a broken translation |
+| `tests/` | 67 checks that fail the build on a bad entry, a stale file or a broken translation |
 
 ## Detection
 
@@ -75,6 +76,7 @@ node --test                             # everything: content, registry, feed, c
 node tools/build-data.mjs               # rebuild docs/data after editing registry/ or feed/
 node tools/build-project-md.mjs         # rebuild PROJECT.md and PROJECT.ar.md after editing content.js
 node tools/ct-watch.mjs --days 2         # read the certificate logs and score what is new
+node mcp/asli-mcp.mjs --local           # run the MCP server against the local data
 node tools/verify-domains.mjs           # confirm every listed official domain still answers
 node tools/check-links.mjs              # confirm every cited source is still reachable
 ```
