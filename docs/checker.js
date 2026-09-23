@@ -23,8 +23,17 @@
   ];
 
   var PRESSURE = {
-    ar: ["خلال ٢٤ ساعة", "خلال 24 ساعة", "وإلا", "الآن", "فورًا", "فورا", "اليوم", "سيتم إيقاف", "سيتم تعليق", "آخر تحذير", "تنتهي صلاحية"],
-    en: ["within 24 hours", "or it will be", "will be blocked", "will be suspended", "immediately", "right now", "today", "final warning", "expires", "act now", "urgent"]
+    ar: [
+      "خلال ٢٤ ساعة", "خلال 24 ساعة", "وإلا", "الآن", "فورًا", "فورا", "اليوم",
+      "سيتم إيقاف", "سيتم تعليق", "تم تعليق", "تم إيقاف", "موقوف", "معلق", "معلّق",
+      "آخر تحذير", "آخر فرصة", "تنتهي صلاحية", "تنتهي اليوم", "بادر", "سارع", "قبل فوات"
+    ],
+    en: [
+      "within 24 hours", "or it will be", "will be blocked", "will be suspended",
+      "is suspended", "has been suspended", "is blocked", "has been blocked", "locked",
+      "immediately", "right now", "now", "today", "final warning", "last chance",
+      "expires", "expired", "act now", "urgent", "reactivate", "avoid suspension"
+    ]
   };
 
   var CREDENTIALS = {
@@ -228,9 +237,16 @@
       A broken policy is enough on its own. Nobody legitimate asks for a
       one-time code by message, whether or not they name who they are.
     */
+    /*
+      A number the body does not publish is weak on its own: a real bank can
+      call from a line that is not on its home page. Put it next to pressure
+      wording and a claimed identity, and it is the shape of a scam call.
+    */
+    var numberAndPressure = claimed && unpublishedNumbers.length && pressure;
+
     var verdict;
     if (listed.length) verdict = "listed";
-    else if (lookalike.length || broken.length) verdict = "impersonation";
+    else if (lookalike.length || broken.length || numberAndPressure) verdict = "impersonation";
     else if (claimed && official.length) verdict = "official";
     else if (official.length && !unknown.length) verdict = "official";
     else verdict = "unverified";

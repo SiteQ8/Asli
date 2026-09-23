@@ -213,6 +213,20 @@ test("a number the body publishes is recognised, and an unknown one is pointed o
   assert.ok(bad.published.includes("1804080"), "the genuine numbers must be offered back to the person");
 });
 
+test("an unpublished number next to pressure wording reads as impersonation", () => {
+  const r = Checker.check({ text: "Burgan Bank: your account is suspended. Call 55512345 now to reactivate it.", channel: "sms" }, data);
+  assert.equal(r.verdict, "impersonation");
+  assert.ok(r.pressure, "suspended and reactivate are pressure");
+  assert.ok(r.unpublishedNumbers.includes("55512345"));
+});
+
+test("an unpublished number on its own is not enough to call something a scam", () => {
+  const r = Checker.check({ text: "Burgan Bank: our branch in Salmiya can be reached on 22334455.", channel: "sms" }, data);
+  assert.ok(r.unpublishedNumbers.includes("22334455"));
+  assert.equal(r.pressure, false);
+  assert.notEqual(r.verdict, "impersonation");
+});
+
 test("a body with no recorded numbers never accuses a number of being wrong", () => {
   const result = Checker.check({ text: "Ministry of Interior: call 55512345 about your fine", channel: "sms" }, data);
   /* The array crosses a vm realm, so compare its contents rather than the object. */
