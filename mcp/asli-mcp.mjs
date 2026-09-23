@@ -155,6 +155,8 @@ function summarise(result) {
     unknown_links: result.unknown,
     in_scam_feed: result.listed,
     broken_policies: result.broken.map((b) => ({ body: b.body.name.en, policy: b.policy.text.en, source: b.policy.source })),
+    numbers_the_body_publishes: result.published,
+    numbers_in_message_not_published_by_it: result.unpublishedNumbers,
     pressure_tactics: result.pressure,
     advice:
       result.verdict === "official"
@@ -227,9 +229,10 @@ async function callTool(name, args) {
         sector: b.sector,
         domains: b.domains,
         apps: (b.apps || []).map((a) => ({ name: a.name.en, publisher: a.publisher, ios: a.ios, android: a.android })),
+        published_numbers: (b.hotlines || []).map((h) => ({ number: h.number, what: h.label ? h.label.en : null, source: h.source, verified: h.verified })),
         policies: (b.policies || []).map((p) => ({ policy: p.text.en, applies_to: p.channels, source: p.source })),
         verified: b.verified,
-        note: "Sender names and hotlines are not documented yet, so their absence here means unverified, not nonexistent."
+        note: "Listed numbers are what the body publishes on its own site, which does not mean they are all of its numbers. Sender names are not documented yet, so their absence means unverified rather than nonexistent."
       }))
     );
   }

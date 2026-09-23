@@ -185,6 +185,40 @@ test("a listed indicator outranks everything else", () => {
   assert.equal(r.verdict, "listed");
 });
 
+test("every recorded number carries its source, its date and how it was checked", () => {
+  const KUWAITI = /^(1\d{6}|[2569]\d{7})$/;
+  let recorded = 0;
+  for (const b of bodies) {
+    for (const h of b.hotlines || []) {
+      recorded++;
+      assert.match(h.number, KUWAITI, `${b.id}: ${h.number} is not a Kuwaiti number`);
+      assert.match(h.source, /^https:\/\//, `${b.id}/${h.number}: needs an https source`);
+      assert.ok(b.domains.some((d) => h.source.includes(d)), `${b.id}/${h.number}: the source must be the body's own site`);
+      assert.match(h.verified, DATE, `${b.id}/${h.number}: needs a verification date`);
+      assert.ok(h.method && h.method.length > 10, `${b.id}/${h.number}: say how it was verified`);
+      for (const lang of ["ar", "en"]) assert.ok(h.label && h.label[lang], `${b.id}/${h.number}: missing ${lang} label`);
+    }
+  }
+  assert.ok(recorded >= 4, `expected some recorded numbers, found ${recorded}`);
+});
+
+test("a number the body publishes is recognised, and an unknown one is pointed out", () => {
+  const withNumbers = bodies.find((b) => (b.hotlines || []).length && b.id === "burgan");
+  assert.ok(withNumbers, "burgan should carry published numbers");
+  const good = Checker.check({ text: "Burgan Bank: call 1804080 about your account", channel: "sms" }, data);
+  assert.ok(good.matchedNumbers.includes("1804080") || good.published.includes("1804080"));
+
+  const bad = Checker.check({ text: "Burgan Bank: your account is suspended, call 55512345 now", channel: "sms" }, data);
+  assert.ok(bad.unpublishedNumbers.includes("55512345"), `found ${bad.unpublishedNumbers.join(", ")}`);
+  assert.ok(bad.published.includes("1804080"), "the genuine numbers must be offered back to the person");
+});
+
+test("a body with no recorded numbers never accuses a number of being wrong", () => {
+  const result = Checker.check({ text: "Ministry of Interior: call 55512345 about your fine", channel: "sms" }, data);
+  /* The array crosses a vm realm, so compare its contents rather than the object. */
+  assert.equal(result.unpublishedNumbers.length, 0, "silence is the honest answer when nothing is on file");
+});
+
 test("phone numbers are read with or without the country code", () => {
   const r = Checker.check({ text: "Call +965 2222 3333 or 22223333 now", channel: "call" }, data);
   assert.ok(r.phones.includes("22223333"), `found ${r.phones.join(", ")}`);

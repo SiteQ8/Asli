@@ -84,6 +84,11 @@
     fLookalike: { ar: "{host} يستعير اسم {name} وهو ليس من نطاقاتها.", en: "{host} borrows the name of {name} and is not one of its domains." },
     fUnknown: { ar: "{host} لا يعرفه السجل.", en: "{host} is unknown to the registry." },
     fPolicy: { ar: "تخالف الرسالة سياسة منشورة: {text}", en: "It breaks a published policy: {text}" },
+    fNumberMatch: { ar: "الرقم {number} من الأرقام التي تنشرها {name}.", en: "{number} is one of the numbers {name} publishes." },
+    fNumberUnknown: {
+      ar: "الرقم {number} ليس من الأرقام التي تنشرها {name} على موقعها، وهي تنشر {list}.",
+      en: "{number} is not among the numbers {name} publishes on its own site, which are {list}."
+    },
     fNoPolicy: { ar: "لا تخالف الرسالة أي سياسة منشورة في السجل.", en: "It breaks no published policy in the registry." },
     fPressure: { ar: "تستخدم الرسالة الضغط بمهلة أو تهديد أو أمر بالتصرف فورًا.", en: "It uses pressure: a deadline, a threat or an order to act now." },
     fNoPressure: { ar: "لا توجد أساليب ضغط واضحة.", en: "No clear pressure tactics." },
@@ -263,6 +268,17 @@
     result.lookalike.forEach(function (l) { findings.push(line("flag", t("fLookalike", { host: l.host, name: P(l.body.name) }))); });
     result.official.forEach(function (o) { findings.push(line("pass", t("fOfficial", { host: o.host, name: P(o.body.name) }))); });
     result.unknown.forEach(function (u) { findings.push(line("info", t("fUnknown", { host: u }))); });
+
+    result.matchedNumbers.forEach(function (n) {
+      findings.push(line("pass", t("fNumberMatch", { number: n, name: P(result.claimed.name) })));
+    });
+    result.unpublishedNumbers.forEach(function (n) {
+      findings.push(line("flag", t("fNumberUnknown", {
+        number: n,
+        name: P(result.claimed.name),
+        list: result.published.join(listSep())
+      })));
+    });
 
     if (result.broken.length) {
       result.broken.forEach(function (b) { findings.push(line("flag", t("fPolicy", { text: P(b.policy.text) }), b.policy.source)); });

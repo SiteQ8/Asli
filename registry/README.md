@@ -21,7 +21,7 @@ than a missing one: it can make a scam look genuine.
 | `domains` | Bare hosts the body really owns, with no scheme and no path |
 | `apps` | Official apps, each with a publisher and at least one store link |
 | `senders` | Verified SMS sender names. Empty until each one is documented |
-| `hotlines` | Verified phone numbers. Empty until each one is documented |
+| `hotlines` | Numbers the body publishes on its own site, each with a source, a date and how it was checked |
 | `policies` | What this body will never do, each with trigger words and a source |
 | `sources` | Where the entry was verified from |
 | `verified` | Date of the last check, `YYYY-MM-DD` |
@@ -35,6 +35,22 @@ than a missing one: it can make a scam look genuine.
 Re-verification is due every 90 days. A domain that stops resolving is not
 deleted straight away: domains move, and a dropped entry can be a scam's opening.
 It is marked and reviewed.
+
+## How a number gets in
+
+Only from an explicit `tel:` link on the body's own site. A number typed into
+running text can be a branch, a supplier, a form placeholder or a person, while a
+`tel:` link is the body publishing a number for people to call.
+
+`node tools/find-contacts.mjs --out proposals.json` collects candidates. It
+writes a proposal and never the registry, because a number that reaches somebody
+mid panic has to be right. A human opens the page, decides what the number is
+for, and edits the body file.
+
+What the entry claims is narrow on purpose: these are numbers the body publishes,
+not all of its numbers, and not a fraud hotline unless the body says so. The
+checker words it the same way, so it can say "this is not among the numbers the
+bank publishes" without ever claiming a number is fake.
 
 ## How a policy gets in
 
