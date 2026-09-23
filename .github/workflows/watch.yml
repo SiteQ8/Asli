@@ -8,7 +8,7 @@ on:
       days:
         description: How many days of certificate logs to read
         required: false
-        default: "2"
+        default: "14"
 
 permissions:
   contents: write
@@ -34,7 +34,7 @@ jobs:
       # an artifact or this repository. See watch/README.md.
       - name: Read certificate transparency and score the names
         id: watch
-        run: node tools/ct-watch.mjs --days "${{ github.event.inputs.days || '2' }}" --out "$RUNNER_TEMP/candidates.json"
+        run: node tools/ct-watch.mjs --days "${{ github.event.inputs.days || '14' }}" --out "$RUNNER_TEMP/candidates.json"
 
       - name: Send new candidates to the private review queue
         if: env.REVIEW_REPO != '' && steps.watch.outputs.candidates != '0'

@@ -25,7 +25,8 @@ export const INTENT = [
   "login", "signin", "verify", "verification", "validate", "update", "secure",
   "account", "payment", "pay", "fine", "fines", "violation", "wallet", "otp",
   "refund", "customs", "delivery", "parcel", "shipment", "invoice", "recovery",
-  "unlock", "reactivate", "suspended", "confirm", "identity", "kyc"
+  "unlock", "reactivate", "suspended", "confirm", "identity", "kyc", "fee", "fees",
+  "charge", "charges", "renew", "renewal", "tracking", "track", "claim"
 ];
 
 /* Hosts that hand out free subdomains, which is where phishing kits tend to live. */
@@ -125,12 +126,18 @@ export function score(name, bodies) {
   /* An official domain used as a label inside another name is the clearest tell. */
   for (const body of bodies) {
     for (const domain of body.domains) {
-      const sequence = "." + domain.split(".").join(".") + ".";
-      if (("." + host + ".").includes(sequence)) {
-        points += 50;
-        owner = owner || body;
-        out.reasons.push(`carries the official domain ${domain} as a label`);
-      }
+      const at = ("." + host).indexOf("." + domain + ".");
+      if (at < 0) continue;
+      /*
+        What follows matters. A country variant such as burgan.com.tr is the
+        bank's own, while moi.gov.kw.pay.example puts the official name inside
+        somebody else's domain, which is the trick worth catching.
+      */
+      const after = ("." + host).slice(at + domain.length + 2);
+      if (!after.includes(".")) continue;
+      points += 50;
+      owner = owner || body;
+      out.reasons.push(`carries the official domain ${domain} as a label`);
     }
   }
 
@@ -181,12 +188,6 @@ export function score(name, bodies) {
   if (host.includes("xn--")) {
     points += 20;
     out.reasons.push("uses punycode, so the name can look like other letters");
-  }
-
-  const hyphens = (host.match(/-/g) || []).length;
-  if (hyphens >= 2) {
-    points += 10;
-    out.reasons.push("stacks hyphens, which is common in throwaway names");
   }
 
   if (/\d/.test(labels(host).slice(0, -1).join(""))) {
