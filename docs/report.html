@@ -3,20 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>افحص رسالة | أَصْلي</title>
-<meta name="description" content="الصق رسالة أو رابطًا أو رقمًا ليقارنه أَصْلي بسجل القنوات الرسمية الكويتية وبتغذية الاحتيال المؤكدة، ويجري الفحص داخل متصفحك ولا تغادر الرسالة جهازك.">
+<title>أبلغ عن احتيال | أَصْلي</title>
+<meta name="description" content="حوّل رسالة احتيال إلى بلاغ مفيد، إذ تُحذف بياناتك الشخصية على جهازك قبل أن يغادر أي شيء، وتبقى أدلة الاحتيال كما هي.">
 <meta name="author" content="Ali AlEnezi">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#EEF3F1" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0D1B18" media="(prefers-color-scheme: dark)">
-<meta name="robots" content="index, follow">
-<link rel="canonical" href="https://asli.3li.info/check.html">
+<link rel="canonical" href="https://asli.3li.info/report.html">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Asli">
-<meta property="og:title" content="افحص رسالة | Check a message">
-<meta property="og:description" content="Paste a message and Asli checks it against Kuwait's registry of genuine official channels. The check runs in your browser.">
-<meta property="og:url" content="https://asli.3li.info/check.html">
+<meta property="og:title" content="أبلغ عن احتيال | Report a scam">
+<meta property="og:description" content="Turn a scam message into a useful report. Your own details are removed on your device before anything leaves it.">
+<meta property="og:url" content="https://asli.3li.info/report.html">
 <meta property="og:image" content="https://asli.3li.info/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,21 +25,20 @@
 <link rel="stylesheet" href="check.css">
 </head>
 <body class="check-page">
-<a class="skip" href="#form" data-t="skip">انتقل إلى الفحص</a>
+<a class="skip" href="#form" data-t="skip">انتقل إلى النموذج</a>
 
 <header class="masthead">
   <a class="brand" href="./"><span class="brand-ar" lang="ar">أَصْلي</span><span class="brand-en" lang="en">Asli</span></a>
   <div class="bar-actions">
     <button id="lang" class="lang" type="button"><span data-t="lang">English</span></button>
-    <a class="repo primary-link" href="report.html" data-t="report">أبلغ عن احتيال</a>
+    <a class="repo primary-link" href="check.html" data-t="check">افحص رسالة</a>
     <a class="repo" href="./" data-t="home">عن المشروع</a>
   </div>
 </header>
 
 <main class="wrap check-main">
-  <h1 data-t="title">افحص رسالة</h1>
+  <h1 data-t="title">أبلغ عن احتيال</h1>
   <p class="lead" data-t="lead"></p>
-
   <p class="privacy-note" data-t="privacy"></p>
 
   <form id="form" class="check-form" autocomplete="off">
@@ -54,34 +52,39 @@
       <div id="channels" class="chips" role="radiogroup" data-t-aria="labelChannel"></div>
     </div>
 
+    <label class="field">
+      <span class="small-label" data-t="labelFrom"></span>
+      <input id="from" type="text" dir="ltr" data-t-placeholder="fromPlaceholder">
+    </label>
+
+    <label class="field">
+      <span class="small-label" data-t="labelSeen"></span>
+      <input id="seen" type="date">
+    </label>
+
     <div class="form-actions">
-      <button type="submit" class="btn primary" data-t="run"></button>
+      <button type="submit" class="btn primary" data-t="prepare"></button>
       <button type="button" id="clear" class="btn" data-t="clear"></button>
       <span id="dataState" class="data-state" aria-live="polite"></span>
     </div>
   </form>
 
   <section id="result" class="result" aria-live="polite" hidden></section>
-
-  <section class="reuse-data">
-    <h2 data-t="dataTitle"></h2>
-    <p data-t="dataLead"></p>
-    <ul id="dataLinks" class="data-links"></ul>
-  </section>
 </main>
 
 <footer class="foot">
   <div class="wrap">
     <p data-t="footer"></p>
     <p class="foot-links">
-      <a href="https://github.com/SiteQ8/Asli" data-t="source"></a>
-      <a href="https://github.com/SiteQ8/Asli/blob/main/LISTING-POLICY.md" data-t="policy"></a>
       <a href="https://github.com/SiteQ8/Asli/blob/main/PRIVACY.md" data-t="privacyDoc"></a>
+      <a href="https://github.com/SiteQ8/Asli/blob/main/LISTING-POLICY.md" data-t="policy"></a>
+      <a href="https://github.com/SiteQ8/Asli" data-t="source"></a>
     </p>
   </div>
 </footer>
 
 <script src="checker.js"></script>
-<script src="check.js"></script>
+<script src="redact.js"></script>
+<script src="report.js"></script>
 </body>
 </html>
