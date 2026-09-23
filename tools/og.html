@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>Asli share card</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@700&amp;family=Markazi+Text:wght@400..700&amp;display=swap">
+<style>
+  :root {
+    --paper: #EEF3F1;
+    --paper-2: #F7FAF9;
+    --ink: #10302A;
+    --ink-2: #45605A;
+    --rule: #C3D1CC;
+    --line: #236B68;
+    --foil: #9C7A2E;
+    --text: "Markazi Text", serif;
+    --mark: "Aref Ruqaa", serif;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body {
+    width: 1200px;
+    height: 630px;
+    display: grid;
+    grid-template-columns: 1fr 470px;
+    align-items: center;
+    gap: 40px;
+    padding: 64px 72px;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--text);
+    overflow: hidden;
+  }
+  body::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    opacity: 0.55;
+    background:
+      repeating-linear-gradient(118deg, transparent 0 8px, rgba(35, 107, 104, 0.07) 8px 9px),
+      repeating-linear-gradient(-118deg, transparent 0 8px, rgba(35, 107, 104, 0.05) 8px 9px);
+  }
+  .text { position: relative; }
+  .kicker { font-size: 26px; color: var(--ink-2); padding-bottom: 14px; border-bottom: 1px solid var(--rule); }
+  h1 { font-size: 78px; line-height: 1.25; margin-top: 22px; }
+  .en { font-size: 34px; line-height: 1.3; color: var(--ink-2); margin-top: 18px; direction: ltr; text-align: start; }
+  .foot { position: absolute; inset-inline-start: 72px; inset-block-end: 40px; font-size: 24px; color: var(--foil); direction: ltr; }
+  figure { position: relative; margin: 0; }
+  svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .g-outer { stroke: var(--line); stroke-width: 0.7; opacity: 0.42; fill: none; }
+  .g-mid { stroke: var(--line); stroke-width: 0.7; opacity: 0.62; fill: none; }
+  .g-rose { stroke: var(--line); stroke-width: 0.8; opacity: 0.95; fill: none; }
+  .g-foil { fill: none; stroke: var(--foil); stroke-width: 1; }
+  .g-dots { stroke-width: 2; stroke-dasharray: 0.1 5; stroke-linecap: round; }
+  .g-thin { stroke-width: 0.7; }
+  .g-disc { fill: var(--paper); stroke: var(--foil); stroke-width: 1.2; }
+  .g-word { font-family: var(--mark); font-size: 60px; fill: var(--ink); }
+  .g-latin { font-family: var(--text); font-size: 18px; fill: var(--ink-2); }
+</style>
+</head>
+<body>
+  <div class="text">
+    <p class="kicker">درع الكويت المفتوح ضد الاحتيال</p>
+    <h1>هل هذه الرسالة أصلية؟</h1>
+    <p class="en">Kuwait's open scam shield: a verified registry of genuine official channels and a reviewed feed of scam links and numbers.</p>
+  </div>
+  <figure><svg id="seal" viewBox="-212 -212 424 424" role="img" aria-label="Asli seal"></svg></figure>
+  <p class="foot">asli.3li.info</p>
+<script src="../docs/seal.js"></script>
+<script>window.AsliSeal.draw(document.getElementById("seal"), { animate: false });</script>
+</body>
+</html>
