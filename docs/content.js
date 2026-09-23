@@ -30,6 +30,7 @@
       "nav.lang": { ar: "English", en: "العربية" },
       "nav.langLabel": { ar: "اعرض الصفحة بالإنجليزية", en: "Show this page in Arabic" },
       "nav.check": { ar: "افحص رسالة", en: "Check a message" },
+      "nav.report": { ar: "أبلغ عن احتيال", en: "Report a scam" },
       "nav.repo": { ar: "المصدر على GitHub", en: "Source on GitHub" },
       "nav.index": { ar: "في هذه الصفحة", en: "On this page" },
 

@@ -10,6 +10,7 @@
     skip: { ar: "انتقل إلى الفحص", en: "Skip to the check" },
     lang: { ar: "English", en: "العربية" },
     home: { ar: "عن المشروع", en: "About the project" },
+    report: { ar: "أبلغ عن احتيال", en: "Report a scam" },
     title: { ar: "افحص رسالة", en: "Check a message" },
     lead: {
       ar: "الصق رسالة أو رابطًا أو رقمًا، فيقارنه أَصْلي بسجل القنوات الرسمية الكويتية وبتغذية الاحتيال المؤكدة ويشرح لك سبب الحكم.",

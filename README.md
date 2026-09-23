@@ -5,6 +5,7 @@ Kuwait's open scam shield: a verified registry of the genuine official channels 
 **Status: version 0.2, September 2026.** The registry of genuine official channels is live with 25 Kuwaiti bodies, the check page runs in the browser against it, and the data is published in nine files. The scam feed exists in all eight formats and is deliberately empty: nothing is listed until two reviewers approve it with evidence.
 
 - Check a message: [asli.3li.info/check.html](https://asli.3li.info/check.html)
+- Report a scam: [asli.3li.info/report.html](https://asli.3li.info/report.html), which cleans your own details off the message before anything leaves your device
 - About the project: [asli.3li.info](https://asli.3li.info/)
 - The data: [registry.json](https://asli.3li.info/data/registry.json), [feed.json](https://asli.3li.info/data/feed.json), [meta.json](https://asli.3li.info/data/meta.json)
 - The same text to read offline: [PROJECT.md](PROJECT.md) in English, [PROJECT.ar.md](PROJECT.ar.md) in Arabic
@@ -40,9 +41,10 @@ Asli is new, but most of its engine already exists in these public repositories:
 | `feed/entries/` | One JSON file per confirmed scam indicator, with evidence and two approvals. See [feed/README.md](feed/README.md) |
 | `docs/` | The site: the write-up, the check page, and the published data under `docs/data/` |
 | `docs/checker.js` | The checking logic itself, the same code in the browser and in the tests |
+| `docs/redact.js` | On-device redaction for reports: civil ID, IBAN, card and account numbers and email addresses go, the scam's own links and numbers stay |
 | `watch/` | The certificate watch: how it works, and a public state file that holds hashes rather than names |
 | `tools/` | Builders, the watcher, the scorer and the verifiers, all on the Node standard library |
-| `tests/` | 36 checks that fail the build on a bad entry, a stale file or a broken translation |
+| `tests/` | 60 checks that fail the build on a bad entry, a stale file or a broken translation |
 
 ## Detection
 

@@ -125,3 +125,27 @@
 .data-links li { padding-block: 6px; border-top: 1px solid var(--rule); }
 .data-links a { font-weight: 700; }
 .data-links span { color: var(--ink-2); font-size: 0.9em; }
+
+.cleaned {
+  margin-top: 8px;
+  padding: 14px 16px;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  background: var(--paper);
+  font-family: inherit;
+  font-size: 0.97em;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+#from, #seen {
+  width: 100%;
+  max-width: 420px;
+  padding: 10px 14px;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+}
