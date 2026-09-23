@@ -1,0 +1,24 @@
+name: Correct the evidence
+description: A fact, figure or source on the site is wrong or out of date
+title: "Correction: "
+labels: ["correction"]
+body:
+  - type: textarea
+    id: claim
+    attributes:
+      label: What the site says now
+      description: Quote the line and say where it appears.
+    validations:
+      required: true
+  - type: textarea
+    id: correct
+    attributes:
+      label: What it should say
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Source for the correction
+    validations:
+      required: true

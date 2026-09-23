@@ -1,0 +1,1338 @@
+{
+  "schema": "asli.registry.v1",
+  "site": "https://asli.3li.info",
+  "licence": "CC BY 4.0",
+  "bodies": [
+    {
+      "id": "abk",
+      "sector": "bank",
+      "name": {
+        "ar": "البنك الأهلي الكويتي",
+        "en": "Al Ahli Bank of Kuwait"
+      },
+      "claims": {
+        "ar": [
+          "البنك الأهلي الكويتي"
+        ],
+        "en": [
+          "al ahli bank of kuwait"
+        ]
+      },
+      "tokens": [
+        "abk",
+        "eahli",
+        "ahli"
+      ],
+      "domains": [
+        "eahli.com"
+      ],
+      "apps": [],
+      "senders": [],
+      "hotlines": [],
+      "policies": [
+        {
+          "id": "no-credentials-by-message",
+          "text": {
+            "ar": "لا تطلب البنوك بياناتك المصرفية أو كلمة المرور أو رمز التحقق عبر المكالمات أو الرسائل أو البريد الإلكتروني.",
+            "en": "Banks never ask for your banking details, password or one-time code by call, message or email."
+          },
+          "channels": [
+            "sms",
+            "imessage",
+            "whatsapp",
+            "email",
+            "call",
+            "social"
+          ],
+          "words": {
+            "ar": [
+              "رمز التحقق",
+              "الرقم السري",
+              "كلمة المرور",
+              "بيانات البطاقة",
+              "رقم البطاقة",
+              "تحديث البيانات"
+            ],
+            "en": [
+              "verification code",
+              "one-time code",
+              "otp",
+              "pin",
+              "password",
+              "card number",
+              "update your details"
+            ]
+          },
+          "source": "https://www.cbk.gov.kw/en/cbk-news/announcements-and-press-releases/press-releases/2021/02/202102031030-diraya-campaign-launches-video-addressing-e-crimes"
+        }
+      ],
+      "sources": [
+        "https://eahli.com/",
+        "https://www.cbk.gov.kw/en/cbk-news/announcements-and-press-releases/press-releases/2021/02/202102031030-diraya-campaign-launches-video-addressing-e-crimes"
+      ],
+      "verified": "2026-09-23",
+      "note": {
+        "ar": "تُفحص النطاقات بالتحقق من استجابتها على HTTPS في تاريخ التحقق المذكور، أما أسماء المرسلين والخطوط الساخنة فلم تُوثَّق بعد.",
+        "en": "Domains are checked by confirming they resolve and answer over HTTPS on the verification date. Sender names and hotlines are not documented yet."
+      }
+    },
+    {
+      "id": "boubyan",
+      "sector": "bank",
+      "name": {
+        "ar": "بنك بوبيان",
+        "en": "Boubyan Bank"
+      },
+      "claims": {
+        "ar": [
+          "بنك بوبيان"
+        ],
+        "en": [
+          "boubyan bank"
+        ]
+      },
+      "tokens": [
+        "boubyan"
+      ],
+      "domains": [
+        "boubyan.com"
+      ],
+      "apps": [],
+      "senders": [],
+      "hotlines": [],
+      "policies": [
+        {
+          "id": "no-credentials-by-message",
+          "text": {
+            "ar": "لا تطلب البنوك بياناتك المصرفية أو كلمة المرور أو رمز التحقق عبر المكالمات أو الرسائل أو البريد الإلكتروني.",
+            "en": "Banks never ask for your banking details, password or one-time code by call, message or email."
+          },
+          "channels": [
+            "sms",
+            "imessage",
+            "whatsapp",
+            "email",
+            "call",
+            "social"
+          ],
+          "words": {
+            "ar": [
+              "رمز التحقق",
+              "الرقم السري",
+              "كلمة المرور",
+              "بيانات البطاقة",
+              "رقم البطاقة",
+              "تحديث البيانات"
+            ],
+            "en": [
+              "verification code",
+              "one-time code",
+              "otp",
+              "pin",
+              "password",
+              "card number",
+              "update your details"
+            ]
+          },
+          "source": "https://www.cbk.gov.kw/en/cbk-news/announcements-and-press-releases/press-releases/2021/02/202102031030-diraya-campaign-launches-video-addressing-e-crimes"
+        }
+      ],
+      "sources": [
+        "https://boubyan.com/",
+        "https://www.cbk.gov.kw/en/cbk-news/announcements-and-press-releases/press-releases/2021/02/202102031030-diraya-campaign-launches-video-addressing-e-crimes"
+      ],
+      "verified": "2026-09-23",
+      "note": {
+        "ar": "تُفحص النطاقات بالتحقق من استجابتها على HTTPS في تاريخ التحقق المذكور، أما أسماء المرسلين والخطوط الساخنة فلم تُوثَّق بعد.",
+        "en": "Domains are checked by confirming they resolve and answer over HTTPS on the verification date. Sender names and hotlines are not documented yet."
+      }
+    },
+    {
+      "id": "burgan",
+      "sector": "bank",
+      "name": {
+        "ar": "بنك برقان",
+        "en": "Burgan Bank"
+      },
+      "claims": {
+        "ar": [
+          "بنك برقان"
+        ],
+        "en": [
+          "burgan bank"
+        ]
+      },
+      "tokens": [
+        "burgan"
+      ],
+      "domains": [
+        "burgan.com"
+      ],
+      "apps": [],
+      "senders": [],
+      "hotlines": [],
+      "policies": [
+        {
+          "id": "no-credentials-by-message",
+          "text": {
+            "ar": "لا تطلب البنوك بياناتك المصرفية أو كلمة المرور أو رمز التحقق عبر المكالمات أو الرسائل أو البريد الإلكتروني.",
+            "en": "Banks never ask for your banking details, password or one-time code by call, message or email."
+          },
+          "channels": [
+            "sms",
+            "imessage",
+            "whatsapp",
+            "email",
+            "call",
+            "social"
+          ],
+          "words": {
+            "ar": [
+              "رمز التحقق",
+              "الرقم السري",
+              "كلمة المرور",
+              "بيانات البطاقة",
+              "رقم البطاقة",
+              "تحديث البيانات"
+            ],
+            "en": [
+              "verification code",
+              "one-time code",
+              "otp",
+              "pin",
+              "password",
+              "card number",
+              "update your details"
+            ]
+          },
+          "source": "https://www.cbk.gov.kw/en/cbk-news/announcements-and-press-releases/press-releases/2021/02/202102031030-diraya-campaign-launches-video-addressing-e-crimes"
+        }
+      ],
+      "sources": [
+        "https://burgan.com/",
+        "https://www.cbk.gov.kw/en/cbk-news/announcements-and-press-releases/press-releases/2021/02/202102031030-diraya-campaign-launches-video-addressing-e-crimes"
+      ],
+      "verified": "2026-09-23",
+      "note": {
+        "ar": "تُفحص النطاقات بالتحقق من استجابتها على HTTPS في تاريخ التحقق المذكور، أما أسماء المرسلين والخطوط الساخنة فلم تُوثَّق بعد.",
+        "en": "Domains are checked by confirming they resolve and answer over HTTPS on the verification date. Sender names and hotlines are not documented yet."
+      }
+    },
+    {
+      "id": "cbk-central",
+      "sector": "government",
+      "name": {
+        "ar": "بنك الكويت المركزي",
+        "en": "Central Bank of Kuwait"
+      },
+      "claims": {
+        "ar": [
+          "بنك الكويت المركزي",
+          "البنك المركزي"
+        ],
+        "en": [
+          "central bank of kuwait"
+        ]
+      },
+      "tokens": [
+        "centralbank"
+      ],
+      "domains": [
+        "cbk.gov.kw"
+      ],
+      "apps": [],
+      "senders": [],
+      "hotlines": [],
+      "policies": [
+        {
+          "id": "no-credentials-by-message",
+          "text": {
+            "ar": "لا تطلب البنوك بياناتك المصرفية أو كلمة المرور أو رمز التحقق عبر المكالمات أو الرسائل أو البريد الإلكتروني.",
+            "en": "Banks never ask for your banking details, password or one-time code by call, message or email."
+          },
+          "channels": [
+            "sms",
+            "imessage",
+            "whatsapp",
+            "email",
+            "call",
+            "social"
+          ],
+          "words": {
+            "ar": [
+              "رمز التحقق",
+              "الرقم السري",
+              "كلمة المرور",
+              "بيانات البطاقة",
+              "رقم البطاقة",
+              "تحديث البيانات"
+            ],
+            "en": [
+              "verification code",
+              "one-time code",
+              "otp",
+              "pin",
+              "password",
+              "card number",
+              "update your details"
+            ]
+          },
+          "source": "https://www.cbk.gov.kw/en/cbk-news/announcements-and-press-releases/press-releases/2021/02/202102031030-diraya-campaign-launches-video-addressing-e-crimes"
+        }
+      ],
+      "sources": [
+        "https://cbk.gov.kw/"
+      ],
+      "verified": "2026-09-23",
+      "note": {
+        "ar": "تُفحص النطاقات بالتحقق من استجابتها على HTTPS في تاريخ التحقق المذكور، أما أسماء المرسلين والخطوط الساخنة فلم تُوثَّق بعد.",
+        "en": "Domains are checked by confirming they resolve and answer over HTTPS on the verification date. Sender names and hotlines are not documented yet."
+      }
+    },
+    {
+      "id": "citra",
+      "sector": "government",
+      "name": {
+        "ar": "هيئة الاتصالات وتقنية المعلومات",
+        "en": "Communication and Information Technology Regulatory Authority"
+      },
+      "claims": {
+        "ar": [
+          "هيئة الاتصالات وتقنية المعلومات"
+        ],
+        "en": [
+          "communication and information technology regulatory authority"
+        ]
+      },
+      "tokens": [
+        "citra"
+      ],
+      "domains": [
+        "citra.gov.kw"
+      ],
+      "apps": [],
+      "senders": [],
+      "hotlines": [],
+      "policies": [],
+      "sources": [
+        "https://citra.gov.kw/"
+      ],
+      "verified": "2026-09-23",
+      "note": {
+        "ar": "تُفحص النطاقات بالتحقق من استجابتها على HTTPS في تاريخ التحقق المذكور، أما أسماء المرسلين والخطوط الساخنة فلم تُوثَّق بعد.",
+        "en": "Domains are checked by confirming they resolve and answer over HTTPS on the verification date. Sender names and hotlines are not documented yet."
+      }
+    },
+    {
+      "id": "commercial-bank",
+      "sector": "bank",
+      "name": {
+        "ar": "البنك التجاري الكويتي",
+        "en": "Commercial Bank of Kuwait"
+      },
+      "claims": {
+        "ar": [
+          "البنك التجاري الكويتي"
+        ],
+        "en": [
+          "commercial bank of kuwait"
+        ]
+      },
+      "tokens": [
+        "cbkonline",
+        "commercialbank"
+      ],
+      "domains": [
+        "cbk.com"
+      ],
+      "apps": [],
+      "senders": [],
+      "hotlines": [],
+      "policies": [
+        {
+          "id": "no-credentials-by-message",
+          "text": {
+            "ar": "لا تطلب البنوك بياناتك المصرفية أو كلمة المرور أو رمز التحقق عبر المكالمات أو الرسائل أو البريد الإلكتروني.",
+            "en": "Banks never ask for your banking details, password or one-time code by call, message or email."
+          },
+          "channels": [
+            "sms",
+            "imessage",
+            "whatsapp",
+            "email",
+            "call",
+            "social"
+          ],
+          "words": {
+            "ar": [
+              "رمز التحقق",
+              "الرقم السري",
+              "كلمة المرور",
+              "بيانات البطاقة",
+              "رقم البطاقة",
+              "تحديث البيانات"
+            ],
+            "en": [
+              "verification code",
+              "one-time code",
+              "otp",
+              "pin",
+              "password",
+              "card number",
+              "update your details"
+            ]
+          },
+          "source": "https://www.cbk.gov.kw/en/cbk-news/announcements-and-press-releases/press-releases/2021/02/202102031030-diraya-campaign-launches-video-addressing-e-crimes"
+        }
+      ],
+      "sources": [
+        "https://cbk.com/",
+        "https://www.cbk.gov.kw/en/cbk-news/announcements-and-press-releases/press-releases/2021/02/202102031030-diraya-campaign-launches-video-addressing-e-crimes"
+      ],
+      "verified": "2026-09-23",
+      "note": {
+        "ar": "تُفحص النطاقات بالتحقق من استجابتها على HTTPS في تاريخ التحقق المذكور، أما أسماء المرسلين والخطوط الساخنة فلم تُوثَّق بعد.",
+        "en": "Domains are checked by confirming they resolve and answer over HTTPS on the verification date. Sender names and hotlines are not documented yet."
+      }
+    },
+    {
+      "id": "egov",
+      "sector": "government",
+      "name": {
+        "ar": "بوابة الكويت الحكومية",
+        "en": "Kuwait Government Online"
+      },
+      "claims": {
+        "ar": [
+          "بوابة الكويت الحكومية"
+        ],
+        "en": [
+          "kuwait government online"
+        ]
+      },
+      "tokens": [
+        "egov"
+      ],
+      "domains": [
+        "e.gov.kw"
+      ],
+      "apps": [],
+      "senders": [],
+      "hotlines": [],
+      "policies": [],
+      "sources": [
+        "https://e.gov.kw/"
+      ],
+      "verified": "2026-09-23",
+      "note": {
+        "ar": "تُفحص النطاقات بالتحقق من استجابتها على HTTPS في تاريخ التحقق المذكور، أما أسماء المرسلين والخطوط الساخنة فلم تُوثَّق بعد.",
+        "en": "Domains are checked by confirming they resolve and answer over HTTPS on the verification date. Sender names and hotlines are not documented yet."
+      }
+    },
+    {
+      "id": "gulf-bank",
+      "sector": "bank",
+      "name": {
+        "ar": "بنك الخليج",
+        "en": "Gulf Bank"
+      },
+      "claims": {
+        "ar": [
+          "بنك الخليج"
+        ],
+        "en": [
+          "gulf bank"
+        ]
+      },
+      "tokens": [
+        "gulfbank"
+      ],
+      "domains": [
+        "gulfbank.com"
+      ],
+      "apps": [],
+      "senders": [],
+      "hotlines": [],
+      "policies": [
+        {
+          "id": "no-credentials-by-message",
+          "text": {
+            "ar": "لا تطلب البنوك بياناتك المصرفية أو كلمة المرور أو رمز التحقق عبر المكالمات أو الرسائل أو البريد الإلكتروني.",
+            "en": "Banks never ask for your banking details, password or one-time code by call, message or email."
+          },
+          "channels": [
+            "sms",
+            "imessage",
+            "whatsapp",
+            "email",
+            "call",
+            "social"
+          ],
+          "words": {
+            "ar": [
+              "رمز التحقق",
+              "الرقم السري",
+              "كلمة المرور",
+              "بيانات البطاقة",
+              "رقم البطاقة",
+              "تحديث البيانات"
+            ],
+            "en": [
+              "verification code",
+              "one-time code",
+              "otp",
+              "pin",
+              "password",
+              "card number",
+              "update your details"
+            ]
+          },
+          "source": "https://www.cbk.gov.kw/en/cbk-news/announcements-and-press-releases/press-releases/2021/02/202102031030-diraya-campaign-launches-video-addressing-e-crimes"
+        }
+      ],
+      "sources": [
+        "https://gulfbank.com/",
+        "https://www.cbk.gov.kw/en/cbk-news/announcements-and-press-releases/press-releases/2021/02/202102031030-diraya-campaign-launches-video-addressing-e-crimes"
+      ],
+      "verified": "2026-09-23",
+      "note": {
+        "ar": "تُفحص النطاقات بالتحقق من استجابتها على HTTPS في تاريخ التحقق المذكور، أما أسماء المرسلين والخطوط الساخنة فلم تُوثَّق بعد.",
+        "en": "Domains are checked by confirming they resolve and answer over HTTPS on the verification date. Sender names and hotlines are not documented yet."
+      }
+    },
+    {
+      "id": "kba",
+      "sector": "association",
+      "name": {
+        "ar": "اتحاد مصارف الكويت",
+        "en": "Kuwait Banking Association"
+      },
+      "claims": {
+        "ar": [
+          "اتحاد مصارف الكويت",
+          "دراية"
+        ],
+        "en": [
+          "kuwait banking association",
+          "diraya"
+        ]
+      },
+      "tokens": [
+        "kba",
+        "diraya"
+      ],
+      "domains": [
+        "kba.org.kw"
+      ],
+      "apps": [],
+      "senders": [],
+      "hotlines": [],
+      "policies": [],
+      "sources": [
+        "https://kba.org.kw/",
+        "https://www.cbk.gov.kw/en/cbk-news/announcements-and-press-releases/press-releases/2021/02/202102031030-diraya-campaign-launches-video-addressing-e-crimes"
+      ],
+      "verified": "2026-09-23",
+      "note": {
+        "ar": "تُفحص النطاقات بالتحقق من استجابتها على HTTPS في تاريخ التحقق المذكور، أما أسماء المرسلين والخطوط الساخنة فلم تُوثَّق بعد.",
+        "en": "Domains are checked by confirming they resolve and answer over HTTPS on the verification date. Sender names and hotlines are not documented yet."
+      }
+    },
+    {
+      "id": "kfh",
+      "sector": "bank",
+      "name": {
+        "ar": "بيت التمويل الكويتي",
+        "en": "Kuwait Finance House"
+      },
+      "claims": {
+        "ar": [
+          "بيت التمويل الكويتي"
+        ],
+        "en": [
+          "kuwait finance house"
+        ]
+      },
+      "tokens": [
+        "kfh"
+      ],
+      "domains": [
+        "kfh.com"
+      ],
+      "apps": [],
+      "senders": [],
+      "hotlines": [],
+      "policies": [
+        {
+          "id": "no-credentials-by-message",
+          "text": {
+            "ar": "لا تطلب البنوك بياناتك المصرفية أو كلمة المرور أو رمز التحقق عبر المكالمات أو الرسائل أو البريد الإلكتروني.",
+            "en": "Banks never ask for your banking details, password or one-time code by call, message or email."
+          },
+          "channels": [
+            "sms",
+            "imessage",
+            "whatsapp",
+            "email",
+            "call",
+            "social"
+          ],
+          "words": {
+            "ar": [
+              "رمز التحقق",
+              "الرقم السري",
+              "كلمة المرور",
+              "بيانات البطاقة",
+              "رقم البطاقة",
+              "تحديث البيانات"
+            ],
+            "en": [
+              "verification code",
+              "one-time code",
+              "otp",
+              "pin",
+              "password",
+              "card number",
+              "update your details"
+            ]
+          },
+          "source": "https://www.cbk.gov.kw/en/cbk-news/announcements-and-press-releases/press-releases/2021/02/202102031030-diraya-campaign-launches-video-addressing-e-crimes"
+        }
+      ],
+      "sources": [
+        "https://kfh.com/",
+        "https://www.cbk.gov.kw/en/cbk-news/announcements-and-press-releases/press-releases/2021/02/202102031030-diraya-campaign-launches-video-addressing-e-crimes"
+      ],
+      "verified": "2026-09-23",
+      "note": {
+        "ar": "تُفحص النطاقات بالتحقق من استجابتها على HTTPS في تاريخ التحقق المذكور، أما أسماء المرسلين والخطوط الساخنة فلم تُوثَّق بعد.",
+        "en": "Domains are checked by confirming they resolve and answer over HTTPS on the verification date. Sender names and hotlines are not documented yet."
+      }
+    },
+    {
+      "id": "kib",
+      "sector": "bank",
+      "name": {
+        "ar": "بنك الكويت الدولي",
+        "en": "Kuwait International Bank"
+      },
+      "claims": {
+        "ar": [
+          "بنك الكويت الدولي"
+        ],
+        "en": [
+          "kuwait international bank"
+        ]
+      },
+      "tokens": [
+        "kib"
+      ],
+      "domains": [
+        "kib.com"
+      ],
+      "apps": [],
+      "senders": [],
+      "hotlines": [],
+      "policies": [
+        {
+          "id": "no-credentials-by-message",
+          "text": {
+            "ar": "لا تطلب البنوك بياناتك المصرفية أو كلمة المرور أو رمز التحقق عبر المكالمات أو الرسائل أو البريد الإلكتروني.",
+            "en": "Banks never ask for your banking details, password or one-time code by call, message or email."
+          },
+          "channels": [
+            "sms",
+            "imessage",
+            "whatsapp",
+            "email",
+            "call",
+            "social"
+          ],
+          "words": {
+            "ar": [
+              "رمز التحقق",
+              "الرقم السري",
+              "كلمة المرور",
+              "بيانات البطاقة",
+              "رقم البطاقة",
+              "تحديث البيانات"
+            ],
+            "en": [
+              "verification code",
+              "one-time code",
+              "otp",
+              "pin",
+              "password",
+              "card number",
+              "update your details"
+            ]
+          },
+          "source": "https://www.cbk.gov.kw/en/cbk-news/announcements-and-press-releases/press-releases/2021/02/202102031030-diraya-campaign-launches-video-addressing-e-crimes"
+        }
+      ],
+      "sources": [
+        "https://kib.com/",
+        "https://www.cbk.gov.kw/en/cbk-news/announcements-and-press-releases/press-releases/2021/02/202102031030-diraya-campaign-launches-video-addressing-e-crimes"
+      ],
+      "verified": "2026-09-23",
+      "note": {
+        "ar": "تُفحص النطاقات بالتحقق من استجابتها على HTTPS في تاريخ التحقق المذكور، أما أسماء المرسلين والخطوط الساخنة فلم تُوثَّق بعد.",
+        "en": "Domains are checked by confirming they resolve and answer over HTTPS on the verification date. Sender names and hotlines are not documented yet."
+      }
+    },
+    {
+      "id": "manpower",
+      "sector": "government",
+      "name": {
+        "ar": "الهيئة العامة للقوى العاملة",
+        "en": "Public Authority for Manpower"
+      },
+      "claims": {
+        "ar": [
+          "الهيئة العامة للقوى العاملة"
+        ],
+        "en": [
+          "public authority for manpower"
+        ]
+      },
+      "tokens": [
+        "manpower"
+      ],
+      "domains": [
+        "manpower.gov.kw"
+      ],
+      "apps": [],
+      "senders": [],
+      "hotlines": [],
+      "policies": [],
+      "sources": [
+        "https://manpower.gov.kw/"
+      ],
+      "verified": "2026-09-23",
+      "note": {
+        "ar": "تُفحص النطاقات بالتحقق من استجابتها على HTTPS في تاريخ التحقق المذكور، أما أسماء المرسلين والخطوط الساخنة فلم تُوثَّق بعد.",
+        "en": "Domains are checked by confirming they resolve and answer over HTTPS on the verification date. Sender names and hotlines are not documented yet."
+      }
+    },
+    {
+      "id": "mew",
+      "sector": "government",
+      "name": {
+        "ar": "وزارة الكهرباء والماء والطاقة المتجددة",
+        "en": "Ministry of Electricity, Water and Renewable Energy"
+      },
+      "claims": {
+        "ar": [
+          "وزارة الكهرباء والماء والطاقة المتجددة"
+        ],
+        "en": [
+          "ministry of electricity, water and renewable energy"
+        ]
+      },
+      "tokens": [
+        "mew"
+      ],
+      "domains": [
+        "mew.gov.kw"
+      ],
+      "apps": [],
+      "senders": [],
+      "hotlines": [],
+      "policies": [],
+      "sources": [
+        "https://mew.gov.kw/"
+      ],
+      "verified": "2026-09-23",
+      "note": {
+        "ar": "تُفحص النطاقات بالتحقق من استجابتها على HTTPS في تاريخ التحقق المذكور، أما أسماء المرسلين والخطوط الساخنة فلم تُوثَّق بعد.",
+        "en": "Domains are checked by confirming they resolve and answer over HTTPS on the verification date. Sender names and hotlines are not documented yet."
+      }
+    },
+    {
+      "id": "moc",
+      "sector": "government",
+      "name": {
+        "ar": "وزارة المواصلات",
+        "en": "Ministry of Communications"
+      },
+      "claims": {
+        "ar": [
+          "وزارة المواصلات",
+          "بريد الكويت"
+        ],
+        "en": [
+          "ministry of communications",
+          "kuwait post"
+        ]
+      },
+      "tokens": [
+        "moc",
+        "kwpost",
+        "kuwaitpost",
+        "post"
+      ],
+      "domains": [
+        "moc.gov.kw"
+      ],
+      "apps": [],
+      "senders": [],
+      "hotlines": [],
+      "policies": [
+        {
+          "id": "no-shipment-fees",
+          "text": {
+            "ar": "لا ترسل وزارة المواصلات رسائل أو بريدًا إلكترونيًا تطلب فيه دفع رسوم لاستلام الشحنات.",
+            "en": "The Ministry of Communications never sends messages or emails asking people to pay to receive shipments."
+          },
+          "channels": [
+            "sms",
+            "imessage",
+            "whatsapp",
+            "email"
+          ],
+          "words": {
+            "ar": [
+              "شحنة",
+              "طرد",
+              "رسوم",
+              "جمارك",
+              "ادفع"
+            ],
+            "en": [
+              "parcel",
+              "shipment",
+              "package",
+              "customs",
+              "fee",
+              "pay"
+            ]
+          },
+          "source": "https://kuwaittimes.com/communications-ministry-warns-of-scam-messages/"
+        }
+      ],
+      "sources": [
+        "https://moc.gov.kw/"
+      ],
+      "verified": "2026-09-23",
+      "note": {
+        "ar": "تُفحص النطاقات بالتحقق من استجابتها على HTTPS في تاريخ التحقق المذكور، أما أسماء المرسلين والخطوط الساخنة فلم تُوثَّق بعد.",
+        "en": "Domains are checked by confirming they resolve and answer over HTTPS on the verification date. Sender names and hotlines are not documented yet."
+      }
+    },
+    {
+      "id": "mof",
+      "sector": "government",
+      "name": {
+        "ar": "وزارة المالية",
+        "en": "Ministry of Finance"
+      },
+      "claims": {
+        "ar": [
+          "وزارة المالية"
+        ],
+        "en": [
+          "ministry of finance"
+        ]
+      },
+      "tokens": [
+        "mof"
+      ],
+      "domains": [
+        "mof.gov.kw"
+      ],
+      "apps": [],
+      "senders": [],
+      "hotlines": [],
+      "policies": [],
+      "sources": [
+        "https://mof.gov.kw/"
+      ],
+      "verified": "2026-09-23",
+      "note": {
+        "ar": "تُفحص النطاقات بالتحقق من استجابتها على HTTPS في تاريخ التحقق المذكور، أما أسماء المرسلين والخطوط الساخنة فلم تُوثَّق بعد.",
+        "en": "Domains are checked by confirming they resolve and answer over HTTPS on the verification date. Sender names and hotlines are not documented yet."
+      }
+    },
+    {
+      "id": "moh",
+      "sector": "government",
+      "name": {
+        "ar": "وزارة الصحة",
+        "en": "Ministry of Health"
+      },
+      "claims": {
+        "ar": [
+          "وزارة الصحة"
+        ],
+        "en": [
+          "ministry of health"
+        ]
+      },
+      "tokens": [
+        "moh"
+      ],
+      "domains": [
+        "moh.gov.kw"
+      ],
+      "apps": [],
+      "senders": [],
+      "hotlines": [],
+      "policies": [],
+      "sources": [
+        "https://moh.gov.kw/"
+      ],
+      "verified": "2026-09-23",
+      "note": {
+        "ar": "تُفحص النطاقات بالتحقق من استجابتها على HTTPS في تاريخ التحقق المذكور، أما أسماء المرسلين والخطوط الساخنة فلم تُوثَّق بعد.",
+        "en": "Domains are checked by confirming they resolve and answer over HTTPS on the verification date. Sender names and hotlines are not documented yet."
+      }
+    },
+    {
+      "id": "moi",
+      "sector": "government",
+      "name": {
+        "ar": "وزارة الداخلية",
+        "en": "Ministry of Interior"
+      },
+      "claims": {
+        "ar": [
+          "وزارة الداخلية",
+          "الداخلية"
+        ],
+        "en": [
+          "ministry of interior",
+          "moi"
+        ]
+      },
+      "tokens": [
+        "moi",
+        "interior",
+        "mawared"
+      ],
+      "domains": [
+        "moi.gov.kw"
+      ],
+      "apps": [],
+      "senders": [],
+      "hotlines": [],
+      "policies": [
+        {
+          "id": "fines-only-in-sahel",
+          "text": {
+            "ar": "ترسل وزارة الداخلية إشعارات المخالفات المرورية عبر تطبيق سهل فقط، ولا ترسلها برسائل نصية.",
+            "en": "The Ministry of Interior sends traffic violation notices only through the Sahel app, never by text message."
+          },
+          "channels": [
+            "sms",
+            "imessage",
+            "whatsapp",
+            "email"
+          ],
+          "words": {
+            "ar": [
+              "مخالفة",
+              "مخالفات",
+              "المخالفة",
+              "غرامة"
+            ],
+            "en": [
+              "fine",
+              "fines",
+              "violation",
+              "traffic ticket",
+              "penalty"
+            ]
+          },
+          "source": "https://kuwaittimes.com/article/39064/kuwait/other-news/moi-warns-against-scammers/"
+        }
+      ],
+      "sources": [
+        "https://moi.gov.kw/"
+      ],
+      "verified": "2026-09-23",
+      "note": {
+        "ar": "تُفحص النطاقات بالتحقق من استجابتها على HTTPS في تاريخ التحقق المذكور، أما أسماء المرسلين والخطوط الساخنة فلم تُوثَّق بعد.",
+        "en": "Domains are checked by confirming they resolve and answer over HTTPS on the verification date. Sender names and hotlines are not documented yet."
+      }
+    },
+    {
+      "id": "mosa",
+      "sector": "government",
+      "name": {
+        "ar": "وزارة الشؤون الاجتماعية",
+        "en": "Ministry of Social Affairs"
+      },
+      "claims": {
+        "ar": [
+          "وزارة الشؤون الاجتماعية"
+        ],
+        "en": [
+          "ministry of social affairs"
+        ]
+      },
+      "tokens": [
+        "mosa"
+      ],
+      "domains": [
+        "mosa.gov.kw"
+      ],
+      "apps": [],
+      "senders": [],
+      "hotlines": [],
+      "policies": [],
+      "sources": [
+        "https://mosa.gov.kw/"
+      ],
+      "verified": "2026-09-23",
+      "note": {
+        "ar": "تُفحص النطاقات بالتحقق من استجابتها على HTTPS في تاريخ التحقق المذكور، أما أسماء المرسلين والخطوط الساخنة فلم تُوثَّق بعد.",
+        "en": "Domains are checked by confirming they resolve and answer over HTTPS on the verification date. Sender names and hotlines are not documented yet."
+      }
+    },
+    {
+      "id": "nbk",
+      "sector": "bank",
+      "name": {
+        "ar": "بنك الكويت الوطني",
+        "en": "National Bank of Kuwait"
+      },
+      "claims": {
+        "ar": [
+          "بنك الكويت الوطني"
+        ],
+        "en": [
+          "national bank of kuwait"
+        ]
+      },
+      "tokens": [
+        "nbk"
+      ],
+      "domains": [
+        "nbk.com"
+      ],
+      "apps": [],
+      "senders": [],
+      "hotlines": [],
+      "policies": [
+        {
+          "id": "no-credentials-by-message",
+          "text": {
+            "ar": "لا تطلب البنوك بياناتك المصرفية أو كلمة المرور أو رمز التحقق عبر المكالمات أو الرسائل أو البريد الإلكتروني.",
+            "en": "Banks never ask for your banking details, password or one-time code by call, message or email."
+          },
+          "channels": [
+            "sms",
+            "imessage",
+            "whatsapp",
+            "email",
+            "call",
+            "social"
+          ],
+          "words": {
+            "ar": [
+              "رمز التحقق",
+              "الرقم السري",
+              "كلمة المرور",
+              "بيانات البطاقة",
+              "رقم البطاقة",
+              "تحديث البيانات"
+            ],
+            "en": [
+              "verification code",
+              "one-time code",
+              "otp",
+              "pin",
+              "password",
+              "card number",
+              "update your details"
+            ]
+          },
+          "source": "https://www.cbk.gov.kw/en/cbk-news/announcements-and-press-releases/press-releases/2021/02/202102031030-diraya-campaign-launches-video-addressing-e-crimes"
+        }
+      ],
+      "sources": [
+        "https://nbk.com/",
+        "https://www.cbk.gov.kw/en/cbk-news/announcements-and-press-releases/press-releases/2021/02/202102031030-diraya-campaign-launches-video-addressing-e-crimes"
+      ],
+      "verified": "2026-09-23",
+      "note": {
+        "ar": "تُفحص النطاقات بالتحقق من استجابتها على HTTPS في تاريخ التحقق المذكور، أما أسماء المرسلين والخطوط الساخنة فلم تُوثَّق بعد.",
+        "en": "Domains are checked by confirming they resolve and answer over HTTPS on the verification date. Sender names and hotlines are not documented yet."
+      }
+    },
+    {
+      "id": "ncsc",
+      "sector": "government",
+      "name": {
+        "ar": "المركز الوطني للأمن السيبراني",
+        "en": "National Cyber Security Center"
+      },
+      "claims": {
+        "ar": [
+          "المركز الوطني للأمن السيبراني"
+        ],
+        "en": [
+          "national cyber security center"
+        ]
+      },
+      "tokens": [
+        "ncsc"
+      ],
+      "domains": [
+        "ncsc.gov.kw"
+      ],
+      "apps": [],
+      "senders": [],
+      "hotlines": [],
+      "policies": [],
+      "sources": [
+        "https://ncsc.gov.kw/"
+      ],
+      "verified": "2026-09-23",
+      "note": {
+        "ar": "تُفحص النطاقات بالتحقق من استجابتها على HTTPS في تاريخ التحقق المذكور، أما أسماء المرسلين والخطوط الساخنة فلم تُوثَّق بعد.",
+        "en": "Domains are checked by confirming they resolve and answer over HTTPS on the verification date. Sender names and hotlines are not documented yet."
+      }
+    },
+    {
+      "id": "ooredoo",
+      "sector": "telecom",
+      "name": {
+        "ar": "أوريدو الكويت",
+        "en": "Ooredoo Kuwait"
+      },
+      "claims": {
+        "ar": [
+          "أوريدو الكويت"
+        ],
+        "en": [
+          "ooredoo kuwait"
+        ]
+      },
+      "tokens": [
+        "ooredoo"
+      ],
+      "domains": [
+        "ooredoo.com.kw"
+      ],
+      "apps": [],
+      "senders": [],
+      "hotlines": [],
+      "policies": [],
+      "sources": [
+        "https://ooredoo.com.kw/"
+      ],
+      "verified": "2026-09-23",
+      "note": {
+        "ar": "تُفحص النطاقات بالتحقق من استجابتها على HTTPS في تاريخ التحقق المذكور، أما أسماء المرسلين والخطوط الساخنة فلم تُوثَّق بعد.",
+        "en": "Domains are checked by confirming they resolve and answer over HTTPS on the verification date. Sender names and hotlines are not documented yet."
+      }
+    },
+    {
+      "id": "paci",
+      "sector": "government",
+      "name": {
+        "ar": "الهيئة العامة للمعلومات المدنية",
+        "en": "Public Authority for Civil Information"
+      },
+      "claims": {
+        "ar": [
+          "المعلومات المدنية",
+          "البطاقة المدنية",
+          "سهل",
+          "هويتي"
+        ],
+        "en": [
+          "civil information",
+          "paci",
+          "sahel",
+          "civil id",
+          "mobile id"
+        ]
+      },
+      "tokens": [
+        "paci",
+        "sahel",
+        "mobileid",
+        "civilid"
+      ],
+      "domains": [
+        "paci.gov.kw"
+      ],
+      "apps": [
+        {
+          "name": {
+            "ar": "سهل",
+            "en": "Sahel"
+          },
+          "publisher": "Public Authority For Civil Information (PACI - Kuwait)",
+          "ios": "https://apps.apple.com/kw/app/id1581727068",
+          "android": "https://play.google.com/store/apps/details?id=kw.gov.sahel"
+        },
+        {
+          "name": {
+            "ar": "هويتي",
+            "en": "Kuwait Mobile ID"
+          },
+          "publisher": "Public Authority For Civil Information (PACI - Kuwait)",
+          "ios": "https://apps.apple.com/app/id1449712307",
+          "android": null,
+          "pending": [
+            "android"
+          ]
+        }
+      ],
+      "senders": [],
+      "hotlines": [],
+      "policies": [],
+      "sources": [
+        "https://paci.gov.kw/"
+      ],
+      "verified": "2026-09-23",
+      "note": {
+        "ar": "تُفحص النطاقات بالتحقق من استجابتها على HTTPS في تاريخ التحقق المذكور، أما أسماء المرسلين والخطوط الساخنة فلم تُوثَّق بعد.",
+        "en": "Domains are checked by confirming they resolve and answer over HTTPS on the verification date. Sender names and hotlines are not documented yet."
+      }
+    },
+    {
+      "id": "stc",
+      "sector": "telecom",
+      "name": {
+        "ar": "stc الكويت",
+        "en": "stc Kuwait"
+      },
+      "claims": {
+        "ar": [
+          "stc الكويت"
+        ],
+        "en": [
+          "stc kuwait"
+        ]
+      },
+      "tokens": [
+        "stc"
+      ],
+      "domains": [
+        "stc.com.kw"
+      ],
+      "apps": [],
+      "senders": [],
+      "hotlines": [],
+      "policies": [],
+      "sources": [
+        "https://stc.com.kw/"
+      ],
+      "verified": "2026-09-23",
+      "note": {
+        "ar": "تُفحص النطاقات بالتحقق من استجابتها على HTTPS في تاريخ التحقق المذكور، أما أسماء المرسلين والخطوط الساخنة فلم تُوثَّق بعد.",
+        "en": "Domains are checked by confirming they resolve and answer over HTTPS on the verification date. Sender names and hotlines are not documented yet."
+      }
+    },
+    {
+      "id": "warba",
+      "sector": "bank",
+      "name": {
+        "ar": "بنك وربة",
+        "en": "Warba Bank"
+      },
+      "claims": {
+        "ar": [
+          "بنك وربة"
+        ],
+        "en": [
+          "warba bank"
+        ]
+      },
+      "tokens": [
+        "warba",
+        "warbabank"
+      ],
+      "domains": [
+        "warbabank.com"
+      ],
+      "apps": [],
+      "senders": [],
+      "hotlines": [],
+      "policies": [
+        {
+          "id": "no-credentials-by-message",
+          "text": {
+            "ar": "لا تطلب البنوك بياناتك المصرفية أو كلمة المرور أو رمز التحقق عبر المكالمات أو الرسائل أو البريد الإلكتروني.",
+            "en": "Banks never ask for your banking details, password or one-time code by call, message or email."
+          },
+          "channels": [
+            "sms",
+            "imessage",
+            "whatsapp",
+            "email",
+            "call",
+            "social"
+          ],
+          "words": {
+            "ar": [
+              "رمز التحقق",
+              "الرقم السري",
+              "كلمة المرور",
+              "بيانات البطاقة",
+              "رقم البطاقة",
+              "تحديث البيانات"
+            ],
+            "en": [
+              "verification code",
+              "one-time code",
+              "otp",
+              "pin",
+              "password",
+              "card number",
+              "update your details"
+            ]
+          },
+          "source": "https://www.cbk.gov.kw/en/cbk-news/announcements-and-press-releases/press-releases/2021/02/202102031030-diraya-campaign-launches-video-addressing-e-crimes"
+        }
+      ],
+      "sources": [
+        "https://warbabank.com/",
+        "https://www.cbk.gov.kw/en/cbk-news/announcements-and-press-releases/press-releases/2021/02/202102031030-diraya-campaign-launches-video-addressing-e-crimes"
+      ],
+      "verified": "2026-09-23",
+      "note": {
+        "ar": "تُفحص النطاقات بالتحقق من استجابتها على HTTPS في تاريخ التحقق المذكور، أما أسماء المرسلين والخطوط الساخنة فلم تُوثَّق بعد.",
+        "en": "Domains are checked by confirming they resolve and answer over HTTPS on the verification date. Sender names and hotlines are not documented yet."
+      }
+    },
+    {
+      "id": "zain",
+      "sector": "telecom",
+      "name": {
+        "ar": "زين الكويت",
+        "en": "Zain Kuwait"
+      },
+      "claims": {
+        "ar": [
+          "زين الكويت"
+        ],
+        "en": [
+          "zain kuwait"
+        ]
+      },
+      "tokens": [
+        "zain"
+      ],
+      "domains": [
+        "kw.zain.com"
+      ],
+      "apps": [],
+      "senders": [],
+      "hotlines": [],
+      "policies": [],
+      "sources": [
+        "https://kw.zain.com/"
+      ],
+      "verified": "2026-09-23",
+      "note": {
+        "ar": "تُفحص النطاقات بالتحقق من استجابتها على HTTPS في تاريخ التحقق المذكور، أما أسماء المرسلين والخطوط الساخنة فلم تُوثَّق بعد.",
+        "en": "Domains are checked by confirming they resolve and answer over HTTPS on the verification date. Sender names and hotlines are not documented yet."
+      }
+    }
+  ]
+}

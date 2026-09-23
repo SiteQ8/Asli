@@ -1,0 +1,71 @@
+{
+  "id": "kib",
+  "sector": "bank",
+  "name": {
+    "ar": "بنك الكويت الدولي",
+    "en": "Kuwait International Bank"
+  },
+  "claims": {
+    "ar": [
+      "بنك الكويت الدولي"
+    ],
+    "en": [
+      "kuwait international bank"
+    ]
+  },
+  "tokens": [
+    "kib"
+  ],
+  "domains": [
+    "kib.com"
+  ],
+  "apps": [],
+  "senders": [],
+  "hotlines": [],
+  "policies": [
+    {
+      "id": "no-credentials-by-message",
+      "text": {
+        "ar": "لا تطلب البنوك بياناتك المصرفية أو كلمة المرور أو رمز التحقق عبر المكالمات أو الرسائل أو البريد الإلكتروني.",
+        "en": "Banks never ask for your banking details, password or one-time code by call, message or email."
+      },
+      "channels": [
+        "sms",
+        "imessage",
+        "whatsapp",
+        "email",
+        "call",
+        "social"
+      ],
+      "words": {
+        "ar": [
+          "رمز التحقق",
+          "الرقم السري",
+          "كلمة المرور",
+          "بيانات البطاقة",
+          "رقم البطاقة",
+          "تحديث البيانات"
+        ],
+        "en": [
+          "verification code",
+          "one-time code",
+          "otp",
+          "pin",
+          "password",
+          "card number",
+          "update your details"
+        ]
+      },
+      "source": "https://www.cbk.gov.kw/en/cbk-news/announcements-and-press-releases/press-releases/2021/02/202102031030-diraya-campaign-launches-video-addressing-e-crimes"
+    }
+  ],
+  "sources": [
+    "https://kib.com/",
+    "https://www.cbk.gov.kw/en/cbk-news/announcements-and-press-releases/press-releases/2021/02/202102031030-diraya-campaign-launches-video-addressing-e-crimes"
+  ],
+  "verified": "2026-09-23",
+  "note": {
+    "ar": "تُفحص النطاقات بالتحقق من استجابتها على HTTPS في تاريخ التحقق المذكور، أما أسماء المرسلين والخطوط الساخنة فلم تُوثَّق بعد.",
+    "en": "Domains are checked by confirming they resolve and answer over HTTPS on the verification date. Sender names and hotlines are not documented yet."
+  }
+}

@@ -1,0 +1,41 @@
+name: Add or correct an official channel
+description: Add a genuine official domain, app, sender name, hotline or channel policy, or fix a wrong one
+title: "Registry: "
+labels: ["registry", "needs source"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        A wrong entry here can make a scam look genuine, so every field needs a source.
+  - type: input
+    id: body
+    attributes:
+      label: Which body
+      placeholder: Ministry of Interior, Gulf Bank, Zain, and so on
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What are you adding or correcting
+      options: [Domain, App, SMS sender name, Hotline, Channel policy, Something else]
+    validations:
+      required: true
+  - type: textarea
+    id: value
+    attributes:
+      label: The value
+      description: The exact domain, store link, sender name or number.
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: Source
+      description: A link to where the body publishes or states this.
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Anything else worth knowing

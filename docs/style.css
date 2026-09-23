@@ -200,6 +200,16 @@ a:hover { text-decoration-thickness: 2px; }
 .lang:hover,
 .repo:hover { border-color: var(--ink-2); }
 
+.repo.primary-link {
+  border-color: var(--line);
+  color: var(--line);
+  font-weight: 700;
+}
+
+.repo.primary-link:hover { background: var(--line); color: var(--paper); border-color: var(--line); }
+
+@media (max-width: 640px) { .repo.primary-link { display: inline-flex; } }
+
 /* Hero */
 
 .hero {

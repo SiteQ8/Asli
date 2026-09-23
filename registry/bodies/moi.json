@@ -1,0 +1,68 @@
+{
+  "id": "moi",
+  "sector": "government",
+  "name": {
+    "ar": "وزارة الداخلية",
+    "en": "Ministry of Interior"
+  },
+  "claims": {
+    "ar": [
+      "وزارة الداخلية",
+      "الداخلية"
+    ],
+    "en": [
+      "ministry of interior",
+      "moi"
+    ]
+  },
+  "tokens": [
+    "moi",
+    "interior",
+    "mawared"
+  ],
+  "domains": [
+    "moi.gov.kw"
+  ],
+  "apps": [],
+  "senders": [],
+  "hotlines": [],
+  "policies": [
+    {
+      "id": "fines-only-in-sahel",
+      "text": {
+        "ar": "ترسل وزارة الداخلية إشعارات المخالفات المرورية عبر تطبيق سهل فقط، ولا ترسلها برسائل نصية.",
+        "en": "The Ministry of Interior sends traffic violation notices only through the Sahel app, never by text message."
+      },
+      "channels": [
+        "sms",
+        "imessage",
+        "whatsapp",
+        "email"
+      ],
+      "words": {
+        "ar": [
+          "مخالفة",
+          "مخالفات",
+          "المخالفة",
+          "غرامة"
+        ],
+        "en": [
+          "fine",
+          "fines",
+          "violation",
+          "traffic ticket",
+          "penalty"
+        ]
+      },
+      "source": "https://kuwaittimes.com/article/39064/kuwait/other-news/moi-warns-against-scammers/"
+    }
+  ],
+  "sources": [
+    "https://moi.gov.kw/"
+  ],
+  "verified": "2026-09-23",
+  "note": {
+    "ar": "تُفحص النطاقات بالتحقق من استجابتها على HTTPS في تاريخ التحقق المذكور، أما أسماء المرسلين والخطوط الساخنة فلم تُوثَّق بعد.",
+    "en": "Domains are checked by confirming they resolve and answer over HTTPS on the verification date. Sender names and hotlines are not documented yet."
+  }
+}

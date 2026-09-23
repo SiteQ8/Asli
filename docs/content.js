@@ -10,7 +10,7 @@
   "use strict";
 
   var ASLI = {
-    version: "0.1.0",
+    version: "0.2.0",
     published: "2026-09-23",
     site: "https://asli.3li.info/",
     repo: "https://github.com/SiteQ8/Asli",
@@ -29,12 +29,13 @@
       "nav.skip": { ar: "انتقل إلى المحتوى", en: "Skip to the content" },
       "nav.lang": { ar: "English", en: "العربية" },
       "nav.langLabel": { ar: "اعرض الصفحة بالإنجليزية", en: "Show this page in Arabic" },
+      "nav.check": { ar: "افحص رسالة", en: "Check a message" },
       "nav.repo": { ar: "المصدر على GitHub", en: "Source on GitHub" },
       "nav.index": { ar: "في هذه الصفحة", en: "On this page" },
 
       "hero.kicker": {
-        ar: "الإصدار ٠٫١، سبتمبر ٢٠٢٦، لم يبدأ البناء بعد وتنطلق المرحلة ٠ في ٤ أكتوبر ٢٠٢٦",
-        en: "Version 0.1, September 2026. Nothing is built yet, and Phase 0 starts on 4 October 2026"
+        ar: "الإصدار ٠٫٢، سبتمبر ٢٠٢٦، السجل وصفحة الفحص يعملان الآن وتبقى تغذية الاحتيال فارغة حتى أول إدراج مُراجَع",
+        en: "Version 0.2, September 2026. The registry and the check page work now, and the scam feed stays empty until the first reviewed listing"
       },
       "hero.title": { ar: "هل هذه الرسالة أصلية؟", en: "Is this message genuine?" },
       "hero.lead": {
@@ -45,6 +46,7 @@
         ar: "تعني كلمة أَصْلي بالعربية الحقيقيَّ غير المزيَّف، وتحمل الكلمة نفسها المعنى ذاته في الهندية والأردية.",
         en: "Asli means genuine in Arabic, and the same word means the same thing in Hindi and Urdu."
       },
+      "hero.ctaCheck": { ar: "افحص رسالة الآن", en: "Check a message now" },
       "hero.ctaStart": { ar: "ابدأ من المشكلة", en: "Start with the problem" },
       "hero.ctaDemo": { ar: "شاهد فحص رسالة", en: "See a message checked" },
       "hero.langs": {
@@ -253,11 +255,13 @@
       "next.lead": { ar: "ما يحدث بعد ذلك بالترتيب.", en: "What happens next, in order." },
 
       "footer.by": {
-        ar: "مشروع مفتوح المصدر من علي العنزي، والإصدار ٠٫١ الصادر في سبتمبر ٢٠٢٦ منشور بترخيص MIT.",
-        en: "An open-source project by Ali AlEnezi. Version 0.1, September 2026, released under the MIT licence."
+        ar: "مشروع مفتوح المصدر من علي العنزي، والإصدار ٠٫٢ الصادر في سبتمبر ٢٠٢٦ منشور بترخيص MIT، أما السجل والتغذية فمنشوران بترخيص CC BY 4.0.",
+        en: "An open-source project by Ali AlEnezi. Version 0.2, September 2026, released under the MIT licence. The registry and the feed are released under CC BY 4.0."
       },
       "footer.source": { ar: "الشيفرة المصدرية", en: "Source code" },
       "footer.text": { ar: "النص الكامل", en: "The full text" },
+      "footer.data": { ar: "البيانات المفتوحة", en: "The open data" },
+      "footer.policy": { ar: "سياسة الإدراج", en: "Listing policy" },
 
       "md.live": { ar: "الموقع التفاعلي", en: "Interactive site" },
       "md.otherLang": { ar: "النسخة الإنجليزية", en: "Arabic version" },
