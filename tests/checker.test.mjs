@@ -24,10 +24,10 @@ const bodies = readRegistry();
 const feedEntries = readFeed();
 const data = { bodies, feed: { domains: [], numbers: [] } };
 const DATE = /^\d{4}-\d{2}-\d{2}$/;
-const SECTORS = new Set(["government", "bank", "telecom", "association", "courier", "utility"]);
+const SECTORS = new Set(["government", "bank", "telecom", "association", "courier", "utility", "airline"]);
 
 test("every registry body has the fields the schema requires", () => {
-  assert.ok(bodies.length >= 25, `expected at least 25 bodies, found ${bodies.length}`);
+  assert.ok(bodies.length >= 36, `expected at least 36 bodies, found ${bodies.length}`);
   for (const b of bodies) {
     assert.match(b.id, /^[a-z0-9-]+$/, `bad id ${b.id}`);
     assert.ok(SECTORS.has(b.sector), `${b.id}: unknown sector ${b.sector}`);

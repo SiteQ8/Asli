@@ -1,0 +1,35 @@
+{
+  "id": "baladia",
+  "sector": "government",
+  "name": {
+    "ar": "بلدية الكويت",
+    "en": "Kuwait Municipality"
+  },
+  "claims": {
+    "ar": [
+      "بلدية الكويت",
+      "البلدية"
+    ],
+    "en": [
+      "kuwait municipality"
+    ]
+  },
+  "tokens": [
+    "baladia"
+  ],
+  "domains": [
+    "baladia.gov.kw"
+  ],
+  "apps": [],
+  "senders": [],
+  "hotlines": [],
+  "policies": [],
+  "sources": [
+    "https://baladia.gov.kw/"
+  ],
+  "verified": "2026-09-23",
+  "note": {
+    "ar": "تُفحص النطاقات بالتحقق من استجابتها على HTTPS في تاريخ التحقق المذكور، أما أسماء المرسلين والخطوط الساخنة فلم تُوثَّق بعد.",
+    "en": "Domains are checked by confirming they resolve and answer over HTTPS on the verification date. Sender names and hotlines are not documented yet."
+  }
+}

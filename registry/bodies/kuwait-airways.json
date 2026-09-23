@@ -1,0 +1,35 @@
+{
+  "id": "kuwait-airways",
+  "sector": "airline",
+  "name": {
+    "ar": "الخطوط الجوية الكويتية",
+    "en": "Kuwait Airways"
+  },
+  "claims": {
+    "ar": [
+      "الخطوط الجوية الكويتية",
+      "الكويتية"
+    ],
+    "en": [
+      "kuwait airways"
+    ]
+  },
+  "tokens": [
+    "kuwaitairways"
+  ],
+  "domains": [
+    "kuwaitairways.com"
+  ],
+  "apps": [],
+  "senders": [],
+  "hotlines": [],
+  "policies": [],
+  "sources": [
+    "https://kuwaitairways.com/"
+  ],
+  "verified": "2026-09-23",
+  "note": {
+    "ar": "تُفحص النطاقات بالتحقق من استجابتها على HTTPS في تاريخ التحقق المذكور، أما أسماء المرسلين والخطوط الساخنة فلم تُوثَّق بعد.",
+    "en": "Domains are checked by confirming they resolve and answer over HTTPS on the verification date. Sender names and hotlines are not documented yet."
+  }
+}

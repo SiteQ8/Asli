@@ -10,7 +10,7 @@
   "use strict";
 
   var ASLI = {
-    version: "0.2.0",
+    version: "0.4.0",
     published: "2026-09-23",
     site: "https://asli.3li.info/",
     repo: "https://github.com/SiteQ8/Asli",
@@ -35,8 +35,8 @@
       "nav.index": { ar: "في هذه الصفحة", en: "On this page" },
 
       "hero.kicker": {
-        ar: "الإصدار ٠٫٢، سبتمبر ٢٠٢٦، السجل وصفحة الفحص يعملان الآن وتبقى تغذية الاحتيال فارغة حتى أول إدراج مُراجَع",
-        en: "Version 0.2, September 2026. The registry and the check page work now, and the scam feed stays empty until the first reviewed listing"
+        ar: "الإصدار ٠٫٤، سبتمبر ٢٠٢٦، السجل يضم ٣٦ جهة رسمية وصفحة الفحص تعمل دون اتصال، وتبقى تغذية الاحتيال فارغة حتى أول إدراج مُراجَع",
+        en: "Version 0.4, September 2026. The registry holds 36 official bodies, the check page works with no connection, and the scam feed stays empty until the first reviewed listing"
       },
       "hero.title": { ar: "هل هذه الرسالة أصلية؟", en: "Is this message genuine?" },
       "hero.lead": {
@@ -256,8 +256,8 @@
       "next.lead": { ar: "ما يحدث بعد ذلك بالترتيب.", en: "What happens next, in order." },
 
       "footer.by": {
-        ar: "مشروع مفتوح المصدر من علي العنزي، والإصدار ٠٫٢ الصادر في سبتمبر ٢٠٢٦ منشور بترخيص MIT، أما السجل والتغذية فمنشوران بترخيص CC BY 4.0.",
-        en: "An open-source project by Ali AlEnezi. Version 0.2, September 2026, released under the MIT licence. The registry and the feed are released under CC BY 4.0."
+        ar: "مشروع مفتوح المصدر من علي العنزي، والإصدار ٠٫٤ الصادر في سبتمبر ٢٠٢٦ منشور بترخيص MIT، أما السجل والتغذية فمنشوران بترخيص CC BY 4.0.",
+        en: "An open-source project by Ali AlEnezi. Version 0.4, September 2026, released under the MIT licence. The registry and the feed are released under CC BY 4.0."
       },
       "footer.source": { ar: "الشيفرة المصدرية", en: "Source code" },
       "footer.text": { ar: "النص الكامل", en: "The full text" },
