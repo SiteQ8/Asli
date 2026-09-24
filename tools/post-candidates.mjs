@@ -12,6 +12,7 @@
   an unreviewed name must never reach a public place. See watch/README.md.
 */
 import { readFileSync } from "node:fs";
+import { loadSeen, markDelivered, saveSeen } from "./ct-watch.mjs";
 
 const repo = process.env.REVIEW_REPO;
 const token = process.env.REVIEW_TOKEN;
@@ -59,6 +60,7 @@ function bodyFor(c) {
 }
 
 let posted = 0;
+const delivered = [];
 for (const c of candidates) {
   const res = await fetch(`https://api.github.com/repos/${repo}/issues`, {
     method: "POST",
@@ -73,8 +75,14 @@ for (const c of candidates) {
       labels: ["candidate", "unreviewed"]
     })
   });
-  if (res.ok) posted++;
-  else console.error(`Could not open an issue for one candidate: http ${res.status}`);
+  if (res.ok) {
+    posted++;
+    delivered.push(c);
+  } else {
+    console.error(`Could not open an issue for one candidate: http ${res.status}`);
+  }
 }
 
+/* Only what the queue actually accepted is marked seen. The rest comes back next run. */
+if (delivered.length) saveSeen(markDelivered(loadSeen().hashes || [], delivered));
 console.log(`Sent ${posted} of ${candidates.length} candidates to the review queue.`);

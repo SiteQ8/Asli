@@ -21,6 +21,10 @@ So:
   runner and go to a private review queue if one is configured.
 - **`seen.json` holds hashes, not names.** It stops the watcher from looking at
   the same name twice. A hash tells you nothing about the name behind it.
+- **A candidate is only marked seen once a queue has it.** An innocent name is
+  recorded straight away, but a candidate stays unseen until the private queue
+  confirms it received it. A candidate found on a day with no queue, or on a
+  day the queue was down, comes back on the next run instead of being lost.
 - **Logs and job summaries carry counts only.** How many queries ran, how many
   names were read, how many candidates came out.
 - **The method is completely open.** The scoring, the thresholds, the queries and
