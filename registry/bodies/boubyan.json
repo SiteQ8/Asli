@@ -7,10 +7,12 @@
   },
   "claims": {
     "ar": [
-      "بنك بوبيان"
+      "بنك بوبيان",
+      "بوبيان"
     ],
     "en": [
-      "boubyan bank"
+      "boubyan bank",
+      "boubyan"
     ]
   },
   "tokens": [

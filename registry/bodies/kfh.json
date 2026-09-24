@@ -7,10 +7,12 @@
   },
   "claims": {
     "ar": [
-      "بيت التمويل الكويتي"
+      "بيت التمويل الكويتي",
+      "بيتك"
     ],
     "en": [
-      "kuwait finance house"
+      "kuwait finance house",
+      "kfh"
     ]
   },
   "tokens": [

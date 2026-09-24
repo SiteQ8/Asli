@@ -15,7 +15,9 @@
           "البنك الأهلي الكويتي"
         ],
         "en": [
-          "al ahli bank of kuwait"
+          "al ahli bank of kuwait",
+          "abk",
+          "al ahli bank"
         ]
       },
       "tokens": [
@@ -153,10 +155,12 @@
       },
       "claims": {
         "ar": [
-          "بنك بوبيان"
+          "بنك بوبيان",
+          "بوبيان"
         ],
         "en": [
-          "boubyan bank"
+          "boubyan bank",
+          "boubyan"
         ]
       },
       "tokens": [
@@ -235,10 +239,12 @@
       },
       "claims": {
         "ar": [
-          "بنك برقان"
+          "بنك برقان",
+          "برقان"
         ],
         "en": [
-          "burgan bank"
+          "burgan bank",
+          "burgan"
         ]
       },
       "tokens": [
@@ -331,7 +337,8 @@
           "البنك المركزي"
         ],
         "en": [
-          "central bank of kuwait"
+          "central bank of kuwait",
+          "central bank"
         ]
       },
       "tokens": [
@@ -435,7 +442,9 @@
           "البنك التجاري الكويتي"
         ],
         "en": [
-          "commercial bank of kuwait"
+          "commercial bank of kuwait",
+          "al tijari",
+          "tijari"
         ]
       },
       "tokens": [
@@ -752,10 +761,12 @@
       },
       "claims": {
         "ar": [
-          "بيت التمويل الكويتي"
+          "بيت التمويل الكويتي",
+          "بيتك"
         ],
         "en": [
-          "kuwait finance house"
+          "kuwait finance house",
+          "kfh"
         ]
       },
       "tokens": [
@@ -826,7 +837,8 @@
           "بنك الكويت الدولي"
         ],
         "en": [
-          "kuwait international bank"
+          "kuwait international bank",
+          "kib"
         ]
       },
       "tokens": [
@@ -1104,7 +1116,8 @@
           "وزارة المالية"
         ],
         "en": [
-          "ministry of finance"
+          "ministry of finance",
+          "mof"
         ]
       },
       "tokens": [
@@ -1138,7 +1151,8 @@
           "وزارة الصحة"
         ],
         "en": [
-          "ministry of health"
+          "ministry of health",
+          "moh"
         ]
       },
       "tokens": [
@@ -1260,7 +1274,8 @@
           "وزارة العدل"
         ],
         "en": [
-          "ministry of justice"
+          "ministry of justice",
+          "moj"
         ]
       },
       "tokens": [
@@ -1328,7 +1343,8 @@
           "بنك الكويت الوطني"
         ],
         "en": [
-          "national bank of kuwait"
+          "national bank of kuwait",
+          "nbk"
         ]
       },
       "tokens": [
@@ -1430,10 +1446,13 @@
       },
       "claims": {
         "ar": [
-          "أوريدو الكويت"
+          "أوريدو الكويت",
+          "أوريدو",
+          "اوريدو"
         ],
         "en": [
-          "ooredoo kuwait"
+          "ooredoo kuwait",
+          "ooredoo"
         ]
       },
       "tokens": [
@@ -1568,7 +1587,8 @@
           "سمسا"
         ],
         "en": [
-          "smsa express"
+          "smsa express",
+          "smsa"
         ]
       },
       "tokens": [
@@ -1603,7 +1623,8 @@
           "stc الكويت"
         ],
         "en": [
-          "stc kuwait"
+          "stc kuwait",
+          "stc"
         ]
       },
       "tokens": [
@@ -1668,10 +1689,12 @@
       },
       "claims": {
         "ar": [
-          "بنك وربة"
+          "بنك وربة",
+          "وربة"
         ],
         "en": [
-          "warba bank"
+          "warba bank",
+          "warba"
         ]
       },
       "tokens": [
@@ -1751,10 +1774,12 @@
       },
       "claims": {
         "ar": [
-          "زين الكويت"
+          "زين الكويت",
+          "زين"
         ],
         "en": [
-          "zain kuwait"
+          "zain kuwait",
+          "zain"
         ]
       },
       "tokens": [

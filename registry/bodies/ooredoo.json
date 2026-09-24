@@ -7,10 +7,13 @@
   },
   "claims": {
     "ar": [
-      "أوريدو الكويت"
+      "أوريدو الكويت",
+      "أوريدو",
+      "اوريدو"
     ],
     "en": [
-      "ooredoo kuwait"
+      "ooredoo kuwait",
+      "ooredoo"
     ]
   },
   "tokens": [

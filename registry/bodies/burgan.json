@@ -7,10 +7,12 @@
   },
   "claims": {
     "ar": [
-      "بنك برقان"
+      "بنك برقان",
+      "برقان"
     ],
     "en": [
-      "burgan bank"
+      "burgan bank",
+      "burgan"
     ]
   },
   "tokens": [
