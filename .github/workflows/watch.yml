@@ -57,7 +57,11 @@ jobs:
           if git diff --cached --quiet; then
             echo "Nothing new to record."
           else
-            git commit -m "Watch: ${{ steps.watch.outputs.candidates }} new candidates from the certificate logs"
+            if [ "${{ steps.watch.outputs.health }}" = "down" ]; then
+              git commit -m "Watch: the certificate source could not be reached, nothing was checked"
+            else
+              git commit -m "Watch: ${{ steps.watch.outputs.candidates }} candidates from the certificate logs"
+            fi
             git push
           fi
 

@@ -38,6 +38,14 @@ const UA = "asli-watch/0.1 (+https://asli.3li.info)";
 const SHORT = 4;
 const EXTRA_QUERIES = ["kuwait-bank", "kuwaitgov", "q8-pay"];
 
+const STOP_AFTER = 4;
+
+export function rotate(list, start) {
+  if (!list.length) return [];
+  const at = ((start % list.length) + list.length) % list.length;
+  return list.slice(at).concat(list.slice(0, at));
+}
+
 export function hashName(name) {
   return createHash("sha256").update(clean(name)).digest("hex").slice(0, 16);
 }
@@ -154,7 +162,8 @@ export function markDelivered(seenHashes, delivered) {
   return [...seen].sort();
 }
 
-export function saveSeen(hashes) {
+export function saveSeen(hashes, extra = {}) {
+  const previous = loadSeen();
   writeFileSync(
     SEEN_FILE,
     JSON.stringify(
@@ -162,6 +171,8 @@ export function saveSeen(hashes) {
         schema: "asli.seen.v1",
         note: "Hashes only. A name that has been looked at once is not looked at again, and no name is published here before it is reviewed.",
         updated: new Date().toISOString().slice(0, 10),
+        cursor: extra.cursor ?? previous.cursor ?? 0,
+        lastRun: extra.lastRun ?? previous.lastRun ?? null,
         hashes: [...hashes].sort()
       },
       null,
@@ -192,6 +203,7 @@ async function main() {
   let queriesRun = 0;
   let queriesFailed = 0;
   let queriesSkipped = 0;
+  let cursor = seenFile.cursor || 0;
 
   if (fixture) {
     found = JSON.parse(readFileSync(fixture, "utf8")).map((n) => (typeof n === "string" ? { name: n } : n));
@@ -204,27 +216,43 @@ async function main() {
     const budget = Number(arg("--budget", "480")) * 1000;
     const started = Date.now();
     const queries = queriesFor(bodies);
-    for (const query of queries) {
-      if (Date.now() - started > budget) {
-        queriesSkipped = queries.length - queriesRun;
-        break;
-      }
+    /* Start where the last run stopped, so every brand gets its turn even when
+       a run only manages part of the list. */
+    const order = rotate(queries, seenFile.cursor || 0);
+    for (const query of order) {
+      if (Date.now() - started > budget) break;
       const result = await crtsh(query, days);
       queriesRun++;
       if (!result.ok) queriesFailed++;
       found.push(...result.names);
+      /* If the first few all fail, the source is down. Stop, rather than burn the
+         budget on retries, and say so. */
+      if (queriesRun >= STOP_AFTER && queriesFailed === queriesRun) break;
       await sleep(1500);
     }
+    queriesSkipped = queries.length - queriesRun;
+    cursor = ((seenFile.cursor || 0) + Math.max(queriesRun - queriesFailed, 0)) % Math.max(queries.length, 1);
+    if (queriesRun && queriesFailed === queriesRun) cursor = seenFile.cursor || 0;
   }
 
   const { candidates, seen } = evaluate(found, bodies, seenFile.hashes || []);
 
   writeFileSync(out, JSON.stringify({ schema: "asli.candidates.v1", generated: new Date().toISOString(), candidates }, null, 2) + "\n");
 
-  if (!dryRun) saveSeen(seen);
+  const health = fixture ? "fixture" : !queriesRun ? "idle" : queriesFailed === queriesRun ? "down" : queriesFailed ? "degraded" : "ok";
+  const lastRun = {
+    date: new Date().toISOString().slice(0, 10),
+    source: "crt.sh",
+    health,
+    queriesRun,
+    queriesFailed,
+    namesRead: found.length
+  };
+  if (!dryRun) saveSeen(seen, { cursor, lastRun });
 
   /* Counts only. Names never go to a public log. */
   const summary = [
+    `Certificate source: ${health === "down" ? "unreachable from this runner, nothing was checked" : health}`,
     `Queries run: ${queriesRun}${queriesFailed ? `, failed: ${queriesFailed}` : ""}${queriesSkipped ? `, left for the next run: ${queriesSkipped}` : ""}`,
     `Names seen in the logs: ${found.length}`,
     `Candidates for review: ${candidates.length}, held until a review queue receives them`,
@@ -236,7 +264,7 @@ async function main() {
     appendFileSync(process.env.GITHUB_STEP_SUMMARY, `### Certificate watch\n\n${summary.split("\n").map((l) => "- " + l).join("\n")}\n`);
   }
   if (process.env.GITHUB_OUTPUT) {
-    appendFileSync(process.env.GITHUB_OUTPUT, `candidates=${candidates.length}\n`);
+    appendFileSync(process.env.GITHUB_OUTPUT, `candidates=${candidates.length}\nhealth=${health}\n`);
   }
 }
 
