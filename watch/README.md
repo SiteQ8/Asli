@@ -74,10 +74,12 @@ is how the tests exercise it.
 
 ## Turning on the private queue
 
-The workflow posts candidates to a private repository when two secrets are set:
+The queue is the private repository `SiteQ8/asli-review`, already created with
+the labels the workflow uses, and the repository variable `REVIEW_REPO` already
+points at it. One thing is left, and it is deliberately left to the owner:
 
-- `REVIEW_REPO`, for example `SiteQ8/asli-review`
-- `REVIEW_TOKEN`, a token that can open issues there and nothing else
+- a secret named `REVIEW_TOKEN` in this repository, holding a fine grained token
+  that can do exactly one thing, open issues in `SiteQ8/asli-review`
 
-Without them the workflow still runs and reports counts, and the candidate file
-is discarded at the end of the job rather than published.
+Until that secret exists the workflow still runs, reports counts, and holds the
+candidates: they come back on every run rather than being published or lost.
