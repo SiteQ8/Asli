@@ -12,7 +12,7 @@ import { join } from "node:path";
 import { ROOT } from "../tools/lib.mjs";
 import { readRegistry } from "../tools/build-data.mjs";
 import { score, rank, deleet, tokenHit, isUnder } from "../tools/lookalike.mjs";
-import { evaluate, hashName, queriesFor, loadSeen } from "../tools/ct-watch.mjs";
+import { evaluate, hashName, queriesFor, loadSeen, markDelivered } from "../tools/ct-watch.mjs";
 
 const bodies = readRegistry();
 const scoreOf = (name) => score(name, bodies);
@@ -93,12 +93,34 @@ test("subdomains are matched against their parent domain", () => {
   assert.ok(!isUnder("moi.gov.kw.example", "moi.gov.kw"));
 });
 
-test("the watcher skips names it has already looked at", () => {
+test("an innocent name is looked at once and never scored again", () => {
+  const found = [{ name: "kibble.example" }, { name: "random-site.example" }];
+  const first = evaluate(found, bodies, []);
+  assert.equal(first.candidates.length, 0);
+  assert.equal(first.seen.length, 2, "both names are recorded as seen");
+  const second = evaluate(found, bodies, first.seen);
+  assert.equal(second.candidates.length, 0);
+});
+
+test("a candidate is not lost when no review queue received it", () => {
   const found = [{ name: "moi-kw-fines.example" }, { name: "gulfbank-verify.xyz" }];
   const first = evaluate(found, bodies, []);
   assert.equal(first.candidates.length, 2);
-  const second = evaluate(found, bodies, first.seen);
-  assert.equal(second.candidates.length, 0, "a name must not be raised twice");
+  const again = evaluate(found, bodies, first.seen);
+  assert.equal(again.candidates.length, 2, "an undelivered candidate must come back on the next run");
+});
+
+test("once a queue has a candidate, it is not raised twice", () => {
+  const found = [{ name: "moi-kw-fines.example" }, { name: "gulfbank-verify.xyz" }];
+  const first = evaluate(found, bodies, []);
+  const afterDelivery = markDelivered(first.seen, first.candidates);
+  const second = evaluate(found, bodies, afterDelivery);
+  assert.equal(second.candidates.length, 0, "a delivered candidate must not be raised again");
+});
+
+test("the same name twice in one run is raised once", () => {
+  const found = [{ name: "nbkkuwait.example" }, { name: "nbkkuwait.example" }];
+  assert.equal(evaluate(found, bodies, []).candidates.length, 1);
 });
 
 test("queries cover every brand in the registry", () => {

@@ -113,15 +113,25 @@ function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+/*
+  A name that is not a candidate is marked seen straight away, so it is never
+  scored twice. A candidate is not: it stays unseen until a review queue has
+  actually received it. Otherwise a candidate found on a day with no queue, or
+  on a day the queue was down, would be marked seen and never raised again.
+*/
 export function evaluate(found, bodies, seenHashes) {
   const results = [];
   const seen = new Set(seenHashes);
+  const raised = new Set();
   for (const entry of found) {
     const hash = hashName(entry.name);
-    if (seen.has(hash)) continue;
-    seen.add(hash);
+    if (seen.has(hash) || raised.has(hash)) continue;
     const verdict = score(entry.name, bodies);
-    if (!verdict.candidate) continue;
+    if (!verdict.candidate) {
+      seen.add(hash);
+      continue;
+    }
+    raised.add(hash);
     results.push({
       name: verdict.name,
       hash,
@@ -135,6 +145,29 @@ export function evaluate(found, bodies, seenHashes) {
     });
   }
   return { candidates: rank(results), seen: [...seen] };
+}
+
+/* Called once a queue has confirmed it holds these candidates. */
+export function markDelivered(seenHashes, delivered) {
+  const seen = new Set(seenHashes);
+  delivered.forEach((c) => seen.add(c.hash || hashName(c.name)));
+  return [...seen].sort();
+}
+
+export function saveSeen(hashes) {
+  writeFileSync(
+    SEEN_FILE,
+    JSON.stringify(
+      {
+        schema: "asli.seen.v1",
+        note: "Hashes only. A name that has been looked at once is not looked at again, and no name is published here before it is reviewed.",
+        updated: new Date().toISOString().slice(0, 10),
+        hashes: [...hashes].sort()
+      },
+      null,
+      2
+    ) + "\n"
+  );
 }
 
 function arg(name, fallback) {
@@ -188,27 +221,13 @@ async function main() {
 
   writeFileSync(out, JSON.stringify({ schema: "asli.candidates.v1", generated: new Date().toISOString(), candidates }, null, 2) + "\n");
 
-  if (!dryRun) {
-    writeFileSync(
-      SEEN_FILE,
-      JSON.stringify(
-        {
-          schema: "asli.seen.v1",
-          note: "Hashes only. A name that has been looked at once is not looked at again, and no name is published here before it is reviewed.",
-          updated: new Date().toISOString().slice(0, 10),
-          hashes: seen.sort()
-        },
-        null,
-        2
-      ) + "\n"
-    );
-  }
+  if (!dryRun) saveSeen(seen);
 
   /* Counts only. Names never go to a public log. */
   const summary = [
     `Queries run: ${queriesRun}${queriesFailed ? `, failed: ${queriesFailed}` : ""}${queriesSkipped ? `, left for the next run: ${queriesSkipped}` : ""}`,
     `Names seen in the logs: ${found.length}`,
-    `New candidates for review: ${candidates.length}`,
+    `Candidates for review: ${candidates.length}, held until a review queue receives them`,
     `Names already known: ${(seenFile.hashes || []).length} to ${seen.length}`
   ].join("\n");
   console.log(summary);
