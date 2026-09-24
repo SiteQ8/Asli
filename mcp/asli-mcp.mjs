@@ -2,8 +2,9 @@
 /*
   Asli MCP server.
 
-  Lets an assistant check a message, look up a domain, or read Kuwait's registry
-  of genuine official channels, without a browser and without an account.
+  Lets an assistant check a message, look up a domain or a phone number, or read
+  Kuwait's registry of genuine official channels, without a browser and without
+  an account.
 
   Run it over stdio:
 
@@ -80,6 +81,8 @@ export async function data(force = false) {
 
 /* Tools */
 
+const SECTORS = ["government", "bank", "telecom", "association", "courier", "utility", "airline"];
+
 const TOOLS = [
   {
     name: "check_message",
@@ -93,9 +96,23 @@ const TOOLS = [
           type: "string",
           enum: ["sms", "imessage", "whatsapp", "email", "call", "social", "app", "web", "unknown"],
           description: "How it arrived, which decides whether a channel policy applies"
+        },
+        sender: {
+          type: "string",
+          description: "Optional. The number or sender name it came from, exactly as the phone shows it. A number is judged like a number written in the message, and a sender name is checked against the scam feed."
         }
       },
       required: ["text"]
+    }
+  },
+  {
+    name: "check_number",
+    description:
+      "Look up a phone number: whether it is in the confirmed scam feed, whether a Kuwaiti official body publishes it on its own site and what it is for, or whether the registry has never heard of it. Takes the number with or without the 965 country code. A number the registry does not know is unverified, not fake, because the registry records only the numbers bodies publish.",
+    inputSchema: {
+      type: "object",
+      properties: { number: { type: "string", description: "A phone number, such as 1804080 or +965 9728 3939" } },
+      required: ["number"]
     }
   },
   {
@@ -116,7 +133,7 @@ const TOOLS = [
       type: "object",
       properties: {
         query: { type: "string", description: "Part of a body's name or id, such as interior, nbk or zain" },
-        sector: { type: "string", enum: ["government", "bank", "telecom", "association", "courier", "utility"] }
+        sector: { type: "string", enum: SECTORS }
       }
     }
   },
@@ -134,7 +151,8 @@ function text(value) {
 function feedIndex(feed) {
   return {
     domains: (feed.domains || []).map((d) => ({ domain: d.domain, reason: d.reason, expires: d.expires })),
-    numbers: (feed.numbers || []).map((n) => ({ number: n.number, reason: n.reason, expires: n.expires }))
+    numbers: (feed.numbers || []).map((n) => ({ number: n.number, reason: n.reason, expires: n.expires })),
+    senders: (feed.senders || []).map((s) => ({ sender: s.sender, reason: s.reason, expires: s.expires }))
   };
 }
 
@@ -152,7 +170,18 @@ function summarise(result) {
     numbers: result.phones,
     official_links: result.official.map((o) => ({ host: o.host, body: o.body.name.en })),
     lookalike_links: result.lookalike.map((l) => ({ host: l.host, imitates: l.body.name.en })),
+    shortened_links: result.shortened,
+    bare_address_links: result.ipLinks,
+    punycode_links: result.punycode,
     unknown_links: result.unknown,
+    sender: result.sender,
+    sender_in_scam_feed: result.senderListed,
+    sender_matches: result.senderOfficial
+      ? {
+          body: result.senderOfficial.name.en,
+          how: result.senderKind === "number" ? "a number the body publishes, which a caller id can still fake" : "a sender name the body uses, which can still be faked"
+        }
+      : null,
     in_scam_feed: result.listed,
     broken_policies: result.broken.map((b) => ({ body: b.body.name.en, policy: b.policy.text.en, source: b.policy.source })),
     numbers_the_body_publishes: result.published,
@@ -171,8 +200,40 @@ async function callTool(name, args) {
   const store = await data();
   if (name === "check_message") {
     if (!args || !args.text) throw new Error("text is required");
-    const result = Checker.check({ text: args.text, channel: args.channel || "unknown" }, { bodies: store.bodies, feed: feedIndex(store.feed) });
+    const result = Checker.check(
+      { text: args.text, channel: args.channel || "unknown", sender: args.sender || "" },
+      { bodies: store.bodies, feed: feedIndex(store.feed) }
+    );
     return text(summarise(result));
+  }
+
+  if (name === "check_number") {
+    if (!args || !args.number) throw new Error("number is required");
+    const read = Checker.readSender(String(args.number));
+    if (!read || read.kind !== "number") throw new Error("number must be digits, with or without the country code");
+    const number = read.value;
+    const listed = (store.feed.numbers || []).find((n) => n.number === number);
+    if (listed) return text({ number, status: "listed", reason: listed.reason, listed: listed.listed, expires: listed.expires });
+    for (const body of store.bodies) {
+      const hotline = (body.hotlines || []).find((h) => h.number === number);
+      if (hotline) {
+        return text({
+          number,
+          status: "published",
+          body: body.name.en,
+          arabic: body.name.ar,
+          what: hotline.label ? hotline.label.en : null,
+          source: hotline.source,
+          verified: hotline.verified,
+          note: "The body publishes this number on its own site. A caller id can still be faked, so treat it as a number to call back on, not as proof of who called."
+        });
+      }
+    }
+    return text({
+      number,
+      status: "unknown",
+      note: "The registry records only the numbers bodies publish on their own sites, so a number missing here is unverified, not fake. Call back on the number printed on your card or on the body's own site."
+    });
   }
 
   if (name === "check_domain") {
@@ -267,7 +328,7 @@ async function handle(request) {
     return {
       protocolVersion: "2024-11-05",
       capabilities: { tools: {} },
-      serverInfo: { name: "asli", version: "0.3.0", title: "Asli, Kuwait's open scam shield" }
+      serverInfo: { name: "asli", version: "0.4.0", title: "Asli, Kuwait's open scam shield" }
     };
   }
   if (method === "tools/list") return { tools: TOOLS };
