@@ -17,6 +17,8 @@
     sample: C.demo.samples[0].id,
     node: C.lanes[0].nodes[0].id,
     weights: defaultWeights(),
+    bodies: null,
+    bodiesFailed: false,
     stampMotion: false
   };
 
@@ -192,15 +194,17 @@
     ]);
   }
 
-  function officialList(entity) {
-    var items = entity.domains.slice();
-    entity.channels.forEach(function (c) { items.push(P(c.name)); });
-    return joinAnd(items);
+  function officialList(body) {
+    return joinAnd(body.domains.slice());
   }
 
+  /*
+    The demo runs window.AsliChecker, the same function the check page runs,
+    against data/registry.json, the same file the check page reads. What the
+    visitor sees here is what the real check says, not an illustration of it.
+  */
   function renderDemo() {
     var s = currentSample();
-    var r = E.analyze(s, C.demo);
     var sender = typeof s.from === "string" ? s.from : P(s.from);
 
     mount("demo-message", [
@@ -213,34 +217,42 @@
       }))
     ]);
 
-    var entityName = r.entity ? P(r.entity.name) : "";
+    if (!state.bodies) {
+      mount("demo-steps", [h("li", { className: "check st-info" }, [h("div", { className: "check-text" }, [h("p", { text: T(state.bodiesFailed ? "demo.offline" : "demo.loading") })])])]);
+      mount("demo-verdict", []);
+      return;
+    }
+
+    var r = window.AsliChecker.check({ text: s.text, channel: s.channel }, { bodies: state.bodies, feed: { domains: [], numbers: [] } });
+    var claimedName = r.claimed ? P(r.claimed.name) : "";
     var items = [];
 
     var readLines = [r.hosts.length ? fill(T("f.links"), { links: r.hosts.join(T("common.listSep")) }) : T("f.noLinks")];
-    readLines.push(r.entity ? fill(T("f.claim"), { entity: entityName }) : T("f.noClaim"));
+    readLines.push(r.claimed ? fill(T("f.claim"), { entity: claimedName }) : T("f.noClaim"));
     items.push(checkItem("info", T("step.read"), readLines));
 
-    if (r.registry.status === "miss") {
-      items.push(checkItem("flag", T("step.registry"), [fill(T("f.regMiss"), { host: r.registry.host, entity: entityName, official: officialList(r.entity) })]));
-    } else if (r.registry.status === "hit") {
-      items.push(checkItem("pass", T("step.registry"), [fill(T("f.regHit"), { host: r.registry.host, entity: entityName })]));
-    } else if (r.registry.status === "channel") {
-      items.push(checkItem("pass", T("step.registry"), [fill(T("f.regChannel"), { channel: P(r.registry.channel.name), entity: entityName })]));
+    if (r.lookalike.length) {
+      var imitated = r.claimed || r.lookalike[0].body;
+      items.push(checkItem("flag", T("step.registry"), [fill(T("f.regMiss"), { host: r.lookalike[0].host, entity: P(imitated.name), official: officialList(imitated) })]));
+    } else if (r.official.length) {
+      items.push(checkItem("pass", T("step.registry"), [fill(T("f.regHit"), { host: r.official[0].host, entity: P(r.official[0].body.name) })]));
+    } else if (r.unknown.length) {
+      items.push(checkItem("info", T("step.registry"), r.unknown.map(function (host) { return fill(T("f.regUnknown"), { host: host }); })));
     } else {
       items.push(checkItem("none", T("step.registry"), [T("f.regNone")]));
     }
 
     if (r.lookalike.length) {
       items.push(checkItem("flag", T("step.lookalike"), r.lookalike.map(function (l) {
-        return fill(T("f.look"), { host: l.host, entity: P(l.entity.name) });
+        return fill(T("f.look"), { host: l.host, entity: P(l.body.name) });
       })));
     } else {
       items.push(checkItem(r.hosts.length ? "pass" : "none", T("step.lookalike"), [T("f.noLook")]));
     }
 
-    if (r.policy.status === "broken") {
-      items.push(checkItem("flag", T("step.policy"), [fill(T("f.policyBreak"), { policy: P(r.policy.policy.text) })], r.policy.policy.url));
-    } else if (r.policy.status === "ok") {
+    if (r.broken.length) {
+      items.push(checkItem("flag", T("step.policy"), [fill(T("f.policyBreak"), { policy: P(r.broken[0].policy.text) })], r.broken[0].policy.source));
+    } else if (r.claimed) {
       items.push(checkItem("pass", T("step.policy"), [T("f.policyOk")]));
     } else {
       items.push(checkItem("none", T("step.policy"), [T("f.policyNone")]));
@@ -249,13 +261,14 @@
     items.push(r.pressure ? checkItem("flag", T("step.pressure"), [T("f.pressure")]) : checkItem("pass", T("step.pressure"), [T("f.noPressure")]));
     mount("demo-steps", items);
 
+    var verdict = r.verdict === "listed" ? "impersonation" : r.verdict;
     var verdictText = {
       impersonation: [T("v.impersonation"), T("v.impersonationWhy")],
       official: [T("v.official"), T("v.officialWhy")],
       unverified: [T("v.unverified"), T("v.unverifiedWhy")]
-    }[r.verdict];
+    }[verdict];
 
-    var stamp = h("p", { className: "stamp v-" + r.verdict + (state.stampMotion ? " stamp-in" : ""), text: verdictText[0] });
+    var stamp = h("p", { className: "stamp v-" + verdict + (state.stampMotion ? " stamp-in" : ""), text: verdictText[0] });
     mount("demo-verdict", [
       h("div", { className: "verdict-head" }, [
         h("p", { className: "small-label", text: T("demo.verdict") }),
@@ -268,6 +281,19 @@
       ])
     ]);
     state.stampMotion = false;
+  }
+
+  function loadRegistry() {
+    fetch("data/registry.json", { cache: "no-cache" })
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        state.bodies = data.bodies || [];
+        renderDemo();
+      })
+      .catch(function () {
+        state.bodiesFailed = true;
+        renderDemo();
+      });
   }
 
   /* Architecture */
@@ -541,6 +567,7 @@
   });
 
   applyLang();
+  loadRegistry();
   window.AsliSeal.draw(doc.getElementById("seal"), { animate: !reduceMotion });
   watchSections();
 })();

@@ -5,6 +5,7 @@
   Kept out of the test suite on purpose, because tests must pass offline.
 */
 import { loadContent } from "./lib.mjs";
+import { readRegistry } from "./build-data.mjs";
 
 const UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36";
 
@@ -13,7 +14,10 @@ function collect() {
   const urls = new Set([C.site, C.repo]);
   C.evidence.forEach((e) => urls.add(e.url));
   C.trust.forEach((t) => t.url && urls.add(t.url));
-  C.demo.registry.forEach((e) => e.policies.forEach((p) => urls.add(p.url)));
+  readRegistry().forEach((b) => {
+    (b.policies || []).forEach((p) => urls.add(p.source));
+    (b.hotlines || []).forEach((h) => urls.add(h.source));
+  });
   C.reuse.forEach((r) => urls.add(`https://github.com/SiteQ8/${r.repo}`));
   return [...urls];
 }

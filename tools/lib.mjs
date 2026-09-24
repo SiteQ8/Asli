@@ -23,3 +23,11 @@ export function loadContent() {
   const C = JSON.parse(JSON.stringify(sandbox.ASLI));
   return { C, E: sandbox.AsliEngine };
 }
+
+/* The one detection engine, loaded the way the browser loads it. */
+export function loadChecker() {
+  const sandbox = {};
+  vm.createContext(sandbox);
+  vm.runInContext(read("docs/checker.js"), sandbox, { filename: "docs/checker.js" });
+  return sandbox.AsliChecker;
+}

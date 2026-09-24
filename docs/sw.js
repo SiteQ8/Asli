@@ -15,7 +15,7 @@
   domains belong to the Ministry of Interior, and a stale answer beats no answer
   when someone is deciding whether to pay.
 */
-const VERSION = "asli-v0.5.0";
+const VERSION = "asli-v0.5.1";
 const SHELL = VERSION + "-shell";
 const DATA = VERSION + "-data";
 

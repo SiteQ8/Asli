@@ -42,7 +42,7 @@ Asli is new, but most of its engine already exists in these public repositories:
 | `registry/bodies/` | One JSON file per official body: domains, apps, channel policies, sources, verification date. See [registry/README.md](registry/README.md) |
 | `feed/entries/` | One JSON file per confirmed scam indicator, with evidence and two approvals. See [feed/README.md](feed/README.md) |
 | `docs/` | The site: the write-up, the check page, and the published data under `docs/data/` |
-| `docs/checker.js` | The checking logic itself, the same code in the browser and in the tests |
+| `docs/checker.js` | The only detection engine: the check page, the home page demo, the report page, the MCP server, the text files and the tests all run this one file |
 | `docs/redact.js` | On-device redaction for reports: civil ID, IBAN, card and account numbers and email addresses go, the scam's own links and numbers stay |
 | `watch/` | The certificate watch: how it works, and a public state file that holds hashes rather than names |
 | `mcp/` | An MCP server so assistants can check messages and domains against the registry. See [mcp/README.md](mcp/README.md) |
