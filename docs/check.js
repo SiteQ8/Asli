@@ -1,11 +1,13 @@
 /*
   The check page. Loads the published registry and feed, then runs
-  window.AsliChecker on whatever the visitor pastes. Nothing leaves the browser.
+  window.AsliChecker on whatever the visitor pastes, or on whatever another app
+  shares into it. Nothing leaves the browser.
 */
 (function () {
   "use strict";
 
   var doc = document;
+  var SITE = "asli.3li.info/check.html";
   var T = {
     skip: { ar: "انتقل إلى الفحص", en: "Skip to the check" },
     lang: { ar: "English", en: "العربية" },
@@ -21,14 +23,27 @@
       ar: "يجري الفحص كله داخل متصفحك، فلا تغادر الرسالة جهازك ولا يُرسل منها شيء إلى أي خادم.",
       en: "The whole check runs inside your browser. The message never leaves your device and nothing is sent to any server."
     },
+    shared: {
+      ar: "وصلت هذه الرسالة من تطبيق آخر عبر المشاركة، وقد بقيت على جهازك ولم تُرسل إلى أي مكان.",
+      en: "This message came in from another app through sharing. It stayed on your device and was not sent anywhere."
+    },
     labelText: { ar: "الرسالة", en: "The message" },
     placeholder: {
       ar: "الصق نص الرسالة هنا بأي لغة",
       en: "Paste the message here, in any language"
     },
     labelChannel: { ar: "كيف وصلتك", en: "How it reached you" },
+    labelSender: { ar: "المرسل، إن كان ظاهرًا", en: "The sender, if it shows" },
+    senderPlaceholder: { ar: "رقم أو اسم مرسل، اختياري", en: "A number or a sender name, optional" },
     run: { ar: "افحص", en: "Check" },
     clear: { ar: "امسح", en: "Clear" },
+    copy: { ar: "انسخ الحكم", en: "Copy the verdict" },
+    copied: { ar: "نُسخ", en: "Copied" },
+    copyWhy: {
+      ar: "لترسله إلى من وصلته الرسالة نفسها.",
+      en: "To pass it on to whoever got the same message."
+    },
+    checkedWith: { ar: "فُحصت بأَصْلي داخل المتصفح", en: "Checked with Asli, in the browser" },
     empty: { ar: "الصق رسالة أولًا.", en: "Paste a message first." },
     loading: { ar: "يجري تحميل البيانات", en: "Loading data" },
     ready: {
@@ -78,11 +93,27 @@
     fLinks: { ar: "الروابط في الرسالة: {list}", en: "Links in the message: {list}" },
     fNoLinks: { ar: "لا توجد روابط في الرسالة.", en: "No links in the message." },
     fPhones: { ar: "الأرقام في الرسالة: {list}", en: "Numbers in the message: {list}" },
+    fSender: { ar: "المرسل: {sender}", en: "Sender: {sender}" },
+    fSenderListed: { ar: "المرسل {sender} مدرج في تغذية الاحتيال المؤكدة.", en: "The sender {sender} is in the confirmed scam feed." },
+    fSenderName: {
+      ar: "اسم المرسل {sender} يطابق ما تستخدمه {name}، ويستطيع المحتالون تزييف اسم المرسل أيضًا.",
+      en: "The sender name {sender} matches what {name} uses, and scammers can fake a sender name too."
+    },
+    fSenderNumber: {
+      ar: "الرقم {sender} من الأرقام التي تنشرها {name}، ويمكن تزييف هوية المتصل أيضًا.",
+      en: "{sender} is one of the numbers {name} publishes, and a caller id can be faked too."
+    },
     fClaim: { ar: "تدّعي الرسالة أنها من {name}.", en: "It claims to come from {name}." },
     fNoClaim: { ar: "لا تذكر الرسالة جهة رسمية يعرفها السجل.", en: "It does not name an official body the registry knows." },
     fListed: { ar: "مدرج في تغذية الاحتيال المؤكدة: {list}", en: "In the confirmed scam feed: {list}" },
     fOfficial: { ar: "{host} نطاق رسمي لـ{name} في السجل.", en: "{host} is an official domain of {name} in the registry." },
     fLookalike: { ar: "{host} يستعير اسم {name} وهو ليس من نطاقاتها.", en: "{host} borrows the name of {name} and is not one of its domains." },
+    fShortened: { ar: "{host} خدمة اختصار روابط تخفي الوجهة الحقيقية للرابط.", en: "{host} is a link shortener, which hides where the link really goes." },
+    fIp: {
+      ar: "{host} عنوان رقمي مجرد لا اسم له، ولا ترسل أي جهة رسمية روابط كهذه.",
+      en: "{host} is a bare numeric address with no name. No official body sends links like that."
+    },
+    fPunycode: { ar: "{host} يستخدم حروفًا مرمّزة قد تبدو كحروف أخرى.", en: "{host} uses encoded characters that can look like other letters." },
     fUnknown: { ar: "{host} لا يعرفه السجل.", en: "{host} is unknown to the registry." },
     fPolicy: { ar: "تخالف الرسالة سياسة منشورة: {text}", en: "It breaks a published policy: {text}" },
     fNumberMatch: { ar: "الرقم {number} من الأرقام التي تنشرها {name}.", en: "{number} is one of the numbers {name} publishes." },
@@ -130,7 +161,7 @@
   ];
 
   var lang = initialLang();
-  var state = { channel: "sms", data: null, meta: null };
+  var state = { channel: "sms", data: null, meta: null, autorun: false };
 
   function initialLang() {
     try {
@@ -142,6 +173,30 @@
       if (saved === "ar" || saved === "en") return saved;
     } catch (e) { /* ignore */ }
     return "ar";
+  }
+
+  /*
+    A message shared from another app arrives in the address as title, text and
+    url. It is read once and taken out of the address straight away, so it does
+    not sit in the history or in a bookmark. The service worker fetches the page
+    by its path alone, so the address is never sent to the network.
+  */
+  function sharedText() {
+    var found = "";
+    try {
+      var url = new URL(window.location.href);
+      var keys = ["title", "text", "url"];
+      var parts = [];
+      keys.forEach(function (k) {
+        var v = (url.searchParams.get(k) || "").trim();
+        if (v && parts.every(function (p) { return p.indexOf(v) < 0; })) parts.push(v);
+      });
+      if (!parts.length) return "";
+      found = parts.join("\n");
+      keys.forEach(function (k) { url.searchParams.delete(k); });
+      window.history.replaceState(null, "", url.pathname + url.search + url.hash);
+    } catch (e) { /* an old browser, or an address that cannot be parsed */ }
+    return found;
   }
 
   function t(key, map) {
@@ -197,9 +252,15 @@
       state.meta = { bodies: (both[0].bodies || []).length, feed: both[1].count || 0 };
       showDataState();
     }).catch(function () {
-      state.data = { bodies: [], feed: { domains: [], numbers: [] } };
+      state.data = { bodies: [], feed: { domains: [], numbers: [], senders: [] } };
       state.meta = null;
       showDataState();
+    }).then(function () {
+      /* A shared message is checked as soon as there is data to check it against. */
+      if (state.autorun) {
+        state.autorun = false;
+        runCheck();
+      }
     });
   }
 
@@ -249,6 +310,83 @@
     ]);
   }
 
+  /* The findings, in the order a person reads them: what was read, then what it means. */
+  function findingsFor(result) {
+    var out = [];
+    var add = function (status, text, source) { out.push({ status: status, text: text, source: source || null }); };
+    var name = result.claimed ? P(result.claimed.name) : "";
+    /* A number typed as the sender is shown on its own line, not as part of the text. */
+    var inText = result.phones.filter(function (n) { return !(result.senderKind === "number" && n === result.sender); });
+
+    add("info", result.hosts.length ? t("fLinks", { list: result.hosts.join(listSep()) }) : t("fNoLinks"));
+    if (inText.length) add("info", t("fPhones", { list: inText.join(listSep()) }));
+    if (result.sender) add(result.senderListed ? "flag" : "info", result.senderListed ? t("fSenderListed", { sender: result.sender }) : t("fSender", { sender: result.sender }));
+    add("info", result.claimed ? t("fClaim", { name: name }) : t("fNoClaim"));
+
+    if (result.listed.length) add("flag", t("fListed", { list: result.listed.join(listSep()) }));
+    result.lookalike.forEach(function (l) { add("flag", t("fLookalike", { host: l.host, name: P(l.body.name) })); });
+    result.ipLinks.forEach(function (ip) { add("flag", t("fIp", { host: ip })); });
+    result.shortened.forEach(function (host) { add("flag", t("fShortened", { host: host })); });
+    result.punycode.forEach(function (host) { add("flag", t("fPunycode", { host: host })); });
+    result.official.forEach(function (o) { add("pass", t("fOfficial", { host: o.host, name: P(o.body.name) })); });
+    result.unknown.forEach(function (u) { add("info", t("fUnknown", { host: u })); });
+
+    result.matchedNumbers.forEach(function (n) { add("pass", t("fNumberMatch", { number: n, name: name })); });
+    result.unpublishedNumbers.forEach(function (n) {
+      add("flag", t("fNumberUnknown", { number: n, name: name, list: result.published.join(listSep()) }));
+    });
+    /* A sender the registry recognises when the text itself names nobody. */
+    if (result.senderOfficial && !result.senderListed && !result.matchedNumbers.length) {
+      var key = result.senderKind === "number" ? "fSenderNumber" : "fSenderName";
+      add("info", t(key, { sender: result.sender, name: P(result.senderOfficial.name) }));
+    }
+
+    if (result.broken.length) {
+      result.broken.forEach(function (b) { add("flag", t("fPolicy", { text: P(b.policy.text) }), b.policy.source); });
+    } else {
+      add("pass", t("fNoPolicy"));
+    }
+    add(result.pressure ? "flag" : "pass", t(result.pressure ? "fPressure" : "fNoPressure"));
+    return out;
+  }
+
+  /* Plain text of the verdict, for pasting into a family group. */
+  function summaryText(verdictMap, findings) {
+    var mark = { flag: "✕", pass: "✓", info: "•" };
+    return [
+      t("verdict") + ": " + t(verdictMap[0]),
+      t(verdictMap[1]),
+      "",
+      t("checks") + ":"
+    ].concat(findings.map(function (f) { return mark[f.status] + " " + f.text; })).concat([
+      "",
+      t("todo") + ": " + t(verdictMap[2]),
+      "",
+      t("checkedWith") + ": " + SITE
+    ]).join("\n");
+  }
+
+  function copyButton(text) {
+    if (!navigator.clipboard || !navigator.clipboard.writeText) return null;
+    return h("p", { className: "form-actions" }, [
+      h("button", {
+        type: "button",
+        className: "btn",
+        text: t("copy"),
+        on: {
+          click: function (ev) {
+            var button = ev.currentTarget;
+            navigator.clipboard.writeText(text).then(function () {
+              button.textContent = t("copied");
+              setTimeout(function () { button.textContent = t("copy"); }, 1500);
+            }).catch(function () { /* the browser said no, and the text is still on the page */ });
+          }
+        }
+      }),
+      h("span", { className: "data-state", text: t("copyWhy") })
+    ]);
+  }
+
   function render(result) {
     var box = doc.getElementById("result");
     box.hidden = false;
@@ -260,33 +398,7 @@
       unverified: ["vUnverified", "vUnverifiedWhy", "adviceUnknown"]
     }[result.verdict];
 
-    var findings = [];
-    findings.push(line("info", result.hosts.length ? t("fLinks", { list: result.hosts.join(listSep()) }) : t("fNoLinks")));
-    if (result.phones.length) findings.push(line("info", t("fPhones", { list: result.phones.join(listSep()) })));
-    findings.push(line("info", result.claimed ? t("fClaim", { name: P(result.claimed.name) }) : t("fNoClaim")));
-
-    if (result.listed.length) findings.push(line("flag", t("fListed", { list: result.listed.join(listSep()) })));
-    result.lookalike.forEach(function (l) { findings.push(line("flag", t("fLookalike", { host: l.host, name: P(l.body.name) }))); });
-    result.official.forEach(function (o) { findings.push(line("pass", t("fOfficial", { host: o.host, name: P(o.body.name) }))); });
-    result.unknown.forEach(function (u) { findings.push(line("info", t("fUnknown", { host: u }))); });
-
-    result.matchedNumbers.forEach(function (n) {
-      findings.push(line("pass", t("fNumberMatch", { number: n, name: P(result.claimed.name) })));
-    });
-    result.unpublishedNumbers.forEach(function (n) {
-      findings.push(line("flag", t("fNumberUnknown", {
-        number: n,
-        name: P(result.claimed.name),
-        list: result.published.join(listSep())
-      })));
-    });
-
-    if (result.broken.length) {
-      result.broken.forEach(function (b) { findings.push(line("flag", t("fPolicy", { text: P(b.policy.text) }), b.policy.source)); });
-    } else {
-      findings.push(line("pass", t("fNoPolicy")));
-    }
-    findings.push(result.pressure ? line("flag", t("fPressure")) : line("pass", t("fNoPressure")));
+    var findings = findingsFor(result);
 
     mount(box, [
       h("div", { className: "verdict-head" }, [
@@ -295,23 +407,29 @@
       ]),
       h("p", { className: "verdict-why", text: t(verdictMap[1]) }),
       h("p", { className: "small-label", text: t("checks") }),
-      h("ol", { className: "checks" }, findings),
+      h("ol", { className: "checks" }, findings.map(function (f) { return line(f.status, f.text, f.source); })),
       h("p", { className: "small-label", text: t("todo") }),
-      h("p", { className: "todo", text: t(verdictMap[2]) })
+      h("p", { className: "todo", text: t(verdictMap[2]) }),
+      copyButton(summaryText(verdictMap, findings))
     ]);
     box.scrollIntoView({ behavior: "smooth", block: "nearest" });
   }
 
-  function run(event) {
-    event.preventDefault();
+  function runCheck() {
     var text = doc.getElementById("text").value.trim();
+    var sender = doc.getElementById("sender").value.trim();
     var box = doc.getElementById("result");
     if (!text) {
       box.hidden = false;
       mount(box, [h("p", { className: "todo", text: t("empty") })]);
       return;
     }
-    render(window.AsliChecker.check({ text: text, channel: state.channel }, state.data || { bodies: [], feed: {} }));
+    render(window.AsliChecker.check({ text: text, channel: state.channel, sender: sender }, state.data || { bodies: [], feed: {} }));
+  }
+
+  function run(event) {
+    event.preventDefault();
+    runCheck();
   }
 
   function applyLang() {
@@ -342,9 +460,18 @@
   doc.getElementById("form").addEventListener("submit", run);
   doc.getElementById("clear").addEventListener("click", function () {
     doc.getElementById("text").value = "";
+    doc.getElementById("sender").value = "";
     doc.getElementById("result").hidden = true;
+    doc.getElementById("sharedNote").hidden = true;
     doc.getElementById("text").focus();
   });
+
+  var shared = sharedText();
+  if (shared) {
+    doc.getElementById("text").value = shared;
+    doc.getElementById("sharedNote").hidden = false;
+    state.autorun = true;
+  }
 
   applyLang();
   loadData();

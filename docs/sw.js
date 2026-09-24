@@ -15,7 +15,7 @@
   domains belong to the Ministry of Interior, and a stale answer beats no answer
   when someone is deciding whether to pay.
 */
-const VERSION = "asli-v0.5.1";
+const VERSION = "asli-v0.6.0";
 const SHELL = VERSION + "-shell";
 const DATA = VERSION + "-data";
 
@@ -93,6 +93,15 @@ async function cacheFirst(request) {
   return fresh;
 }
 
+/*
+  A message shared into the app from the phone's share sheet arrives as a query
+  string on the check page. The page is fetched by its path alone, so the query,
+  and the message inside it, is read by the page and never sent anywhere.
+*/
+function shellRequest(url) {
+  return new Request(url.origin + url.pathname);
+}
+
 self.addEventListener("fetch", (event) => {
   const request = event.request;
   if (request.method !== "GET") return;
@@ -107,7 +116,7 @@ self.addEventListener("fetch", (event) => {
 
   if (request.mode === "navigate") {
     event.respondWith(
-      cacheFirst(request).catch(() => caches.match("check.html") || caches.match("index.html"))
+      cacheFirst(shellRequest(url)).catch(() => caches.match("check.html") || caches.match("index.html"))
     );
     return;
   }

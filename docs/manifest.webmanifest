@@ -20,5 +20,10 @@
   "shortcuts": [
     { "name": "افحص رسالة", "short_name": "افحص", "url": "./check.html" },
     { "name": "أبلغ عن احتيال", "short_name": "أبلغ", "url": "./report.html" }
-  ]
+  ],
+  "share_target": {
+    "action": "./check.html",
+    "method": "GET",
+    "params": { "title": "title", "text": "text", "url": "url" }
+  }
 }

@@ -139,7 +139,7 @@
   overflow-wrap: anywhere;
 }
 
-#from, #seen {
+#from, #seen, #sender {
   width: 100%;
   max-width: 420px;
   padding: 10px 14px;
