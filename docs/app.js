@@ -436,7 +436,10 @@
       C.criteria.forEach(function (k) {
         cells.push(h("td", { className: "c-score", text: num(c.scores[k.id]) }));
       });
-      var meter = h("span", { className: "meter", "aria-hidden": "true" }, [h("i", { style: "width:" + (row.score / 5 * 100).toFixed(1) + "%" })]);
+      /* Set through the style object, not a style attribute, so the page's Content Security Policy allows it. */
+      var bar = h("i", {});
+      bar.style.width = (row.score / 5 * 100).toFixed(1) + "%";
+      var meter = h("span", { className: "meter", "aria-hidden": "true" }, [bar]);
       cells.push(h("td", { className: "c-total" }, [h("div", { className: "total" }, [meter, h("b", { text: num(row.score, 2) })])]));
       return h("tr", { className: isTop ? "is-top" : "" }, cells);
     }));
