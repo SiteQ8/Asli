@@ -1,0 +1,38 @@
+name: Check cited sources
+
+on:
+  schedule:
+    - cron: "29 5 * * 3"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  links:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      # Every figure on the site and every policy in the registry cites a source.
+      # A citation that has died is a claim with nothing behind it, so it is raised.
+      - name: Confirm every cited source still answers
+        id: check
+        run: node tools/check-links.mjs --report report.md
+
+      - name: Open an issue when a cited source stops answering
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # The label is created on first use, so a missing label can never stop the issue.
+          gh label create registry --color 1D76DB --description "The registry of official channels and the evidence behind it" --force >/dev/null 2>&1 || true
+          gh issue create \
+            --title "Evidence needs attention: a cited source stopped answering" \
+            --label registry \
+            --body-file report.md

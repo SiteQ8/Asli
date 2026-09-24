@@ -1,9 +1,16 @@
 #!/usr/bin/env node
 /*
   Checks that every external link the site cites is still reachable.
-  Run before publishing a change to the evidence: node tools/check-links.mjs
-  Kept out of the test suite on purpose, because tests must pass offline.
+
+    node tools/check-links.mjs                    print the result
+    node tools/check-links.mjs --report file.md   also write the failures as Markdown
+
+  Run before publishing a change to the evidence. A scheduled workflow runs it
+  weekly and opens an issue from the report, because a citation that has died
+  is a claim with nothing behind it. Kept out of the test suite on purpose,
+  because tests must pass offline.
 */
+import { writeFileSync } from "node:fs";
 import { loadContent } from "./lib.mjs";
 import { readRegistry } from "./build-data.mjs";
 
@@ -57,4 +64,21 @@ for (const url of collect()) {
 
 const bad = results.filter((r) => !r.ok);
 console.log(`\n${results.length - bad.length} of ${results.length} links reachable`);
+
+const reportFlag = process.argv.indexOf("--report");
+if (reportFlag > -1 && process.argv[reportFlag + 1]) {
+  const lines = bad.length
+    ? [
+        "These sources are cited on the site or in the registry, and they stopped answering:",
+        "",
+        ...bad.map((r) => `- ${r.url} (${r.status})`),
+        "",
+        "A source that stops answering is not deleted. Check whether the page moved, find the same statement at its new address, or replace the citation with an archived copy. A claim that has lost its source is removed rather than left standing on nothing.",
+        "",
+        `${results.length - bad.length} of ${results.length} cited sources answered.`
+      ]
+    : [`All ${results.length} cited sources answered.`];
+  writeFileSync(process.argv[reportFlag + 1], lines.join("\n") + "\n");
+}
+
 if (bad.length) process.exit(1);

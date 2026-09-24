@@ -28,6 +28,8 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          # The label is created on first use, so a missing label can never stop the issue.
+          gh label create registry --color 1D76DB --description "The registry of official channels and the evidence behind it" --force >/dev/null 2>&1 || true
           gh issue create \
             --title "Registry needs attention: a domain stopped answering or an entry is overdue" \
             --label registry \
