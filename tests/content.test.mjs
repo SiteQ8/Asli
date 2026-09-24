@@ -7,7 +7,8 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join, relative } from "node:path";
-import { ROOT, read, loadContent } from "../tools/lib.mjs";
+import { ROOT, read, loadContent, loadChecker } from "../tools/lib.mjs";
+import { readRegistry } from "../tools/build-data.mjs";
 import { buildText, FILES } from "../tools/build-project-md.mjs";
 
 const { C, E } = loadContent();
@@ -146,32 +147,41 @@ test("no tool attribution, co-author trailers or credentials in the repository",
   }
 });
 
-test("demo samples reach the verdicts the site promises", () => {
+/* The demo runs the real checker on the real registry, exactly as the check page does. */
+const Checker = loadChecker();
+const registry = { bodies: readRegistry(), feed: { domains: [], numbers: [] } };
+const run = (s) => Checker.check({ text: s.text, channel: s.channel }, registry);
+
+test("demo samples reach the verdicts the site promises, on the real engine", () => {
   for (const s of C.demo.samples) {
-    assert.equal(E.analyze(s, C.demo).verdict, s.expect, `sample ${s.id}`);
+    assert.equal(run(s).verdict, s.expect, `sample ${s.id}`);
   }
   const verdicts = new Set(C.demo.samples.map((s) => s.expect));
   assert.ok(verdicts.has("impersonation") && verdicts.has("official"), "the demo must show a fake and a genuine case");
 });
 
+test("there is one detection engine, and the home page loads it", () => {
+  const engine = read("docs/engine.js");
+  assert.ok(!/function analyze|function check\b/.test(engine), "engine.js must not decide verdicts");
+  const html = read("docs/index.html");
+  assert.ok(html.includes('src="checker.js"'), "the home page must load the real checker");
+  const app = read("docs/app.js");
+  assert.ok(app.includes("window.AsliChecker.check"), "the demo must call the real checker");
+  assert.ok(app.includes("data/registry.json"), "the demo must read the real registry");
+});
+
 test("an unknown sender stays unverified instead of looking safe", () => {
-  const sample = { id: "x", channel: "sms", text: "Your exam results are ready.", lang: "en" };
-  assert.equal(E.analyze(sample, C.demo).verdict, "unverified");
+  assert.equal(run({ channel: "sms", text: "Your exam results are ready." }).verdict, "unverified");
 });
 
 test("demo links point only at official domains or the reserved example domain", () => {
-  const official = C.demo.registry.flatMap((e) => e.domains);
+  const official = registry.bodies.flatMap((b) => b.domains);
   for (const s of C.demo.samples) {
     const sender = typeof s.from === "string" ? s.from : "";
-    for (const host of [...E.extractHosts(s.text), ...E.extractHosts(sender)]) {
-      assert.ok(E.isOfficial(host, official) || host.endsWith(".example"), `sample ${s.id} links to ${host}`);
+    for (const host of [...Checker.hosts(s.text), ...Checker.hosts(sender)]) {
+      const isOfficial = official.some((d) => Checker.isUnder(host, d));
+      assert.ok(isOfficial || host.endsWith(".example"), `sample ${s.id} links to ${host}`);
     }
-  }
-});
-
-test("every demo policy cites an official statement over https", () => {
-  for (const e of C.demo.registry) {
-    for (const p of e.policies) assert.match(p.url, /^https:\/\//, `${e.id}/${p.id}`);
   }
 });
 

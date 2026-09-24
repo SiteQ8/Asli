@@ -116,10 +116,10 @@ Pick a sample. Asli reads it the way the Phase 1 checker will: it pulls out link
 ### Notice in the Sahel app
 
 - **From**: Ministry of Interior
-- **Channel**: Sahel app
+- **Channel**: Inside the Sahel app
 - **Message**:
 
-  > وزارة الداخلية: سُجّلت عليك مخالفة مرورية، ويمكنك الاطلاع عليها وسدادها من خدمات الوزارة داخل التطبيق
+  > وزارة الداخلية: سُجّلت عليك مخالفة مرورية، ويمكنك الاطلاع عليها وسدادها من خدمات الوزارة داخل التطبيق أو عبر moi.gov.kw
 
 - **Verdict**: Official channel
 
@@ -141,7 +141,7 @@ Pick a sample. Asli reads it the way the Phase 1 checker will: it pulls out link
 
 - **What to do**: Do not send the code to anyone. Call your bank on the number printed on the back of your card.
 
-The samples are illustrative. Their links use the reserved example domain and lead nowhere. The demo registry holds three entries, and each policy links to its source.
+The samples are illustrative. Their links use the reserved example domain and lead nowhere, apart from the official domain in the Sahel sample. The demo runs on the same checker and the same registry as the check page.
 
 ## How it works
 

@@ -114,8 +114,8 @@
         en: "Pick a sample. Asli reads it the way the Phase 1 checker will: it pulls out links and claims, compares them with the registry and explains the verdict."
       },
       "demo.note": {
-        ar: "تأتي النماذج للتوضيح فقط، وتستخدم روابطها النطاق المحجوز example فلا تؤدي إلى أي مكان، أما سجل العرض فيضم ثلاثة قيود ترتبط كل سياسة فيها بمصدرها.",
-        en: "The samples are illustrative. Their links use the reserved example domain and lead nowhere. The demo registry holds three entries, and each policy links to its source."
+        ar: "تأتي النماذج للتوضيح فقط، وتستخدم روابطها النطاق المحجوز example فلا تؤدي إلى أي مكان عدا النطاق الرسمي في نموذج سهل، ويعمل العرض بالمحرك نفسه والسجل نفسه اللذين تعمل بهما صفحة الفحص.",
+        en: "The samples are illustrative. Their links use the reserved example domain and lead nowhere, apart from the official domain in the Sahel sample. The demo runs on the same checker and the same registry as the check page."
       },
       "demo.samples": { ar: "النماذج", en: "Samples" },
       "demo.from": { ar: "المرسل", en: "From" },
@@ -123,6 +123,11 @@
       "demo.checks": { ar: "الفحوص", en: "Checks" },
       "demo.verdict": { ar: "الحكم", en: "Verdict" },
       "demo.todo": { ar: "ما الذي تفعله", en: "What to do" },
+      "demo.loading": { ar: "يجري تحميل السجل الحقيقي", en: "Loading the real registry" },
+      "demo.offline": {
+        ar: "تعذّر تحميل السجل، وتعمل صفحة الفحص نفسها بالطريقة ذاتها حين يتوفر الاتصال.",
+        en: "The registry could not be loaded. The check page works the same way once a connection is back."
+      },
 
       "step.read": { ar: "القراءة", en: "Read" },
       "step.registry": { ar: "السجل", en: "Registry" },
@@ -144,10 +149,7 @@
         en: "{host} is not in the registry entry for {entity}, which lists {official}."
       },
       "f.regHit": { ar: "يطابق النطاق {host} قيد {entity} في السجل.", en: "{host} matches the registry entry for {entity}." },
-      "f.regChannel": {
-        ar: "وصلت الرسالة عبر قناة رسمية لدى {entity} بحسب السجل، هي {channel}.",
-        en: "It arrived through {channel}, an official channel of {entity} according to the registry."
-      },
+      "f.regUnknown": { ar: "لا يعرف السجل النطاق {host}.", en: "{host} is not in the registry." },
       "f.regNone": { ar: "لا يوجد ما يمكن مطابقته مع السجل.", en: "There is nothing to match against the registry." },
       "f.look": { ar: "يستعير النطاق {host} اسم {entity} ليبدو رسميًا.", en: "{host} borrows the name of {entity} to look official." },
       "f.noLook": { ar: "لا توجد أسماء تقلّد اسمًا رسميًا.", en: "No names imitate an official one." },
@@ -450,75 +452,10 @@
       ]
     },
 
-    /* Demo registry and samples. Official domains are real and resolvable; every
-       other link uses the reserved example domain. */
+    /* Demo samples. They run on the real checker against the real registry, the
+       same code and data as the check page. Links use the reserved example
+       domain, apart from one genuine official domain in the Sahel sample. */
     demo: {
-      registry: [
-        {
-          id: "moi",
-          name: { ar: "وزارة الداخلية", en: "the Ministry of Interior" },
-          claims: ["وزارة الداخلية", "ministry of interior"],
-          tokens: ["moi"],
-          domains: ["moi.gov.kw"],
-          channels: [{ id: "sahel", name: { ar: "تطبيق سهل", en: "the Sahel app" } }],
-          policies: [
-            {
-              id: "moi-fines-in-sahel",
-              text: {
-                ar: "ترسل وزارة الداخلية إشعارات المخالفات المرورية عبر تطبيق سهل فقط، ولا ترسلها برسائل نصية.",
-                en: "The Ministry of Interior sends traffic violation notices only through the Sahel app, never by text message."
-              },
-              url: "https://kuwaittimes.com/article/39064/kuwait/other-news/moi-warns-against-scammers/",
-              channels: ["sms", "imessage", "whatsapp"],
-              words: ["مخالفة", "مخالفات", "fine", "fines", "violation"]
-            }
-          ]
-        },
-        {
-          id: "moc",
-          name: { ar: "وزارة المواصلات", en: "the Ministry of Communications" },
-          claims: ["بريد الكويت", "وزارة المواصلات", "kuwait post", "ministry of communications"],
-          tokens: ["kwpost", "post", "moc"],
-          domains: ["moc.gov.kw"],
-          channels: [],
-          policies: [
-            {
-              id: "moc-no-shipment-fees",
-              text: {
-                ar: "لا ترسل وزارة المواصلات رسائل أو بريدًا إلكترونيًا تطلب فيه دفع رسوم لاستلام الشحنات.",
-                en: "The Ministry of Communications never sends messages or emails asking people to pay to receive shipments."
-              },
-              url: "https://kuwaittimes.com/communications-ministry-warns-of-scam-messages/",
-              channels: ["sms", "imessage", "whatsapp", "email"],
-              words: ["ادفع", "رسوم", "pay", "fee", "fees"]
-            }
-          ]
-        },
-        {
-          id: "bank",
-          name: { ar: "بنك كويتي", en: "a Kuwaiti bank" },
-          claims: ["عزيزي العميل", "بطاقتك", "dear customer", "your card"],
-          tokens: ["bank"],
-          domains: [],
-          channels: [],
-          policies: [
-            {
-              id: "bank-no-codes",
-              text: {
-                ar: "لا تطلب البنوك بياناتك المصرفية أو رمز التحقق عبر المكالمات أو الرسائل أو البريد الإلكتروني.",
-                en: "Banks never ask for your banking details or one-time code by call, message or email."
-              },
-              url: "https://www.cbk.gov.kw/en/cbk-news/announcements-and-press-releases/press-releases/2021/02/202102031030-diraya-campaign-launches-video-addressing-e-crimes",
-              channels: ["sms", "imessage", "whatsapp", "call", "email"],
-              words: ["رمز التحقق", "verification code", "one-time code", "otp", "pin"]
-            }
-          ]
-        }
-      ],
-      pressure: [
-        "خلال ٢٤ ساعة", "وإلا", "الآن", "فورًا", "اليوم", "سيتم إيقاف",
-        "within 24 hours", "or it will be", "will be blocked", "immediately", "today", "now"
-      ],
       samples: [
         {
           id: "fine",
@@ -551,11 +488,11 @@
         {
           id: "sahel",
           label: { ar: "إشعار في تطبيق سهل", en: "Notice in the Sahel app" },
-          channel: "sahel",
-          channelName: { ar: "تطبيق سهل", en: "Sahel app" },
+          channel: "app",
+          channelName: { ar: "داخل تطبيق سهل", en: "Inside the Sahel app" },
           from: { ar: "وزارة الداخلية", en: "Ministry of Interior" },
           lang: "ar",
-          text: "وزارة الداخلية: سُجّلت عليك مخالفة مرورية، ويمكنك الاطلاع عليها وسدادها من خدمات الوزارة داخل التطبيق",
+          text: "وزارة الداخلية: سُجّلت عليك مخالفة مرورية، ويمكنك الاطلاع عليها وسدادها من خدمات الوزارة داخل التطبيق أو عبر moi.gov.kw",
           advice: {
             ar: "ادفع من داخل التطبيق نفسه ولا تنتقل إلى روابط خارجية، ولا تشارك رمز التحقق مع أي أحد.",
             en: "Pay inside the app itself, do not follow outside links, and never share a one-time code with anyone."

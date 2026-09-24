@@ -7,7 +7,8 @@
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
-import { ROOT, loadContent } from "./lib.mjs";
+import { ROOT, loadContent, loadChecker } from "./lib.mjs";
+import { readRegistry } from "./build-data.mjs";
 
 export const FILES = { en: "PROJECT.md", ar: "PROJECT.ar.md" };
 
@@ -94,9 +95,11 @@ export function buildText(lang) {
     official: [T("v.official"), T("v.officialWhy")],
     unverified: [T("v.unverified"), T("v.unverifiedWhy")]
   };
+  const Checker = loadChecker();
+  const bodies = readRegistry();
   for (const s of C.demo.samples) {
-    const r = E.analyze(s, C.demo);
-    const [label, why] = verdicts[r.verdict];
+    const r = Checker.check({ text: s.text, channel: s.channel }, { bodies, feed: { domains: [], numbers: [] } });
+    const [label, why] = verdicts[r.verdict === "listed" ? "impersonation" : r.verdict];
     const sender = typeof s.from === "string" ? s.from : P(s.from);
     line(`### ${P(s.label)}`);
     line();
