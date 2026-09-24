@@ -2,13 +2,13 @@
 
 Kuwait's open scam shield: a verified registry of the genuine official channels and a reviewed feed of confirmed scam links and numbers, so anyone can check a message in seconds and any bank, telco or app can plug it in.
 
-**Status: version 0.4, September 2026.** The registry of genuine official channels is live with 36 Kuwaiti bodies, including the ministries, nine banks, the telcos, the couriers and customs. The check page runs in the browser against it and keeps working with no connection, the report page cleans a message on the device, a scheduled job watches certificate transparency for lookalikes, and an MCP server gives assistants the same answers. The scam feed exists in all eight formats and is deliberately empty: nothing is listed until two reviewers approve it with evidence.
+**Status: version 0.5, September 2026.** The registry of genuine official channels is live with 36 Kuwaiti bodies, including the ministries, nine banks, the telcos, the couriers and customs. The check page runs in the browser against it, keeps working with no connection, takes a message shared straight from the phone's messaging app, and catches brands written with swapped characters, shortened links and links to bare addresses. Every page carries a Content Security Policy that lets its scripts talk to nothing but the site's own data files, so the promise that a message never leaves the device is enforced by the browser. The report page cleans a message on the device, scheduled jobs watch certificate transparency for lookalikes and confirm that every listed domain and every cited source still answers, and an MCP server gives assistants the same answers. The scam feed exists in all eight formats and is deliberately empty: nothing is listed until two reviewers approve it with evidence.
 
 - Check a message: [asli.3li.info/check.html](https://asli.3li.info/check.html)
 - Report a scam: [asli.3li.info/report.html](https://asli.3li.info/report.html), which cleans your own details off the message before anything leaves your device
 - Already been scammed: [asli.3li.info/help.html](https://asli.3li.info/help.html), the first hour in order, with every number taken from the body that published it
 - About the project: [asli.3li.info](https://asli.3li.info/)
-- Install it on a phone: open the check page and add it to the home screen, then it works offline
+- Install it on a phone: open the check page and add it to the home screen, then it works offline and appears in the share sheet, so a suspicious message can be sent to it straight from the messaging app
 - The data: [registry.json](https://asli.3li.info/data/registry.json), [feed.json](https://asli.3li.info/data/feed.json), [meta.json](https://asli.3li.info/data/meta.json)
 - The same text to read offline: [PROJECT.md](PROJECT.md) in English, [PROJECT.ar.md](PROJECT.ar.md) in Arabic
 - Rules: [listing policy](LISTING-POLICY.md), [appeals](APPEALS.md), [privacy](PRIVACY.md), [security](SECURITY.md), [contributing](CONTRIBUTING.md)
@@ -47,7 +47,8 @@ Asli is new, but most of its engine already exists in these public repositories:
 | `watch/` | The certificate watch: how it works, and a public state file that holds hashes rather than names |
 | `mcp/` | An MCP server so assistants can check messages and domains against the registry. See [mcp/README.md](mcp/README.md) |
 | `tools/` | Builders, the watcher, the scorer and the verifiers, all on the Node standard library |
-| `tests/` | 87 checks that fail the build on a bad entry, a stale file or a broken translation |
+| `tests/` | 116 checks that fail the build on a bad entry, a stale file, a broken translation or a page that could reach the network |
+| `.github/workflows/` | The checks on every push, the certificate watch every six hours, and the weekly jobs that confirm every official domain and every cited source still answer |
 
 ## Detection
 
@@ -60,6 +61,16 @@ The scoring is conservative on purpose: a name scores nothing unless it carries 
 brand the registry knows, so `nbkkuwait.example` and `b0ubyan-kw.example` are
 raised while `nbkwealth.ch` and `kibble.example` are left alone. An official
 domain always scores zero, so the watch can never flag the channels it protects.
+
+The check page applies the same rule to a pasted message and adds what only a
+message can show: a brand written with swapped characters such as `b0ubyan`, a
+shortened link that hides where it goes, a link to a bare numeric address, the
+sender's name or number, and pressure wording. A shortened link or an
+unpublished number is never enough on its own, but beside a claimed identity and
+a deadline it is the shape of a scam. An official link vouches only for itself,
+so a genuine domain placed next to an unknown one does not make a message
+official, and a sender name or a published number is reported as information
+rather than proof, because both can be faked.
 
 Candidate names are not published. A name that borrows a brand is not yet a scam,
 and an unreviewed accusation would harm whoever owns it. The public state file
@@ -81,7 +92,7 @@ node tools/ct-watch.mjs --days 2         # read the certificate logs and score w
 node mcp/asli-mcp.mjs --local           # run the MCP server against the local data
 node tools/verify-domains.mjs           # confirm every listed official domain still answers
 node tools/find-contacts.mjs            # collect contact numbers bodies publish, as proposals to review
-node tools/check-links.mjs              # confirm every cited source is still reachable
+node tools/check-links.mjs              # confirm every cited source is still reachable, --report file.md for the weekly issue
 ```
 
 The site itself is plain HTML, CSS and JavaScript in `docs/`, with no build step and no dependencies. Rendering the share image needs a headless browser: `npm i playwright && node tools/render-og.mjs`.
