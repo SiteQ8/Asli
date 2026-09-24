@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; manifest-src 'self'; worker-src 'self'; form-action 'self'; base-uri 'none'">
 <title>افحص رسالة | أَصْلي</title>
 <meta name="description" content="الصق رسالة أو رابطًا أو رقمًا ليقارنه أَصْلي بسجل القنوات الرسمية الكويتية وبتغذية الاحتيال المؤكدة، ويجري الفحص داخل متصفحك ولا تغادر الرسالة جهازك.">
 <meta name="author" content="Ali AlEnezi">
@@ -45,6 +46,7 @@
   <p class="lead" data-t="lead"></p>
 
   <p class="privacy-note" data-t="privacy"></p>
+  <p id="sharedNote" class="privacy-note" data-t="shared" hidden></p>
 
   <form id="form" class="check-form" autocomplete="off">
     <label class="field">
@@ -56,6 +58,11 @@
       <span class="small-label" data-t="labelChannel"></span>
       <div id="channels" class="chips" role="radiogroup" data-t-aria="labelChannel"></div>
     </div>
+
+    <label class="field">
+      <span class="small-label" data-t="labelSender"></span>
+      <input id="sender" type="text" dir="ltr" autocomplete="off" spellcheck="false" data-t-placeholder="senderPlaceholder">
+    </label>
 
     <div class="form-actions">
       <button type="submit" class="btn primary" data-t="run"></button>

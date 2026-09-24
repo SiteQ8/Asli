@@ -115,3 +115,38 @@ test("no single shipped file is large enough to hurt a slow connection", () => {
     assert.ok(raw < 200 * 1024, `${file} is ${Math.round(raw / 1024)} KB, which is too much to ship as one file`);
   }
 });
+
+/* A message can be shared straight from the messaging app, and it still never leaves the phone. */
+
+test("a message shared from another app lands on the check page", () => {
+  const share = manifest.share_target;
+  assert.ok(share, "the manifest needs a share target");
+  assert.equal(share.method, "GET", "a GET target works with the page served from the shell");
+  assert.ok(share.action.endsWith("check.html"), "sharing must open the check page");
+  assert.equal(share.params.text, "text");
+  const js = read("docs/check.js");
+  assert.ok(js.includes("function sharedText"), "the page must read the shared text");
+  assert.ok(js.includes("searchParams.delete"), "the shared text must be taken out of the address");
+  assert.ok(js.includes("replaceState"), "the address must be rewritten without it");
+  assert.ok(js.includes("autorun"), "a shared message is checked without another tap");
+});
+
+test("the worker serves a page by its path alone, so a shared message never reaches the network", () => {
+  assert.ok(sw.includes("function shellRequest"), "navigations must be rebuilt without their query string");
+  const navigate = sw.slice(sw.indexOf('request.mode === "navigate"'));
+  assert.ok(navigate.includes("shellRequest(url)"), "the navigate branch must use the query free request");
+  assert.ok(!sw.includes("url.search"), "the worker must never read the query string");
+  assert.ok(sw.includes("url.origin + url.pathname"), "the shell request is origin and path, nothing else");
+});
+
+test("the check page takes an optional sender and hands it to the engine", () => {
+  const html = read("docs/check.html");
+  assert.ok(html.includes('id="sender"'), "the sender field is missing");
+  const js = read("docs/check.js");
+  assert.ok(js.includes("sender: sender"), "the sender must reach the checker");
+  assert.ok(js.includes("fShortened") && js.includes("fIp") && js.includes("fPunycode"), "every new finding needs wording");
+  for (const key of ["fShortened", "fIp", "fPunycode", "fSenderListed", "fSenderName", "fSenderNumber", "shared", "copy"]) {
+    const block = js.slice(js.indexOf(key + ":"));
+    assert.ok(/ar: "[^"]+"/.test(block.slice(0, 400)) && /en: "[^"]+"/.test(block.slice(0, 400)), `${key} needs both languages`);
+  }
+});
