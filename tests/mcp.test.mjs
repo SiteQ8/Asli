@@ -21,7 +21,7 @@ test("the handshake answers with a protocol version and the tool list", async ()
   const list = await handle({ id: 2, method: "tools/list", params: {} });
   assert.deepEqual(
     list.tools.map((t) => t.name).sort(),
-    ["check_domain", "check_message", "official_channels", "registry_status"]
+    ["check_domain", "check_message", "check_number", "official_channels", "registry_status"]
   );
 });
 
@@ -79,4 +79,54 @@ test("registry_status reports the counts and where to download the data", async 
   assert.ok(status.downloads.every((url) => url.startsWith("https://asli.3li.info/data/")));
   assert.ok(status.listing_rule.includes("two reviewers"));
   assert.equal(status.data_source, "local files");
+});
+
+test("check_message takes the sender and reports the hidden and bare links", async () => {
+  const call = await json("check_message", {
+    text: "Burgan Bank: your account is suspended, call back now",
+    channel: "call",
+    sender: "+965 5551 2345"
+  });
+  assert.equal(call.verdict, "impersonation");
+  assert.equal(call.sender, "55512345");
+  assert.ok(call.numbers_in_message_not_published_by_it.includes("55512345"));
+
+  const links = await json("check_message", {
+    text: "Ministry of Interior: see bit.ly/x1 or http://185.220.101.5/pay",
+    channel: "sms"
+  });
+  assert.deepEqual(links.shortened_links, ["bit.ly"]);
+  assert.deepEqual(links.bare_address_links, ["185.220.101.5"]);
+  assert.equal(links.verdict, "impersonation");
+
+  const published = await json("check_message", { text: "Burgan Bank: about your account", channel: "call", sender: "1804080" });
+  assert.equal(published.sender_matches.body, "Burgan Bank");
+  assert.ok(published.sender_matches.how.includes("fake"), "a matching number is never sold as proof");
+  assert.notEqual(published.verdict, "official");
+});
+
+test("check_number says published, unknown or listed, and never fake", async () => {
+  const burgan = await json("check_number", { number: "1804080" });
+  assert.equal(burgan.status, "published");
+  assert.equal(burgan.body, "Burgan Bank");
+  assert.ok(burgan.source.startsWith("https://"));
+
+  const cyber = await json("check_number", { number: "+965 9728 3939" });
+  assert.equal(cyber.status, "published");
+  assert.equal(cyber.body, "Ministry of Interior");
+
+  const unknown = await json("check_number", { number: "55512345" });
+  assert.equal(unknown.status, "unknown");
+  assert.ok(unknown.note.includes("not fake"));
+
+  await assert.rejects(() => callTool("check_number", {}), /number is required/);
+  await assert.rejects(() => callTool("check_number", { number: "not a number" }), /digits/);
+});
+
+test("the sector list offered to assistants matches the sectors the registry uses", async () => {
+  const tool = TOOLS.find((t) => t.name === "official_channels");
+  const status = await json("registry_status", {});
+  for (const sector of status.registry.sectors) {
+    assert.ok(tool.inputSchema.properties.sector.enum.includes(sector), `the ${sector} sector cannot be asked for`);
+  }
 });
