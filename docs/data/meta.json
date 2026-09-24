@@ -24,8 +24,16 @@
     "expiredAndRemoved": 0
   },
   "watch": {
-    "namesChecked": 0,
-    "updated": "2026-09-24"
+    "namesChecked": 20,
+    "updated": "2026-09-24",
+    "lastRun": {
+      "date": "2026-09-24",
+      "source": "crt.sh",
+      "health": "ok",
+      "queriesRun": 9,
+      "queriesFailed": 0,
+      "namesRead": 20
+    }
   },
   "formats": [
     "feed.json",

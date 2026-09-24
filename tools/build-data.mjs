@@ -195,7 +195,7 @@ export function build(date = today(), overrides = {}) {
         sectors: [...new Set(bodies.map((b) => b.sector))].sort()
       },
       feed: { total: feed.length, domains: domains.length, numbers: numbers.length, senders: senders.length, expiredAndRemoved: expired },
-      watch: { namesChecked: watch.hashes.length, updated: watch.updated },
+      watch: { namesChecked: watch.hashes.length, updated: watch.updated, lastRun: watch.lastRun || null },
       formats: ["feed.json", "feed.csv", "feed.txt", "hosts.txt", "adguard.txt", "rpz.zone", "feed.stix2.json", "feed.misp.json"]
     },
     null,

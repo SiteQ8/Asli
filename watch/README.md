@@ -62,6 +62,25 @@ Signals are removed when they prove noisy. Counting hyphens was one: it flagged
 long infrastructure hostnames belonging to the banks themselves, which is exactly
 the kind of noise that makes a review queue useless.
 
+## When the source is down
+
+crt.sh is free and often busy, and it frequently refuses requests from GitHub's
+runners. The watch is built around that rather than pretending otherwise:
+
+- Each run works to a time budget and starts where the last run stopped, so
+  every brand gets its turn over a day even when a run only reaches part of the
+  list.
+- If the first four queries all fail, the source is treated as down and the run
+  stops instead of burning its budget on retries.
+- The run records its health in `seen.json` and the site publishes it in
+  `meta.json`: `ok`, `degraded` or `down`, with how many queries ran and failed.
+  A run that could not reach the source commits a message saying so, never a
+  message claiming it found nothing.
+
+A second, independent source is the real fix. A small always on host running a
+certificate stream would not depend on crt.sh at all, and it would feed the same
+scorer and the same private queue.
+
 ## Running it by hand
 
 ```sh

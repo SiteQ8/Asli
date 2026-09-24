@@ -12,7 +12,7 @@ import { join } from "node:path";
 import { ROOT } from "../tools/lib.mjs";
 import { readRegistry } from "../tools/build-data.mjs";
 import { score, rank, deleet, tokenHit, isUnder } from "../tools/lookalike.mjs";
-import { evaluate, hashName, queriesFor, loadSeen, markDelivered } from "../tools/ct-watch.mjs";
+import { evaluate, hashName, queriesFor, loadSeen, markDelivered, rotate } from "../tools/ct-watch.mjs";
 
 const bodies = readRegistry();
 const scoreOf = (name) => score(name, bodies);
@@ -151,4 +151,20 @@ test("hashing a name gives a short stable value that hides it", () => {
   assert.match(hash, /^[0-9a-f]{16}$/);
   assert.equal(hash, hashName("MOI-KW-FINES.EXAMPLE."), "hashing must ignore case and a trailing dot");
   assert.ok(!hash.includes("moi"));
+});
+
+test("each run starts where the last one stopped, so every brand gets a turn", () => {
+  assert.deepEqual(rotate(["a", "b", "c", "d"], 0), ["a", "b", "c", "d"]);
+  assert.deepEqual(rotate(["a", "b", "c", "d"], 2), ["c", "d", "a", "b"]);
+  assert.deepEqual(rotate(["a", "b", "c", "d"], 6), ["c", "d", "a", "b"], "the cursor wraps around");
+  assert.deepEqual(rotate([], 3), []);
+});
+
+test("the public state records how the source behaved, and still no names", () => {
+  const seen = loadSeen();
+  if (seen.lastRun) {
+    assert.ok(["ok", "degraded", "down", "idle", "fixture"].includes(seen.lastRun.health), `unknown health ${seen.lastRun.health}`);
+    assert.equal(typeof seen.lastRun.queriesRun, "number");
+  }
+  assert.equal(typeof (seen.cursor ?? 0), "number");
 });
