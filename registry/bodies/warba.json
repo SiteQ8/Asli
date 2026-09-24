@@ -7,10 +7,12 @@
   },
   "claims": {
     "ar": [
-      "بنك وربة"
+      "بنك وربة",
+      "وربة"
     ],
     "en": [
-      "warba bank"
+      "warba bank",
+      "warba"
     ]
   },
   "tokens": [

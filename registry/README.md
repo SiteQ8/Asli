@@ -14,13 +14,13 @@ than a missing one: it can make a scam look genuine.
 | Field | Meaning |
 | --- | --- |
 | `id` | Short slug, lowercase, also the file name |
-| `sector` | `government`, `bank`, `telecom`, `association`, `courier` or `utility` |
+| `sector` | `government`, `bank`, `telecom`, `association`, `courier`, `utility` or `airline` |
 | `name` | Display name, Arabic and English |
-| `claims` | Phrases a message uses to claim it comes from this body, per language, lowercase |
+| `claims` | Phrases a message uses to claim it comes from this body, per language, lowercase. The full name, and the short brand name a message actually uses, such as `nbk` or `zain`, when that name cannot mean anything else. A common word is left out even when it is also a brand, so that a parcel message mentioning customs still reads as claiming the courier |
 | `tokens` | Brand words a squatting domain would borrow, lowercase Latin |
 | `domains` | Bare hosts the body really owns, with no scheme and no path |
 | `apps` | Official apps, each with a publisher and at least one store link |
-| `senders` | Verified SMS sender names. Empty until each one is documented |
+| `senders` | Verified SMS sender names. Empty until each one is documented. The checker reports a match as information and nothing more, because a sender name can be faked, while a sender name in the scam feed is a listing |
 | `hotlines` | Numbers the body publishes on its own site, each with a source, a date and how it was checked |
 | `policies` | What this body will never do, each with trigger words and a source |
 | `sources` | Where the entry was verified from |
@@ -50,7 +50,9 @@ for, and edits the body file.
 What the entry claims is narrow on purpose: these are numbers the body publishes,
 not all of its numbers, and not a fraud hotline unless the body says so. The
 checker words it the same way, so it can say "this is not among the numbers the
-bank publishes" without ever claiming a number is fake.
+bank publishes" without ever claiming a number is fake, and when the number is
+the one that called, it says the body publishes it without ever claiming that
+is who called, because a caller id can be faked.
 
 ## How a policy gets in
 

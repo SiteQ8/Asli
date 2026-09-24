@@ -7,10 +7,12 @@
   },
   "claims": {
     "ar": [
-      "زين الكويت"
+      "زين الكويت",
+      "زين"
     ],
     "en": [
-      "zain kuwait"
+      "zain kuwait",
+      "zain"
     ]
   },
   "tokens": [

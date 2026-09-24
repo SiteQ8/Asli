@@ -11,7 +11,11 @@
   examples, and both get the same answer.
 */
 
-/* Words a squatter glues onto a brand name. */
+/*
+  Words a squatter glues onto a brand name. The check page carries the same list
+  in docs/checker.js, and a test keeps the two identical, so the watch and the
+  page agree on what a glued name looks like.
+*/
 export const GLUE = [
   "kuwait", "kw", "q8", "online", "secure", "security", "login", "signin", "sign",
   "verify", "verification", "update", "confirm", "account", "accounts", "bank",

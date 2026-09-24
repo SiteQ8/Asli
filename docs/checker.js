@@ -11,15 +11,36 @@
   "use strict";
 
   var HOST_RE = /(?:https?:\/\/)?((?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[a-z]{2,}))(?![a-z0-9-])/gi;
+  /* A link to a bare address rather than a name. No official body sends one. */
+  var IP_RE = /(?:https?:\/\/)?((?:\d{1,3}\.){3}\d{1,3})(?::\d{1,5})?(?!\d|\.\d)/g;
   var PHONE_RE = /(?:\+?965[\s-]?)?(?:\d[\s-]?){7,12}\d/g;
   var LATIN = /[a-z]/i;
 
-  /* Words a squatter glues onto a brand name. Used to catch nbkkuwait and moi-kw. */
+  /*
+    Words a squatter glues onto a brand name. Used to catch nbkkuwait and moi-kw.
+    The same list drives the certificate watch in tools/lookalike.mjs, and a test
+    keeps the two identical.
+  */
   var GLUE = [
-    "kuwait", "kw", "q8", "online", "secure", "security", "login", "signin", "verify",
-    "verification", "update", "confirm", "account", "accounts", "bank", "banking", "pay",
-    "payment", "payments", "portal", "service", "services", "support", "help", "alert",
-    "alerts", "app", "mobile", "gov", "info", "center", "centre", "care", "net", "web"
+    "kuwait", "kw", "q8", "online", "secure", "security", "login", "signin", "sign",
+    "verify", "verification", "update", "confirm", "account", "accounts", "bank",
+    "banking", "pay", "payment", "payments", "portal", "service", "services",
+    "support", "help", "helpdesk", "alert", "alerts", "app", "apps", "mobile",
+    "gov", "info", "center", "centre", "care", "net", "web", "my", "e", "new", "official"
+  ];
+
+  /* Characters swapped to fake a letter without owning the real name. */
+  var LEET = { "0": "o", "1": "l", "3": "e", "4": "a", "5": "s", "7": "t", "8": "b", "9": "g" };
+
+  /*
+    Services that turn a link into a short one. A short link is not a scam, but
+    it hides where it goes, so the registry cannot vouch for it either way.
+  */
+  var SHORTENERS = [
+    "bit.ly", "bitly.com", "tinyurl.com", "t.co", "goo.gl", "cutt.ly", "is.gd", "v.gd",
+    "rb.gy", "shorturl.at", "tiny.cc", "t.ly", "ow.ly", "buff.ly", "rebrand.ly", "bl.ink",
+    "short.io", "lnkd.in", "s.id", "surl.li", "clck.ru", "u.to", "shorte.st", "adf.ly",
+    "urlz.fr", "1link.io", "tny.im", "qrco.de", "han.gl", "2u.pw", "lc.cx"
   ];
 
   var PRESSURE = {
@@ -69,14 +90,36 @@
     return String(text || "").replace(HOST_RE, " ");
   }
 
+  /* Bare addresses, read from the text once the names have been taken out. */
+  function ipLinks(text) {
+    var out = [];
+    var m;
+    var stripped = stripHosts(text);
+    IP_RE.lastIndex = 0;
+    while ((m = IP_RE.exec(stripped))) {
+      var address = m[1];
+      var valid = address.split(".").every(function (part) { return Number(part) <= 255; });
+      if (valid && out.indexOf(address) < 0) out.push(address);
+    }
+    return out;
+  }
+
+  function stripAddresses(text) {
+    return stripHosts(text).replace(IP_RE, " ");
+  }
+
+  function normalisePhone(digits) {
+    return digits.length > 8 && digits.indexOf("965") === 0 ? digits.slice(3) : digits;
+  }
+
   function phones(text) {
     var out = [];
     var m;
     PHONE_RE.lastIndex = 0;
-    while ((m = PHONE_RE.exec(stripHosts(text)))) {
+    while ((m = PHONE_RE.exec(stripAddresses(text)))) {
       var digits = m[0].replace(/\D/g, "");
       if (digits.length < 8) continue;
-      var normal = digits.length > 8 && digits.indexOf("965") === 0 ? digits.slice(3) : digits;
+      var normal = normalisePhone(digits);
       if (out.indexOf(normal) < 0) out.push(normal);
     }
     return out;
@@ -99,22 +142,51 @@
     return null;
   }
 
+  function isShortener(host) {
+    for (var i = 0; i < SHORTENERS.length; i++) {
+      if (isUnder(host, SHORTENERS[i])) return true;
+    }
+    return false;
+  }
+
+  /* Punycode is how a name written in another script travels. It can also make one letter look like another. */
+  function isPunycode(host) {
+    return registrableParts(host).some(function (label) { return label.indexOf("xn--") === 0; });
+  }
+
+  /* Undo the usual digit for letter swaps so m0i reads as moi and rnoi reads as moi. */
+  function deleet(part) {
+    return part.replace(/[01345789]/g, function (c) { return LEET[c] || c; }).replace(/rn/g, "m").replace(/vv/g, "w");
+  }
+
+  /*
+    Whether one label part carries a brand token: as the whole part, glued to a
+    common word, or inside a longer part for brands long enough that a chance
+    match is unlikely. Bare substring matching on short brands is deliberately
+    avoided: it flags innocent names.
+  */
+  function carries(part, token, swapped) {
+    if (part === token) return true;
+    for (var g = 0; g < GLUE.length; g++) {
+      if (part === token + GLUE[g] || part === GLUE[g] + token) return true;
+    }
+    var minimum = swapped ? 4 : 5;
+    return token.length >= minimum && part.indexOf(token) >= 0;
+  }
+
   /*
     A host imitates a brand when one of the brand's tokens turns up in the host
-    as a whole label, as a part of a hyphenated label, or glued to a common word.
-    Bare substring matching is deliberately avoided: it flags innocent names.
+    as a whole label, as a part of a hyphenated label, glued to a common word, or
+    written with swapped characters such as b0ubyan or rnoi.
   */
   function imitates(host, token) {
     var labels = registrableParts(host);
     for (var i = 0; i < labels.length; i++) {
       var parts = labels[i].split(/[^a-z0-9]+/).filter(Boolean);
       for (var j = 0; j < parts.length; j++) {
-        var part = parts[j];
-        if (part === token) return true;
-        for (var g = 0; g < GLUE.length; g++) {
-          if (part === token + GLUE[g] || part === GLUE[g] + token) return true;
-        }
-        if (token.length >= 5 && part.indexOf(token) >= 0) return true;
+        if (carries(parts[j], token, false)) return true;
+        var plain = deleet(parts[j]);
+        if (plain !== parts[j] && carries(plain, token, true)) return true;
       }
     }
     return false;
@@ -144,9 +216,26 @@
   }
 
   /*
+    The sender, as the phone shows it: a number, or a name such as a bank's
+    sender id. A name is read in lower case. A number is read as digits with
+    the country code dropped, the same way numbers in the text are read.
+  */
+  function readSender(raw) {
+    var s = String(raw || "").trim();
+    if (!s) return null;
+    /* Short codes such as 1804080 and 112 are numbers too, so three digits are enough. */
+    if (/^\+?[\d\s()-]+$/.test(s)) {
+      var digits = s.replace(/\D/g, "");
+      if (digits.length >= 3) return { kind: "number", value: normalisePhone(digits) };
+    }
+    return { kind: "name", value: lower(s).replace(/\s+/g, " ") };
+  }
+
+  /*
     check(input, data)
       input.text     the message, as pasted
       input.channel  sms | imessage | whatsapp | email | call | social | app | web
+      input.sender   optional, the number or sender name it came from
       data.bodies    registry entries
       data.feed      confirmed scam indicators
     Returns findings and a verdict. Wording is left to the caller.
@@ -157,10 +246,14 @@
     var claimText = lower(stripHosts(text));
     var channel = input.channel || "unknown";
     var bodies = (data && data.bodies) || [];
-    var feed = (data && data.feed) || { domains: [], numbers: [] };
+    var feed = (data && data.feed) || { domains: [], numbers: [], senders: [] };
+    var sender = readSender(input.sender);
 
     var foundHosts = hosts(text);
+    var foundIps = ipLinks(text);
     var foundPhones = phones(text);
+    /* A number that sent the message is judged like a number written in it. */
+    if (sender && sender.kind === "number" && foundPhones.indexOf(sender.value) < 0) foundPhones.push(sender.value);
 
     var claimed = null;
     for (var i = 0; i < bodies.length && !claimed; i++) {
@@ -180,13 +273,40 @@
       });
     });
 
+    /*
+      A sender name in the feed is a listing like any other. One that matches a
+      name the registry records for a body is only worth mentioning: sender
+      names can be faked, so a match never makes a message official.
+    */
+    var senderListed = false;
+    var senderOfficial = null;
+    if (sender && sender.kind === "name") {
+      (feed.senders || []).forEach(function (bad) {
+        if (lower(bad.sender || bad) === sender.value) senderListed = true;
+      });
+      if (senderListed && listed.indexOf(sender.value) < 0) listed.push(sender.value);
+      for (var s = 0; s < bodies.length && !senderOfficial; s++) {
+        if ((bodies[s].senders || []).some(function (name) { return lower(name) === sender.value; })) senderOfficial = bodies[s];
+      }
+    } else if (sender) {
+      senderListed = listed.indexOf(sender.value) >= 0;
+      for (var p = 0; p < bodies.length && !senderOfficial; p++) {
+        if ((bodies[p].hotlines || []).some(function (h) { return h.number === sender.value; })) senderOfficial = bodies[p];
+      }
+    }
+
     var official = [];
     var lookalike = [];
+    var shortened = [];
     var unknown = [];
     foundHosts.forEach(function (host) {
       var owner = officialOwner(host, bodies);
       if (owner) {
         official.push({ host: host, body: owner });
+        return;
+      }
+      if (isShortener(host)) {
+        shortened.push(host);
         return;
       }
       var imitated = null;
@@ -198,6 +318,7 @@
       if (imitated) lookalike.push({ host: host, body: imitated });
       else unknown.push(host);
     });
+    var punycode = foundHosts.filter(function (host) { return isPunycode(host) && !officialOwner(host, bodies); });
 
     var broken = [];
     if (claimed) {
@@ -236,29 +357,47 @@
     /*
       A broken policy is enough on its own. Nobody legitimate asks for a
       one-time code by message, whether or not they name who they are.
-    */
-    /*
+
       A number the body does not publish is weak on its own: a real bank can
       call from a line that is not on its home page. Put it next to pressure
-      wording and a claimed identity, and it is the shape of a scam call.
+      wording and a claimed identity, and it is the shape of a scam call. A
+      shortened link beside the same two things is the same shape.
+
+      A link to a bare address under an official name needs no pressure. No
+      ministry, bank or telco sends one.
     */
     var numberAndPressure = claimed && unpublishedNumbers.length && pressure;
+    var hiddenAndPressure = claimed && shortened.length && pressure;
+    var addressUnderName = claimed && foundIps.length;
+
+    /*
+      An official link vouches only for itself. A message that mixes one with a
+      link the registry does not know, a shortened link or a bare address is
+      not official: the genuine name may be there as decoration.
+    */
+    var everyLinkOfficial = official.length && !unknown.length && !shortened.length && !foundIps.length;
 
     var verdict;
     if (listed.length) verdict = "listed";
-    else if (lookalike.length || broken.length || numberAndPressure) verdict = "impersonation";
-    else if (claimed && official.length) verdict = "official";
-    else if (official.length && !unknown.length) verdict = "official";
+    else if (lookalike.length || broken.length || numberAndPressure || hiddenAndPressure || addressUnderName) verdict = "impersonation";
+    else if (everyLinkOfficial) verdict = "official";
     else verdict = "unverified";
 
     return {
       channel: channel,
       hosts: foundHosts,
+      ipLinks: foundIps,
       phones: foundPhones,
+      sender: sender ? sender.value : null,
+      senderKind: sender ? sender.kind : null,
+      senderListed: senderListed,
+      senderOfficial: senderOfficial,
       claimed: claimed,
       listed: listed,
       official: official,
       lookalike: lookalike,
+      shortened: shortened,
+      punycode: punycode,
       unknown: unknown,
       broken: broken,
       published: published,
@@ -269,7 +408,20 @@
     };
   }
 
-  var api = { check: check, hosts: hosts, phones: phones, imitates: imitates, isUnder: isUnder, GLUE: GLUE };
+  var api = {
+    check: check,
+    hosts: hosts,
+    ipLinks: ipLinks,
+    phones: phones,
+    imitates: imitates,
+    deleet: deleet,
+    isUnder: isUnder,
+    isShortener: isShortener,
+    isPunycode: isPunycode,
+    readSender: readSender,
+    GLUE: GLUE,
+    SHORTENERS: SHORTENERS
+  };
 
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   root.AsliChecker = api;

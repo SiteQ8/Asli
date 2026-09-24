@@ -11,6 +11,7 @@ import { join } from "node:path";
 import vm from "node:vm";
 import { ROOT, read } from "../tools/lib.mjs";
 import { build, readRegistry, readFeed, committedDate } from "../tools/build-data.mjs";
+import { GLUE as WATCH_GLUE, tokenHit } from "../tools/lookalike.mjs";
 
 function loadChecker() {
   const sandbox = {};
@@ -288,4 +289,135 @@ test("the checker never mutates the registry it is given", () => {
   const before = JSON.stringify(bodies);
   Checker.check({ text: "وزارة الداخلية moi-kw.example", channel: "sms" }, data);
   assert.equal(JSON.stringify(bodies), before);
+});
+
+/* The check page has to catch what the certificate watch catches, and no more. */
+
+test("a brand written with swapped characters is caught on the page as it is by the watch", () => {
+  assert.ok(Checker.imitates("b0ubyan-kw.example", "boubyan"));
+  assert.ok(Checker.imitates("m0i-fines.example", "moi"));
+  assert.ok(Checker.imitates("rnoi.example", "moi"));
+  assert.ok(Checker.imitates("nbk0nline.example", "nbk"));
+  assert.equal(Checker.deleet("b0ubyan"), "boubyan");
+  assert.equal(Checker.deleet("vvarba"), "warba");
+  const r = Checker.check({ text: "Boubyan Bank: confirm your card at b0ubyan-kw.example", channel: "sms" }, data);
+  assert.equal(r.verdict, "impersonation");
+  assert.equal(r.lookalike[0].body.id, "boubyan");
+});
+
+test("a name with digits that spells no brand is left alone", () => {
+  for (const host of ["web3.example", "2go.example", "4sale.example", "k1b-tools.example"]) {
+    for (const b of bodies) {
+      for (const token of b.tokens) assert.ok(!Checker.imitates(host, token), `${host} should not imitate ${token}`);
+    }
+  }
+});
+
+test("the check page and the certificate watch agree on what a borrowed name looks like", () => {
+  assert.deepEqual([...Checker.GLUE], WATCH_GLUE, "the glue lists must stay identical");
+  const cases = [
+    ["nbkkuwait.example", "nbk"], ["b0ubyan-kw.example", "boubyan"], ["secure-boubyan.example", "boubyan"],
+    ["moi-kw-fines.example", "moi"], ["thinkingcap.example", "kib"], ["stickers.example", "stc"],
+    ["kibble.example", "kib"], ["nbkwealth.ch", "nbk"], ["mofongo-recipes.example", "mof"],
+    ["gulfbank-verify.xyz", "gulfbank"], ["my-kfh-account.example", "kfh"], ["rnoi.example", "moi"]
+  ];
+  for (const [host, token] of cases) {
+    assert.equal(Checker.imitates(host, token), tokenHit(host, token) !== null, `${host} against ${token}`);
+  }
+});
+
+test("a shortened link hides where it goes, and the page says so instead of guessing", () => {
+  const alone = Checker.check({ text: "Menu for tonight: bit.ly/abc123", channel: "whatsapp" }, data);
+  assert.deepEqual([...alone.shortened], ["bit.ly"]);
+  assert.equal(alone.unknown.length, 0, "a shortener is reported as hidden, not as unknown");
+  assert.equal(alone.verdict, "unverified", "a short link on its own is not a scam");
+
+  const pressed = Checker.check({ text: "National Bank of Kuwait: your account is suspended, verify at bit.ly/x1", channel: "sms" }, data);
+  assert.equal(pressed.verdict, "impersonation", "a hidden link beside a claimed identity and pressure is the shape of a scam");
+
+  const calm = Checker.check({ text: "National Bank of Kuwait: our new branch is open, see bit.ly/x1", channel: "sms" }, data);
+  assert.equal(calm.verdict, "unverified", "without pressure the registry cannot say either way");
+  assert.ok(Checker.isShortener("tinyurl.com") && Checker.isShortener("cutt.ly") && !Checker.isShortener("moi.gov.kw"));
+});
+
+test("a link to a bare address under an official name is impersonation", () => {
+  const r = Checker.check({ text: "Ministry of Interior: pay your fine at http://185.220.101.5/pay", channel: "email" }, data);
+  assert.deepEqual([...r.ipLinks], ["185.220.101.5"]);
+  assert.equal(r.verdict, "impersonation");
+  assert.equal(r.phones.length, 0, "an address is never read as a phone number");
+
+  const plain = Checker.check({ text: "the printer is on 10.0.0.1 today", channel: "sms" }, data);
+  assert.deepEqual([...plain.ipLinks], ["10.0.0.1"]);
+  assert.equal(plain.verdict, "unverified", "an address with no claimed identity is only pointed out");
+  assert.deepEqual([...Checker.ipLinks("see 1.2.3.4.example.com and 999.1.1.1")], [], "numeric labels in a name and impossible octets are not addresses");
+});
+
+test("an official link vouches only for itself", () => {
+  const mixed = Checker.check({ text: "Ministry of Interior: see moi.gov.kw then pay at other-site.example", channel: "sms" }, data);
+  assert.equal(mixed.verdict, "unverified", "a genuine name beside an unknown link is decoration, not proof");
+  assert.equal(mixed.official[0].host, "moi.gov.kw");
+  const hidden = Checker.check({ text: "Ministry of Interior: see moi.gov.kw and bit.ly/zz", channel: "sms" }, data);
+  assert.equal(hidden.verdict, "unverified");
+  const clean = Checker.check({ text: "Ministry of Interior: see moi.gov.kw", channel: "sms" }, data);
+  assert.equal(clean.verdict, "official");
+});
+
+test("a punycode host is pointed out, and the registry's own domains never are", () => {
+  const r = Checker.check({ text: "login at xn--nbk-8ka.example", channel: "sms" }, data);
+  assert.deepEqual([...r.punycode], ["xn--nbk-8ka.example"]);
+  assert.ok(Checker.isPunycode("xn--mgbaakc7dvf.example"));
+  for (const b of bodies) for (const d of b.domains) assert.ok(!Checker.check({ text: d, channel: "sms" }, data).punycode.length, d);
+});
+
+test("the sender is read as a number or a name, the way the phone shows it", () => {
+  assert.deepEqual({ ...Checker.readSender("+965 5551 2345") }, { kind: "number", value: "55512345" });
+  assert.deepEqual({ ...Checker.readSender("1804080") }, { kind: "number", value: "1804080" });
+  assert.deepEqual({ ...Checker.readSender("112") }, { kind: "number", value: "112" });
+  assert.deepEqual({ ...Checker.readSender("  NBK  Alert ") }, { kind: "name", value: "nbk alert" });
+  assert.equal(Checker.readSender("   "), null);
+});
+
+test("a sender name in the scam feed makes the message a listing", () => {
+  const withFeed = { bodies, feed: { domains: [], numbers: [], senders: [{ sender: "NBK-ALERT" }] } };
+  const r = Checker.check({ text: "Your card is ready for collection", channel: "sms", sender: "nbk-alert" }, withFeed);
+  assert.equal(r.verdict, "listed");
+  assert.ok(r.senderListed);
+  assert.ok(r.listed.includes("nbk-alert"));
+});
+
+test("a sender number is judged like a number written in the message", () => {
+  const scam = Checker.check({ text: "Burgan Bank: your account is suspended, call back now", channel: "call", sender: "+965 5551 2345" }, data);
+  assert.equal(scam.verdict, "impersonation");
+  assert.ok(scam.unpublishedNumbers.includes("55512345"));
+
+  const genuine = Checker.check({ text: "Burgan Bank: about your account", channel: "call", sender: "1804080" }, data);
+  assert.ok(genuine.matchedNumbers.includes("1804080"));
+  assert.equal(genuine.senderOfficial.id, "burgan");
+  assert.notEqual(genuine.verdict, "official", "a published number never makes a message official on its own, because a caller id can be faked");
+});
+
+test("a sender name the registry records is reported, never trusted", () => {
+  const nbk = bodies.find((b) => b.id === "nbk");
+  const withSender = { bodies: bodies.map((b) => (b.id === "nbk" ? { ...b, senders: ["NBK"] } : b)), feed: { domains: [], numbers: [], senders: [] } };
+  const r = Checker.check({ text: "Your statement is ready", channel: "sms", sender: "NBK" }, withSender);
+  assert.equal(r.senderOfficial.id, nbk.id);
+  assert.equal(r.verdict, "unverified", "sender names can be spoofed, so a match is information and not a verdict");
+});
+
+test("the short brand names a message actually uses count as claims", () => {
+  const cases = [
+    ["NBK: your card is blocked, call 55512345 now", "nbk"],
+    ["Zain: your line will be suspended today", "zain"],
+    ["KFH: update your details", "kfh"],
+    ["بيتك: تم تعليق حسابك", "kfh"],
+    ["stc: your bill is overdue", "stc"],
+    ["Ooredoo: claim your reward", "ooredoo"]
+  ];
+  for (const [text, id] of cases) {
+    const r = Checker.check({ text, channel: "sms" }, data);
+    assert.equal(r.claimed && r.claimed.id, id, text);
+  }
+  /* A parcel message names the courier, not customs, even when it mentions customs. */
+  const parcel = Checker.check({ text: "DHL: your parcel is held at customs, pay the fee", channel: "sms" }, data);
+  assert.equal(parcel.claimed.id, "dhl");
 });
