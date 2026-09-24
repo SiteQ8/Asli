@@ -21,7 +21,8 @@ jobs:
   watch:
     runs-on: ubuntu-latest
     env:
-      REVIEW_REPO: ${{ secrets.REVIEW_REPO }}
+      # The queue's name is configuration, so it is a variable. The token is the secret.
+      REVIEW_REPO: ${{ vars.REVIEW_REPO }}
       REVIEW_TOKEN: ${{ secrets.REVIEW_TOKEN }}
     steps:
       - uses: actions/checkout@v4
@@ -37,14 +38,14 @@ jobs:
         run: node tools/ct-watch.mjs --days "${{ github.event.inputs.days || '14' }}" --out "$RUNNER_TEMP/candidates.json"
 
       - name: Send new candidates to the private review queue
-        if: env.REVIEW_REPO != '' && steps.watch.outputs.candidates != '0'
+        if: env.REVIEW_REPO != '' && env.REVIEW_TOKEN != '' && steps.watch.outputs.candidates != '0'
         run: node tools/post-candidates.mjs "$RUNNER_TEMP/candidates.json"
 
-      - name: Say so when no private queue is configured
-        if: env.REVIEW_REPO == '' && steps.watch.outputs.candidates != '0'
+      - name: Say so when the private queue cannot be reached yet
+        if: (env.REVIEW_REPO == '' || env.REVIEW_TOKEN == '') && steps.watch.outputs.candidates != '0'
         run: |
-          echo "Candidates were found but there is no private review queue configured," >> "$GITHUB_STEP_SUMMARY"
-          echo "so they were discarded rather than published. Set REVIEW_REPO and REVIEW_TOKEN to receive them." >> "$GITHUB_STEP_SUMMARY"
+          echo "Candidates were found and are being held, not published and not lost." >> "$GITHUB_STEP_SUMMARY"
+          echo "They come back on every run until the private queue has a REVIEW_TOKEN secret." >> "$GITHUB_STEP_SUMMARY"
 
       # Rebuilding as of today is also what removes expired listings from every format.
       - name: Record what has been checked, as hashes, and drop expired listings
