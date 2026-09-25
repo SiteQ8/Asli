@@ -2,27 +2,31 @@
   "schema": "asli.seen.v1",
   "note": "Hashes only. A name that has been looked at once is not looked at again, and no name is published here before it is reviewed.",
   "updated": "2026-09-25",
-  "cursor": 31,
+  "cursor": 8,
   "lastRun": {
     "date": "2026-09-25",
     "source": "crt.sh",
-    "health": "down",
-    "queriesRun": 4,
-    "queriesFailed": 4,
-    "namesRead": 0
+    "health": "degraded",
+    "queriesRun": 31,
+    "queriesFailed": 3,
+    "namesRead": 54
   },
   "hashes": [
     "0177c2a4817b6c33",
+    "085e005486a8e32c",
     "1210b59f9188f47b",
     "1228ce1a29f9a191",
     "1f0de440d521394b",
     "1f635fbafb0ded53",
+    "224933693b594e09",
     "3123e7cdc349bfd3",
     "321681fc82d9d518",
     "3328832f77104246",
     "33397a2d5b48c188",
+    "35d358b98255ca81",
     "3a2b8b5f8e1e66fe",
     "3be02f9e18513447",
+    "4aac0bb56ae8b57c",
     "51b593af191c4d73",
     "5e0d982633de694e",
     "607d764236216f35",
@@ -53,6 +57,8 @@
     "a8ca314410207ff0",
     "af68de76b1b2c540",
     "b4e215847948bcbc",
+    "bd76da371f1148ad",
+    "bf3bf2332515dd52",
     "c1fe5049f9dc1b7d",
     "c6409b47bb54c0e3",
     "c695c2c58b8c399d",
@@ -64,6 +70,7 @@
     "e6a83131827b4a4a",
     "eff3121b707eb5d7",
     "f00c342e97c14f11",
-    "f7052463b4924356"
+    "f7052463b4924356",
+    "f9232f17d046c50f"
   ]
 }
