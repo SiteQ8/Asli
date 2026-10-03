@@ -29,10 +29,10 @@
     "lastRun": {
       "date": "2026-10-03",
       "source": "crt.sh",
-      "health": "down",
-      "queriesRun": 4,
-      "queriesFailed": 4,
-      "namesRead": 0
+      "health": "degraded",
+      "queriesRun": 15,
+      "queriesFailed": 7,
+      "namesRead": 1
     }
   },
   "formats": [
