@@ -24,15 +24,15 @@
     "expiredAndRemoved": 0
   },
   "watch": {
-    "namesChecked": 69,
+    "namesChecked": 70,
     "updated": "2026-10-05",
     "lastRun": {
       "date": "2026-10-05",
       "source": "crt.sh",
-      "health": "down",
-      "queriesRun": 4,
+      "health": "degraded",
+      "queriesRun": 35,
       "queriesFailed": 4,
-      "namesRead": 0
+      "namesRead": 10
     }
   },
   "formats": [
