@@ -2,14 +2,14 @@
   "schema": "asli.seen.v1",
   "note": "Hashes only. A name that has been looked at once is not looked at again, and no name is published here before it is reviewed.",
   "updated": "2026-10-15",
-  "cursor": 29,
+  "cursor": 22,
   "lastRun": {
     "date": "2026-10-15",
     "source": "crt.sh",
-    "health": "degraded",
-    "queriesRun": 43,
-    "queriesFailed": 2,
-    "namesRead": 9
+    "health": "ok",
+    "queriesRun": 44,
+    "queriesFailed": 0,
+    "namesRead": 11
   },
   "hashes": [
     "0177c2a4817b6c33",
@@ -58,6 +58,7 @@
     "913a08346327ccf6",
     "92fcc15475ea3eca",
     "931f4e1fd3e21ec2",
+    "94ff28d695e472ce",
     "986c5387b34b2552",
     "9a275e9323004e48",
     "9a8358bd7ae9c536",
@@ -69,6 +70,7 @@
     "a8ca314410207ff0",
     "af68de76b1b2c540",
     "b4e215847948bcbc",
+    "ba3bf20200a86b74",
     "bd76da371f1148ad",
     "bf3bf2332515dd52",
     "c1fe5049f9dc1b7d",
