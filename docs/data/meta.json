@@ -30,9 +30,9 @@
       "date": "2026-10-18",
       "source": "crt.sh",
       "health": "degraded",
-      "queriesRun": 25,
-      "queriesFailed": 5,
-      "namesRead": 6
+      "queriesRun": 24,
+      "queriesFailed": 6,
+      "namesRead": 0
     }
   },
   "formats": [
