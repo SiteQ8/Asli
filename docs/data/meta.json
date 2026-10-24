@@ -29,9 +29,9 @@
     "lastRun": {
       "date": "2026-10-24",
       "source": "crt.sh",
-      "health": "degraded",
-      "queriesRun": 16,
-      "queriesFailed": 6,
+      "health": "down",
+      "queriesRun": 4,
+      "queriesFailed": 4,
       "namesRead": 0
     }
   },
