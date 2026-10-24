@@ -1,6 +1,6 @@
 {
   "schema": "asli.meta.v1",
-  "generated": "2026-10-23T00:00:00Z",
+  "generated": "2026-10-24T00:00:00Z",
   "site": "https://asli.3li.info",
   "registry": {
     "bodies": 36,
@@ -25,14 +25,14 @@
   },
   "watch": {
     "namesChecked": 117,
-    "updated": "2026-10-23",
+    "updated": "2026-10-24",
     "lastRun": {
-      "date": "2026-10-23",
+      "date": "2026-10-24",
       "source": "crt.sh",
-      "health": "down",
-      "queriesRun": 4,
-      "queriesFailed": 4,
-      "namesRead": 0
+      "health": "degraded",
+      "queriesRun": 34,
+      "queriesFailed": 1,
+      "namesRead": 44
     }
   },
   "formats": [
