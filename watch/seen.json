@@ -2,14 +2,14 @@
   "schema": "asli.seen.v1",
   "note": "Hashes only. A name that has been looked at once is not looked at again, and no name is published here before it is reviewed.",
   "updated": "2026-10-27",
-  "cursor": 48,
+  "cursor": 35,
   "lastRun": {
     "date": "2026-10-27",
     "source": "crt.sh",
     "health": "ok",
-    "queriesRun": 26,
+    "queriesRun": 38,
     "queriesFailed": 0,
-    "namesRead": 0
+    "namesRead": 46
   },
   "hashes": [
     "0177c2a4817b6c33",
