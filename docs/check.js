@@ -188,7 +188,7 @@
     var state = { channel: "sms", result: null, empty: false, motion: false };
     var level = opts.headingLevel || 2;
 
-    var textarea = h("textarea", { id: rootEl.id + "-text", rows: "5", dir: "auto", spellcheck: "false", "aria-describedby": rootEl.id + "-state" });
+    var textarea = h("textarea", { id: rootEl.id + "-text", rows: "5", spellcheck: "false", "aria-describedby": rootEl.id + "-state" });
     var labelText = h("label", { className: "field-label", for: textarea.id });
     var channelLabel = h("p", { className: "field-label", id: rootEl.id + "-channel-label" });
     var channels = h("div", { className: "chips", role: "radiogroup", "aria-labelledby": channelLabel.id });

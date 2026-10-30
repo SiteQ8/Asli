@@ -219,8 +219,7 @@ html[dir="rtl"] .path a::after { transform: translateY(-0.12em) rotate(-45deg); 
   position: sticky;
   top: 0;
   z-index: 10;
-  background: var(--paper);
-  border-bottom: 1px solid var(--rule);
+  background: var(--paper-2);
 }
 
 .bar {
@@ -407,12 +406,14 @@ html[dir="rtl"] .path a::after { transform: translateY(-0.12em) rotate(-45deg); 
   transition: border-color var(--quick) var(--ease-out);
 }
 
+/* Each pasted paragraph takes its own direction; an empty field follows the page. */
 .text-area,
 .check-form textarea {
   min-height: 8.6em;
   padding: var(--s-3) 14px;
   line-height: 1.7;
   resize: vertical;
+  unicode-bidi: plaintext;
 }
 
 .text-input {
@@ -1020,7 +1021,6 @@ html[lang="ar"] .hero h1 {
   padding: var(--s-5);
   border: 1px solid var(--foil);
   border-radius: var(--radius);
-  background: var(--paper-2);
 }
 
 .analysis-label {
@@ -1047,7 +1047,7 @@ html[lang="ar"] .hero h1 {
 .compare-col.is-block { color: var(--ink-2); }
 
 .compare-col.is-registry {
-  border-color: var(--line);
+  border-color: transparent;
   background: var(--paper-2);
 }
 
@@ -1230,7 +1230,6 @@ html[dir="rtl"] .lane + .lane::before { transform: rotate(-45deg); }
   padding: var(--s-5);
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  background: var(--paper-2);
 }
 
 .lane-detail h3 { font-size: 1.2em; }
