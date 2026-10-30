@@ -8,6 +8,13 @@
 (function () {
   "use strict";
 
+  /* The long write up used to live on this page. Old links to its sections still land on them. */
+  var MOVED = ["content", "problem", "idea", "demo", "how", "why", "roadmap", "reuse", "trust", "measures", "risks", "serves", "next"];
+  if (MOVED.indexOf(window.location.hash.slice(1)) >= 0) {
+    window.location.replace("about.html" + window.location.search + window.location.hash);
+    return;
+  }
+
   var C = window.ASLI;
   var S = window.AsliSite;
   var doc = document;
