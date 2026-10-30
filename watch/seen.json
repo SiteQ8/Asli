@@ -6,9 +6,9 @@
   "lastRun": {
     "date": "2026-10-30",
     "source": "crt.sh",
-    "health": "degraded",
-    "queriesRun": 34,
-    "queriesFailed": 5,
+    "health": "down",
+    "queriesRun": 4,
+    "queriesFailed": 4,
     "namesRead": 0
   },
   "hashes": [
