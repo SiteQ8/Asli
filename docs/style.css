@@ -1148,9 +1148,7 @@ html[lang="ar"] .hero h1 {
   grid-template-columns: auto minmax(0, 1fr);
   gap: var(--s-4) var(--s-5);
   align-items: start;
-  margin-top: var(--s-4);
-  padding-top: var(--s-4);
-  border-top: 1px solid var(--rule);
+  margin-top: var(--s-5);
 }
 
 .verdict .stamp { margin-top: var(--s-2); }
@@ -1639,8 +1637,7 @@ html[dir="rtl"] .lane + .lane::before { transform: rotate(-45deg); }
   justify-content: space-between;
   gap: var(--s-2) var(--s-5);
   grid-column: 1 / -1;
-  padding-top: var(--s-5);
-  border-top: 1px solid var(--rule);
+  padding-top: var(--s-4);
   font-size: 0.92em;
 }
 
