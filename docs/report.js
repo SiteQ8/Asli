@@ -13,11 +13,6 @@
   var REPO = "https://github.com/SiteQ8/Asli";
 
   var T = {
-    skip: { ar: "انتقل إلى النموذج", en: "Skip to the form" },
-    lang: { ar: "English", en: "العربية" },
-    check: { ar: "افحص رسالة", en: "Check a message" },
-    help: { ar: "وقع الاحتيال بالفعل", en: "It already happened" },
-    home: { ar: "عن المشروع", en: "About the project" },
     title: { ar: "أبلغ عن احتيال", en: "Report a scam" },
     lead: {
       ar: "حوّل رسالة وصلتك إلى بلاغ يستفيد منه غيرك، إذ يفحصها أَصْلي ويحذف بياناتك الشخصية ثم يجهّز البلاغ لقائمة المراجعة.",
@@ -37,7 +32,7 @@
     clear: { ar: "امسح", en: "Clear" },
     empty: { ar: "الصق الرسالة أولًا.", en: "Paste the message first." },
     loading: { ar: "يجري تحميل السجل", en: "Loading the registry" },
-    ready: { ar: "السجل جاهز: {bodies} جهة رسمية", en: "Registry ready: {bodies} official bodies" },
+    ready: { ar: "يقارن الفحص بسجل يضم {bodies}.", en: "Checked against a registry of {bodies}." },
     offline: { ar: "تعذّر تحميل السجل، ويمكنك إرسال البلاغ رغم ذلك.", en: "The registry could not be loaded. You can still send the report." },
     verdict: { ar: "ما رأي أَصْلي", en: "What Asli makes of it" },
     cleaned: { ar: "الرسالة بعد التنظيف", en: "The message after cleaning" },
@@ -78,14 +73,7 @@
     vListed: { ar: "احتيال مؤكد", en: "Confirmed scam" },
     vImpersonation: { ar: "انتحال صفة", en: "Impersonation" },
     vOfficial: { ar: "قناة رسمية", en: "Official channel" },
-    vUnverified: { ar: "غير موثّق", en: "Unverified" },
-    footer: {
-      ar: "أَصْلي مشروع مفتوح المصدر من علي العنزي، ولا يُدرج شيء إلا بموافقة مراجعَين مع أدلته.",
-      en: "Asli is an open-source project by Ali AlEnezi. Nothing is listed without two reviewers and stored evidence."
-    },
-    privacyDoc: { ar: "إشعار الخصوصية", en: "Privacy notice" },
-    policy: { ar: "سياسة الإدراج", en: "Listing policy" },
-    source: { ar: "الشيفرة المصدرية", en: "Source code" }
+    vUnverified: { ar: "غير موثّق", en: "Unverified" }
   };
 
   var CHANNELS = [
@@ -98,20 +86,14 @@
     { id: "app", form: "Inside an app", ar: "داخل تطبيق", en: "Inside an app" }
   ];
 
-  var lang = initialLang();
-  var state = { channel: "sms", bodies: [], drop: [], last: null };
+  var BODIES = {
+    ar: { one: "جهة رسمية واحدة", two: "جهتين رسميتين", few: "جهات رسمية", many: "جهة رسمية" },
+    en: { one: "one official body", other: "official bodies" }
+  };
 
-  function initialLang() {
-    try {
-      var q = new URLSearchParams(window.location.search).get("lang");
-      if (q === "ar" || q === "en") return q;
-    } catch (e) { /* ignore */ }
-    try {
-      var saved = window.localStorage.getItem("asli.lang");
-      if (saved === "ar" || saved === "en") return saved;
-    } catch (e) { /* ignore */ }
-    return "ar";
-  }
+  var S = window.AsliSite;
+  var lang = S.lang;
+  var state = { channel: "sms", bodies: [], drop: [], last: null };
 
   function t(key, map) {
     var pair = T[key];
@@ -148,12 +130,11 @@
   function loadRegistry() {
     var node = doc.getElementById("dataState");
     node.textContent = t("loading");
-    fetch("data/registry.json", { cache: "no-cache" })
-      .then(function (r) { return r.json(); })
+    S.json("data/registry.json")
       .then(function (d) {
         state.bodies = d.bodies || [];
         node.classList.remove("is-warn");
-        node.textContent = t("ready", { bodies: num(state.bodies.length) });
+        node.textContent = t("ready", { bodies: S.count(state.bodies.length, BODIES) });
       })
       .catch(function () {
         node.classList.add("is-warn");
@@ -237,20 +218,20 @@
     box.hidden = false;
     mount(box, [
       h("div", { className: "verdict-head" }, [
-        h("p", { className: "small-label", text: t("verdict") }),
+        h("p", { className: "field-label", text: t("verdict") }),
         h("p", { className: "stamp stamp-in v-" + result.verdict, text: verdictLabel(result.verdict) })
       ]),
       result.verdict === "impersonation" || result.verdict === "listed"
         ? h("p", { className: "todo", text: t("urgent") })
         : null,
 
-      h("p", { className: "small-label", text: t("cleaned") }),
+      h("p", { className: "field-label", text: t("cleaned") }),
       h("pre", { className: "cleaned", dir: "auto", text: cleaned.text }),
 
-      h("p", { className: "small-label", text: t("removedTitle") }),
+      h("p", { className: "field-label", text: t("removedTitle") }),
       h("p", { text: removedLine }),
 
-      cleaned.phones.length ? h("p", { className: "small-label", text: t("phonesTitle") }) : null,
+      cleaned.phones.length ? h("p", { className: "field-label", text: t("phonesTitle") }) : null,
       cleaned.phones.length ? h("p", { text: t("phonesLead") }) : null,
       cleaned.phones.length ? h("div", { className: "chips" }, phoneChips) : null,
 
@@ -291,28 +272,14 @@
   }
 
   function applyLang() {
-    doc.documentElement.setAttribute("lang", lang);
-    doc.documentElement.setAttribute("dir", lang === "ar" ? "rtl" : "ltr");
     doc.title = t("title") + " | " + (lang === "ar" ? "أَصْلي" : "Asli");
     doc.querySelectorAll("[data-t]").forEach(function (n) { n.textContent = t(n.getAttribute("data-t")); });
     doc.querySelectorAll("[data-t-placeholder]").forEach(function (n) { n.setAttribute("placeholder", t(n.getAttribute("data-t-placeholder"))); });
     doc.querySelectorAll("[data-t-aria]").forEach(function (n) { n.setAttribute("aria-label", t(n.getAttribute("data-t-aria"))); });
-    doc.getElementById("lang").setAttribute("lang", lang === "ar" ? "en" : "ar");
     renderChannels();
     if (state.last) render();
-    if (state.bodies.length) doc.getElementById("dataState").textContent = t("ready", { bodies: num(state.bodies.length) });
+    if (state.bodies.length) doc.getElementById("dataState").textContent = t("ready", { bodies: S.count(state.bodies.length, BODIES) });
   }
-
-  doc.getElementById("lang").addEventListener("click", function () {
-    lang = lang === "ar" ? "en" : "ar";
-    try { window.localStorage.setItem("asli.lang", lang); } catch (e) { /* ignore */ }
-    try {
-      var url = new URL(window.location.href);
-      url.searchParams.set("lang", lang);
-      window.history.replaceState(null, "", url.pathname + url.search);
-    } catch (e) { /* ignore */ }
-    applyLang();
-  });
 
   doc.getElementById("form").addEventListener("submit", run);
   doc.getElementById("clear").addEventListener("click", function () {
@@ -324,6 +291,6 @@
     doc.getElementById("text").focus();
   });
 
-  applyLang();
+  S.onLang(function (next) { lang = next; applyLang(); });
   loadRegistry();
 })();

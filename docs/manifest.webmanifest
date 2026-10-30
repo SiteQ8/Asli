@@ -19,6 +19,8 @@
   ],
   "shortcuts": [
     { "name": "افحص رسالة", "short_name": "افحص", "url": "./check.html" },
-    { "name": "أبلغ عن احتيال", "short_name": "أبلغ", "url": "./report.html" }
+    { "name": "أبلغ عن احتيال", "short_name": "أبلغ", "url": "./report.html" },
+    { "name": "وقع الاحتيال بالفعل", "short_name": "ساعدني", "url": "./help.html" },
+    { "name": "سجل القنوات الرسمية", "short_name": "السجل", "url": "./registry.html" }
   ]
 }

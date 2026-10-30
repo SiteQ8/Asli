@@ -1,18 +1,19 @@
 /*
-  Asli site. Renders every section from content.js in the chosen language
-  and wires the interactive parts. Text is always set with textContent.
+  The about page. Renders every long-form section from content.js in the
+  chosen language and wires the interactive parts. The shared shell (site.js)
+  owns the language, the header and the footer. Text is always set with
+  textContent.
 */
 (function () {
   "use strict";
 
   var C = window.ASLI;
   var E = window.AsliEngine;
+  var S = window.AsliSite;
   var doc = document;
-  var SVG_NS = "http://www.w3.org/2000/svg";
-  var reduceMotion = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  var h = S.h;
   var narrow = window.matchMedia ? window.matchMedia("(max-width: 640px)") : { matches: false };
 
-  var lang = initialLang();
   var state = {
     sample: C.demo.samples[0].id,
     node: C.lanes[0].nodes[0].id,
@@ -22,113 +23,20 @@
     stampMotion: false
   };
 
-  /* Language */
-
-  function initialLang() {
-    var q = null;
-    try { q = new URLSearchParams(window.location.search).get("lang"); } catch (e) { q = null; }
-    if (q === "ar" || q === "en") return q;
-    try {
-      var saved = window.localStorage.getItem("asli.lang");
-      if (saved === "ar" || saved === "en") return saved;
-    } catch (e) { /* storage can be unavailable */ }
-    return "ar";
-  }
-
-  /* In Arabic, keep Latin phrases such as GitHub Pages or CC BY 4.0 on one line. */
-  function glue(s) {
-    return lang === "ar" ? s.replace(/([A-Za-z0-9][A-Za-z0-9.+]*) (?=[A-Za-z0-9])/g, "$1\u00A0") : s;
-  }
-
-  function T(key) {
-    var pair = C.t[key];
-    if (!pair) throw new Error("Missing text key: " + key);
-    return glue(pair[lang]);
-  }
-
-  function P(pair) { return glue(pair[lang]); }
-
-  function num(value, decimals) { return E.formatNumber(value, lang, decimals); }
-
-  function pct(value) { return num(value) + (lang === "ar" ? "٪" : "%"); }
-
-  function fill(template, map) {
-    return template.replace(/\{(\w+)\}/g, function (whole, key) {
-      return Object.prototype.hasOwnProperty.call(map, key) ? map[key] : whole;
-    });
-  }
+  function T(key) { return S.c(key); }
+  function P(pair) { return S.pick(pair); }
+  function num(value, decimals) { return E.formatNumber(value, S.lang, decimals); }
+  function pct(value) { return num(value) + (S.lang === "ar" ? "٪" : "%"); }
+  function fill(template, map) { return S.fill(template, map); }
+  function mount(id, nodes) { return S.mount(id, nodes); }
 
   function joinAnd(items) {
     if (items.length < 2) return items.join("");
-    if (lang === "ar") return items.join(T("common.and"));
+    if (S.lang === "ar") return items.join(T("common.and"));
     return items.slice(0, -1).join(T("common.listSep")) + T("common.and") + items[items.length - 1];
   }
 
-  /* DOM helpers */
-
-  function h(tag, props, children) {
-    var n = doc.createElement(tag);
-    Object.keys(props || {}).forEach(function (k) {
-      var v = props[k];
-      if (v === null || v === undefined || v === false) return;
-      if (k === "text") n.textContent = v;
-      else if (k === "className") n.className = v;
-      else if (k === "on") Object.keys(v).forEach(function (ev) { n.addEventListener(ev, v[ev]); });
-      else n.setAttribute(k, v === true ? "" : String(v));
-    });
-    (children || []).forEach(function (c) {
-      if (c === null || c === undefined || c === false) return;
-      n.appendChild(typeof c === "string" ? doc.createTextNode(c) : c);
-    });
-    return n;
-  }
-
-  function mount(id, nodes) {
-    var host = doc.getElementById(id);
-    host.textContent = "";
-    nodes.forEach(function (n) { host.appendChild(n); });
-    return host;
-  }
-
-  function icon(kind) {
-    var paths = {
-      pass: "M4.5 8.5 7 11 11.5 5.5",
-      flag: "M5 5 11 11M11 5 5 11"
-    };
-    var svg = doc.createElementNS(SVG_NS, "svg");
-    svg.setAttribute("viewBox", "0 0 16 16");
-    svg.setAttribute("aria-hidden", "true");
-    svg.setAttribute("class", "icon icon-" + kind);
-    if (kind === "info") {
-      var dot = doc.createElementNS(SVG_NS, "circle");
-      dot.setAttribute("cx", "8"); dot.setAttribute("cy", "8"); dot.setAttribute("r", "2.2");
-      svg.appendChild(dot);
-    } else if (kind === "none") {
-      var ring = doc.createElementNS(SVG_NS, "circle");
-      ring.setAttribute("cx", "8"); ring.setAttribute("cy", "8"); ring.setAttribute("r", "4.5");
-      svg.appendChild(ring);
-    } else {
-      var p = doc.createElementNS(SVG_NS, "path");
-      p.setAttribute("d", paths[kind]);
-      svg.appendChild(p);
-    }
-    return svg;
-  }
-
-  function sourceLink(url) {
-    return h("p", { className: "src" }, [h("a", { href: url, rel: "noopener", text: T("common.source") })]);
-  }
-
   /* Sections */
-
-  function renderTongues() {
-    mount("tongues", C.questions.map(function (q) {
-      return h("li", {}, [
-        h("span", { className: "q", lang: q.lang, dir: q.dir, text: q.text }),
-        h("span", { className: "qn", text: P(q.name) })
-      ]);
-    }));
-  }
 
   function renderLedger() {
     mount("ledger", C.evidence.map(function (e) {
@@ -147,10 +55,10 @@
 
   function renderIdea() {
     mount("idea-block", C.idea.block.map(function (item) {
-      return h("li", {}, [icon("flag"), h("span", { text: P(item) })]);
+      return h("li", {}, [S.icon("flag"), h("span", { text: P(item) })]);
     }));
     mount("idea-registry", C.idea.registry.map(function (item) {
-      return h("li", {}, [icon("pass"), h("span", { text: P(item) })]);
+      return h("li", {}, [S.icon("pass"), h("span", { text: P(item) })]);
     }));
     mount("idea-open", C.idea.open.map(function (item) {
       return h("li", {}, [h("h4", { text: P(item.title) }), h("p", { text: P(item.body) })]);
@@ -174,7 +82,7 @@
           click: function () {
             if (state.sample === s.id) return;
             state.sample = s.id;
-            state.stampMotion = !reduceMotion;
+            state.stampMotion = !S.reduceMotion;
             renderDemoPicker();
             renderDemo();
           }
@@ -186,16 +94,12 @@
   function checkItem(status, name, lines, url) {
     var statusKey = { flag: "status.flag", pass: "status.pass", info: "status.info", none: "status.none" }[status];
     var body = lines.map(function (line) { return h("p", { text: line }); });
-    if (url) body.push(sourceLink(url));
+    if (url) body.push(S.sourceLink(url));
     return h("li", { className: "check st-" + status }, [
-      h("span", { className: "check-icon" }, [icon(status), h("span", { className: "visually-hidden", text: T(statusKey) })]),
+      h("span", { className: "check-icon" }, [S.icon(status), h("span", { className: "visually-hidden", text: T(statusKey) })]),
       h("span", { className: "check-name", text: name }),
       h("div", { className: "check-text" }, body)
     ]);
-  }
-
-  function officialList(body) {
-    return joinAnd(body.domains.slice());
   }
 
   /*
@@ -224,16 +128,15 @@
     }
 
     var r = window.AsliChecker.check({ text: s.text, channel: s.channel }, { bodies: state.bodies, feed: { domains: [], numbers: [] } });
-    var claimedName = r.claimed ? P(r.claimed.name) : "";
     var items = [];
 
     var readLines = [r.hosts.length ? fill(T("f.links"), { links: r.hosts.join(T("common.listSep")) }) : T("f.noLinks")];
-    readLines.push(r.claimed ? fill(T("f.claim"), { entity: claimedName }) : T("f.noClaim"));
+    readLines.push(r.claimed ? fill(T("f.claim"), { entity: P(r.claimed.name) }) : T("f.noClaim"));
     items.push(checkItem("info", T("step.read"), readLines));
 
     if (r.lookalike.length) {
       var imitated = r.claimed || r.lookalike[0].body;
-      items.push(checkItem("flag", T("step.registry"), [fill(T("f.regMiss"), { host: r.lookalike[0].host, entity: P(imitated.name), official: officialList(imitated) })]));
+      items.push(checkItem("flag", T("step.registry"), [fill(T("f.regMiss"), { host: r.lookalike[0].host, entity: P(imitated.name), official: joinAnd(imitated.domains.slice()) })]));
     } else if (r.official.length) {
       items.push(checkItem("pass", T("step.registry"), [fill(T("f.regHit"), { host: r.official[0].host, entity: P(r.official[0].body.name) })]));
     } else if (r.unknown.length) {
@@ -268,15 +171,14 @@
       unverified: [T("v.unverified"), T("v.unverifiedWhy")]
     }[verdict];
 
-    var stamp = h("p", { className: "stamp v-" + verdict + (state.stampMotion ? " stamp-in" : ""), text: verdictText[0] });
     mount("demo-verdict", [
       h("div", { className: "verdict-head" }, [
-        h("p", { className: "small-label", text: T("demo.verdict") }),
-        stamp
+        h("p", { className: "field-label", text: T("demo.verdict") }),
+        h("p", { className: "stamp v-" + verdict + (state.stampMotion ? " stamp-in" : ""), text: verdictText[0] })
       ]),
       h("div", { className: "verdict-body" }, [
         h("p", { className: "verdict-why", text: verdictText[1] }),
-        h("p", { className: "small-label", text: T("demo.todo") }),
+        h("p", { className: "field-label", text: T("demo.todo") }),
         h("p", { className: "todo", text: P(s.advice) })
       ])
     ]);
@@ -284,8 +186,7 @@
   }
 
   function loadRegistry() {
-    fetch("data/registry.json", { cache: "no-cache" })
-      .then(function (res) { return res.json(); })
+    S.json("data/registry.json")
       .then(function (data) {
         state.bodies = data.bodies || [];
         renderDemo();
@@ -310,9 +211,9 @@
     var detail = doc.getElementById("lane-detail");
     var lanesEl = doc.getElementById("lanes");
     if (detail.parentNode === lanesEl) lanesEl.parentNode.insertBefore(detail, lanesEl.nextSibling);
-    mount("lanes", C.lanes.map(function (lane, i) {
+    mount("lanes", C.lanes.map(function (lane) {
       return h("div", { className: "lane" }, [
-        h("h3", { className: "lane-title" }, [h("span", { className: "lane-n", text: num(i + 1) }), " ", h("span", { text: P(lane.title) })]),
+        h("h3", { className: "lane-title", text: P(lane.title) }),
         h("ul", {}, lane.nodes.map(function (n) {
           return h("li", {}, [h("button", {
             type: "button",
@@ -447,24 +348,45 @@
     result.textContent = fill(T(winners.length > 1 ? "why.tie" : "why.result"), { winner: joinAnd(winners), score: num(top, 2) });
   }
 
-  /* Remaining sections */
+  /* Roadmap and progress: each phase and each step says where it stands. */
+
+  var PHASE_STATUS = { done: "roadmap.done", active: "roadmap.active", ahead: "roadmap.ahead" };
+  var STEP_STATUS = { done: "status.done", active: "status.active", todo: "status.todo" };
+  var STEP_ICON = { done: "pass", active: "info", todo: "none" };
 
   function renderPhases() {
     mount("phases", C.phases.map(function (p) {
-      return h("li", { className: "phase" }, [
+      return h("li", { className: "phase is-" + p.status, "aria-current": p.status === "active" ? "step" : null }, [
         h("div", { className: "phase-when" }, [
           h("p", { className: "phase-n", text: fill(T("roadmap.phase"), { n: num(p.n) }) }),
+          h("p", { className: "phase-status", text: T(PHASE_STATUS[p.status]) }),
           h("p", { className: "phase-weeks", text: P(p.when) }),
           h("p", { className: "phase-dates", text: P(p.dates) })
         ]),
         h("div", { className: "phase-body" }, [
           h("h3", { text: P(p.title) }),
-          h("ul", { className: "goals" }, p.goals.map(function (g) { return h("li", { text: P(g) }); })),
+          h("ul", { className: "goals" }, p.goals.map(function (g) {
+            return h("li", { className: g.done ? "is-done" : "" }, [
+              S.icon(g.done ? "pass" : "none"),
+              h("span", { text: P(g.text) }),
+              g.done ? h("span", { className: "visually-hidden", text: " (" + T(STEP_STATUS.done) + ")" }) : null
+            ]);
+          })),
           h("div", { className: "exit" }, [
             h("p", { className: "exit-label", text: T("roadmap.exit") }),
             h("p", { text: P(p.exit) })
           ])
         ])
+      ]);
+    }));
+  }
+
+  function renderSteps() {
+    mount("next-steps", C.steps.map(function (s) {
+      return h("li", { className: "st-" + s.status }, [
+        h("span", { className: "progress-icon" }, [S.icon(STEP_ICON[s.status])]),
+        h("p", { className: "progress-text", text: P(s.text) }),
+        h("p", { className: "progress-status", text: T(STEP_STATUS[s.status]) })
       ]);
     }));
   }
@@ -483,7 +405,7 @@
       return h("li", {}, [
         h("h3", { text: P(item.title) }),
         h("p", { text: P(item.body) }),
-        item.url ? sourceLink(item.url) : null
+        item.url ? S.sourceLink(item.url) : null
       ]);
     });
   }
@@ -498,7 +420,6 @@
   }
 
   function renderAll() {
-    renderTongues();
     renderLedger();
     renderIdea();
     renderDemoPicker();
@@ -513,32 +434,16 @@
     renderRegister("measures-table", ["measures.metric", "measures.target"], C.measures.map(function (m) { return [m.metric, m.target]; }));
     renderRegister("risks-table", ["risks.risk", "risks.response"], C.risks.map(function (r) { return [r.risk, r.response]; }));
     mount("serves-list", gridItems(C.serves));
-    mount("next-steps", C.steps.map(function (s) { return h("li", { text: P(s) }); }));
+    renderSteps();
   }
 
   function applyLang() {
-    var root = doc.documentElement;
-    root.setAttribute("lang", lang);
-    root.setAttribute("dir", lang === "ar" ? "rtl" : "ltr");
-    doc.title = T("meta.title");
+    doc.title = T("about.title");
     var desc = doc.querySelector('meta[name="description"]');
-    if (desc) desc.setAttribute("content", T("meta.description"));
+    if (desc) desc.setAttribute("content", T("about.lead"));
     doc.querySelectorAll("[data-t]").forEach(function (n) { n.textContent = T(n.getAttribute("data-t")); });
     doc.querySelectorAll("[data-t-aria]").forEach(function (n) { n.setAttribute("aria-label", T(n.getAttribute("data-t-aria"))); });
-    doc.getElementById("lang").setAttribute("lang", lang === "ar" ? "en" : "ar");
-    doc.getElementById("full-text").setAttribute("href", C.repo + "/blob/main/" + (lang === "ar" ? "PROJECT.ar.md" : "PROJECT.md"));
     renderAll();
-  }
-
-  function switchLang() {
-    lang = lang === "ar" ? "en" : "ar";
-    try { window.localStorage.setItem("asli.lang", lang); } catch (e) { /* storage can be unavailable */ }
-    try {
-      var url = new URL(window.location.href);
-      url.searchParams.set("lang", lang);
-      window.history.replaceState(null, "", url.pathname + url.search + url.hash);
-    } catch (e) { /* history can be unavailable */ }
-    applyLang();
   }
 
   function watchSections() {
@@ -556,7 +461,6 @@
     doc.querySelectorAll(".part").forEach(function (s) { io.observe(s); });
   }
 
-  doc.getElementById("lang").addEventListener("click", switchLang);
   if (narrow.addEventListener) {
     narrow.addEventListener("change", function () { placeLaneDetail(doc.getElementById("lane-detail")); });
   }
@@ -566,8 +470,7 @@
     updateMatrix();
   });
 
-  applyLang();
+  S.onLang(applyLang);
   loadRegistry();
-  window.AsliSeal.draw(doc.getElementById("seal"), { animate: !reduceMotion });
   watchSections();
 })();

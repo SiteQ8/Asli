@@ -40,7 +40,7 @@ test("every file the worker precaches actually exists", () => {
 });
 
 test("the worker precaches the data the checker needs to answer offline", () => {
-  for (const file of ["data/registry.json", "checker.js", "check.html", "check.js", "help.html", "help.js"]) {
+  for (const file of ["data/registry.json", "data/feed.json", "checker.js", "site.js", "check.html", "check.js", "help.html", "help.js", "registry.html", "registry.js"]) {
     assert.ok(sw.includes(`"${file}"`), `${file} must be available offline`);
   }
 });
@@ -63,7 +63,7 @@ test("the worker leaves other origins alone", () => {
 });
 
 test("every page registers the worker and links the manifest", () => {
-  for (const page of ["index.html", "check.html", "report.html"]) {
+  for (const page of ["index.html", "check.html", "report.html", "help.html", "registry.html", "about.html"]) {
     const html = read("docs/" + page);
     assert.ok(html.includes('href="manifest.webmanifest"'), `${page} does not link the manifest`);
     assert.ok(html.includes('src="offline.js"'), `${page} does not register the worker`);
@@ -89,12 +89,12 @@ test("the manifest points at icons that exist at the sizes it claims", () => {
 });
 
 test("the check page stays under the weight the project promised", () => {
-  const weight = gzipped(["check.html", "style.css", "check.css", "checker.js", "check.js", "offline.js", "data/registry.json"]);
+  const weight = gzipped(["check.html", "style.css", "site.js", "checker.js", "check.js", "offline.js", "data/registry.json", "data/feed.json"]);
   assert.ok(weight < BUDGET, `the check page is ${Math.round(weight / 1024)} KB compressed, over the ${BUDGET / 1024} KB budget`);
 });
 
 test("the page for someone already scammed loads fast and works offline", () => {
-  const weight = gzipped(["help.html", "style.css", "check.css", "help.js", "offline.js"]);
+  const weight = gzipped(["help.html", "style.css", "pages.css", "site.js", "help.js", "offline.js", "data/registry.json"]);
   assert.ok(weight < BUDGET, `the help page is ${Math.round(weight / 1024)} KB compressed, over the ${BUDGET / 1024} KB budget`);
   const html = read("docs/help.html");
   assert.ok(html.includes('src="offline.js"'), "it must survive a lost connection");
@@ -105,12 +105,22 @@ test("the page for someone already scammed loads fast and works offline", () => 
 });
 
 test("the report page stays under the same budget", () => {
-  const weight = gzipped(["report.html", "style.css", "check.css", "checker.js", "redact.js", "report.js", "offline.js", "data/registry.json"]);
+  const weight = gzipped(["report.html", "style.css", "pages.css", "site.js", "checker.js", "redact.js", "report.js", "offline.js", "data/registry.json"]);
   assert.ok(weight < BUDGET, `the report page is ${Math.round(weight / 1024)} KB compressed, over the ${BUDGET / 1024} KB budget`);
 });
 
+test("the home page, with the check in its first screen, stays under the same budget", () => {
+  const weight = gzipped(["index.html", "style.css", "content.js", "checker.js", "seal.js", "site.js", "check.js", "home.js", "offline.js", "data/registry.json", "data/feed.json", "data/meta.json"]);
+  assert.ok(weight < BUDGET, `the home page is ${Math.round(weight / 1024)} KB compressed, over the ${BUDGET / 1024} KB budget`);
+});
+
+test("the registry page stays under the same budget", () => {
+  const weight = gzipped(["registry.html", "style.css", "pages.css", "site.js", "registry.js", "offline.js", "data/registry.json", "data/meta.json"]);
+  assert.ok(weight < BUDGET, `the registry page is ${Math.round(weight / 1024)} KB compressed, over the ${BUDGET / 1024} KB budget`);
+});
+
 test("no single shipped file is large enough to hurt a slow connection", () => {
-  for (const file of ["style.css", "content.js", "app.js", "checker.js", "check.js", "report.js", "data/registry.json"]) {
+  for (const file of ["style.css", "pages.css", "site.js", "content.js", "app.js", "home.js", "registry.js", "checker.js", "check.js", "report.js", "help.js", "data/registry.json"]) {
     const raw = statSync(docs(file)).size;
     assert.ok(raw < 200 * 1024, `${file} is ${Math.round(raw / 1024)} KB, which is too much to ship as one file`);
   }

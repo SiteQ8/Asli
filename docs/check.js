@@ -1,17 +1,15 @@
 /*
-  The check page. Loads the published registry and feed, then runs
-  window.AsliChecker on whatever the visitor pastes. Nothing leaves the browser.
+  The checker as a component. The home page and check.html mount the same
+  form and the same result, running window.AsliChecker against the published
+  registry and feed. Nothing leaves the browser.
 */
-(function () {
+(function (root) {
   "use strict";
 
-  var doc = document;
+  var S = root.AsliSite;
+  var C = root.AsliChecker;
+
   var T = {
-    skip: { ar: "انتقل إلى الفحص", en: "Skip to the check" },
-    lang: { ar: "English", en: "العربية" },
-    home: { ar: "عن المشروع", en: "About the project" },
-    report: { ar: "أبلغ عن احتيال", en: "Report a scam" },
-    help: { ar: "وقع الاحتيال بالفعل", en: "It already happened" },
     title: { ar: "افحص رسالة", en: "Check a message" },
     lead: {
       ar: "الصق رسالة أو رابطًا أو رقمًا، فيقارنه أَصْلي بسجل القنوات الرسمية الكويتية وبتغذية الاحتيال المؤكدة ويشرح لك سبب الحكم.",
@@ -22,27 +20,21 @@
       en: "The whole check runs inside your browser. The message never leaves your device and nothing is sent to any server."
     },
     labelText: { ar: "الرسالة", en: "The message" },
-    placeholder: {
-      ar: "الصق نص الرسالة هنا بأي لغة",
-      en: "Paste the message here, in any language"
-    },
+    placeholder: { ar: "الصق نص الرسالة هنا بأي لغة", en: "Paste the message here, in any language" },
     labelChannel: { ar: "كيف وصلتك", en: "How it reached you" },
+    samples: { ar: "أو جرّب رسالة من النماذج", en: "Or try one of the samples" },
     run: { ar: "افحص", en: "Check" },
     clear: { ar: "امسح", en: "Clear" },
     empty: { ar: "الصق رسالة أولًا.", en: "Paste a message first." },
-    loading: { ar: "يجري تحميل البيانات", en: "Loading data" },
-    ready: {
-      ar: "البيانات جاهزة: {bodies} جهة رسمية و{feed} مؤشر احتيال مؤكد",
-      en: "Data ready: {bodies} official bodies and {feed} confirmed scam indicators"
-    },
+    loading: { ar: "يجري تحميل السجل", en: "Loading the registry" },
+    ready: { ar: "يقارن الفحص بسجل يضم {bodies}.", en: "Checked against a registry of {bodies}." },
     offline: {
-      ar: "تعذّر تحميل البيانات، لذا يعمل الفحص بقواعد عامة فقط دون السجل.",
-      en: "The data could not be loaded, so the check runs on general rules only, without the registry."
+      ar: "تعذّر تحميل السجل، لذا يعمل الفحص بقواعد عامة فقط.",
+      en: "The registry could not be loaded, so the check runs on general rules only."
     },
     verdict: { ar: "الحكم", en: "Verdict" },
-    checks: { ar: "الفحوص", en: "Checks" },
+    checks: { ar: "ما وجده الفحص", en: "What the check found" },
     todo: { ar: "ما الذي تفعله", en: "What to do" },
-    sourceLabel: { ar: "المصدر", en: "Source" },
     vListed: { ar: "احتيال مؤكد", en: "Confirmed scam" },
     vListedWhy: {
       ar: "يرد أحد عناصر الرسالة في تغذية الاحتيال المؤكدة بعد مراجعة بشرية.",
@@ -75,6 +67,8 @@
       ar: "تحقّق من المرسل بقناة تعرفها أنت، مثل الرقم المطبوع خلف بطاقتك أو الموقع الرسمي الذي تكتبه بنفسك.",
       en: "Verify the sender through a channel you already trust, such as the number printed on your card or an official site you type yourself."
     },
+    nextHelp: { ar: "دفعت أو أرسلت رمزًا؟ افتح خطوات الساعة الأولى", en: "Already paid or sent a code? Open the first hour steps" },
+    nextReport: { ar: "أبلغ عن هذه الرسالة", en: "Report this message" },
     fLinks: { ar: "الروابط في الرسالة: {list}", en: "Links in the message: {list}" },
     fNoLinks: { ar: "لا توجد روابط في الرسالة.", en: "No links in the message." },
     fPhones: { ar: "الأرقام في الرسالة: {list}", en: "Numbers in the message: {list}" },
@@ -95,16 +89,15 @@
     fNoPressure: { ar: "لا توجد أساليب ضغط واضحة.", en: "No clear pressure tactics." },
     dataTitle: { ar: "البيانات نفسها مفتوحة", en: "The data itself is open" },
     dataLead: {
-      ar: "يستطيع أي بنك أو شركة اتصالات أو مطوّر أن يستهلك الملفات نفسها التي تعمل بها هذه الصفحة.",
-      en: "Any bank, telco or developer can consume the same files this page runs on."
+      ar: "تعمل هذه الصفحة بملفات منشورة يستطيع أي بنك أو شركة اتصالات أو مطوّر أن يستهلكها بالصيغة التي يفضلها.",
+      en: "This page runs on published files that any bank, telco or developer can consume in the format they prefer."
     },
-    footer: {
-      ar: "أَصْلي مشروع مفتوح المصدر من علي العنزي، والبيانات منشورة بترخيص CC BY 4.0.",
-      en: "Asli is an open-source project by Ali AlEnezi. The data is published under CC BY 4.0."
-    },
-    source: { ar: "الشيفرة المصدرية", en: "Source code" },
-    policy: { ar: "سياسة الإدراج", en: "Listing policy" },
-    privacyDoc: { ar: "إشعار الخصوصية", en: "Privacy notice" }
+    dataLink: { ar: "اعرض السجل والملفات", en: "See the registry and the files" }
+  };
+
+  var BODIES = {
+    ar: { one: "جهة رسمية واحدة", two: "جهتين رسميتين", few: "جهات رسمية", many: "جهة رسمية" },
+    en: { one: "one official body", other: "official bodies" }
   };
 
   var CHANNELS = [
@@ -117,235 +110,226 @@
     { id: "app", ar: "داخل تطبيق", en: "Inside an app" }
   ];
 
-  var DATA_FILES = [
-    { file: "registry.json", ar: "سجل القنوات الرسمية", en: "Registry of official channels" },
-    { file: "feed.json", ar: "تغذية الاحتيال، JSON", en: "Scam feed, JSON" },
-    { file: "feed.csv", ar: "تغذية الاحتيال، CSV", en: "Scam feed, CSV" },
-    { file: "hosts.txt", ar: "ملف hosts", en: "hosts file" },
-    { file: "adguard.txt", ar: "قائمة AdGuard", en: "AdGuard list" },
-    { file: "rpz.zone", ar: "منطقة DNS RPZ", en: "DNS RPZ zone" },
-    { file: "feed.stix2.json", ar: "حزمة STIX 2.1", en: "STIX 2.1 bundle" },
-    { file: "feed.misp.json", ar: "حدث MISP", en: "MISP event" },
-    { file: "meta.json", ar: "الأعداد ووقت البناء", en: "Counts and build time" }
-  ];
-
-  var lang = initialLang();
-  var state = { channel: "sms", data: null, meta: null };
-
-  function initialLang() {
-    try {
-      var q = new URLSearchParams(window.location.search).get("lang");
-      if (q === "ar" || q === "en") return q;
-    } catch (e) { /* ignore */ }
-    try {
-      var saved = window.localStorage.getItem("asli.lang");
-      if (saved === "ar" || saved === "en") return saved;
-    } catch (e) { /* ignore */ }
-    return "ar";
-  }
+  var data = null;
+  var dataFailed = false;
+  var loading = null;
 
   function t(key, map) {
     var pair = T[key];
-    var text = pair ? pair[lang] : key;
-    return map ? text.replace(/\{(\w+)\}/g, function (w, k) { return k in map ? map[k] : w; }) : text;
+    if (!pair) throw new Error("Missing check text: " + key);
+    return S.fill(pair[S.lang], map);
   }
 
-  function P(pair) {
-    if (!pair) return "";
-    return pair[lang] || pair.en || pair.ar || "";
-  }
+  function listSep() { return S.lang === "ar" ? "، " : ", "; }
 
-  function num(value) {
-    var s = String(value);
-    return lang === "ar" ? s.replace(/[0-9]/g, function (d) { return "٠١٢٣٤٥٦٧٨٩"[+d]; }) : s;
-  }
-
-  function h(tag, props, children) {
-    var n = doc.createElement(tag);
-    Object.keys(props || {}).forEach(function (k) {
-      var v = props[k];
-      if (v === null || v === undefined || v === false) return;
-      if (k === "text") n.textContent = v;
-      else if (k === "className") n.className = v;
-      else if (k === "on") Object.keys(v).forEach(function (ev) { n.addEventListener(ev, v[ev]); });
-      else n.setAttribute(k, v === true ? "" : String(v));
-    });
-    (children || []).forEach(function (c) {
-      if (!c) return;
-      n.appendChild(typeof c === "string" ? doc.createTextNode(c) : c);
-    });
-    return n;
-  }
-
-  function mount(node, children) {
-    node.textContent = "";
-    children.forEach(function (c) { if (c) node.appendChild(c); });
-  }
-
-  function listSep() { return lang === "ar" ? "، " : ", "; }
-
-  /* Data */
-
-  function loadData() {
-    var state$ = doc.getElementById("dataState");
-    state$.textContent = t("loading");
-    Promise.all([
-      fetch("data/registry.json", { cache: "no-cache" }).then(function (r) { return r.json(); }),
-      fetch("data/feed.json", { cache: "no-cache" }).then(function (r) { return r.json(); })
-    ]).then(function (both) {
-      state.data = { bodies: both[0].bodies || [], feed: both[1] };
-      state.meta = { bodies: (both[0].bodies || []).length, feed: both[1].count || 0 };
-      showDataState();
-    }).catch(function () {
-      state.data = { bodies: [], feed: { domains: [], numbers: [] } };
-      state.meta = null;
-      showDataState();
-    });
-  }
-
-  function showDataState() {
-    var node = doc.getElementById("dataState");
-    if (!state.meta) { node.textContent = t("offline"); node.classList.add("is-warn"); return; }
-    node.classList.remove("is-warn");
-    node.textContent = t("ready", { bodies: num(state.meta.bodies), feed: num(state.meta.feed) });
-  }
-
-  /* Rendering */
-
-  function renderChannels() {
-    mount(doc.getElementById("channels"), CHANNELS.map(function (c) {
-      return h("button", {
-        type: "button",
-        className: "chip",
-        role: "radio",
-        "aria-checked": c.id === state.channel ? "true" : "false",
-        text: c[lang],
-        on: {
-          click: function () {
-            state.channel = c.id;
-            renderChannels();
-          }
-        }
+  function load() {
+    if (!loading) {
+      loading = Promise.all([S.json("data/registry.json"), S.json("data/feed.json")]).then(function (both) {
+        data = { bodies: both[0].bodies || [], feed: both[1] };
+      }).catch(function () {
+        data = { bodies: [], feed: { domains: [], numbers: [] } };
+        dataFailed = true;
       });
-    }));
-  }
-
-  function renderDataLinks() {
-    mount(doc.getElementById("dataLinks"), DATA_FILES.map(function (d) {
-      return h("li", {}, [
-        h("a", { href: "data/" + d.file, dir: "ltr", text: d.file }),
-        h("span", { text: " " + d[lang] })
-      ]);
-    }));
+    }
+    return loading;
   }
 
   function line(status, text, source) {
+    var h = S.h;
     return h("li", { className: "check st-" + status }, [
-      h("span", { className: "check-icon", "aria-hidden": "true", text: status === "flag" ? "✕" : status === "pass" ? "✓" : "•" }),
+      h("span", { className: "check-icon" }, [S.icon(status)]),
       h("div", { className: "check-text" }, [
         h("p", { text: text }),
-        source ? h("p", { className: "src" }, [h("a", { href: source, rel: "noopener", text: t("sourceLabel") })]) : null
+        source ? S.sourceLink(source) : null
       ])
     ]);
   }
 
-  function render(result) {
-    var box = doc.getElementById("result");
-    box.hidden = false;
-
-    var verdictMap = {
-      listed: ["vListed", "vListedWhy", "adviceBad"],
-      impersonation: ["vImpersonation", "vImpersonationWhy", "adviceBad"],
-      official: ["vOfficial", "vOfficialWhy", "adviceOfficial"],
-      unverified: ["vUnverified", "vUnverifiedWhy", "adviceUnknown"]
-    }[result.verdict];
-
-    var findings = [];
-    findings.push(line("info", result.hosts.length ? t("fLinks", { list: result.hosts.join(listSep()) }) : t("fNoLinks")));
-    if (result.phones.length) findings.push(line("info", t("fPhones", { list: result.phones.join(listSep()) })));
-    findings.push(line("info", result.claimed ? t("fClaim", { name: P(result.claimed.name) }) : t("fNoClaim")));
-
-    if (result.listed.length) findings.push(line("flag", t("fListed", { list: result.listed.join(listSep()) })));
-    result.lookalike.forEach(function (l) { findings.push(line("flag", t("fLookalike", { host: l.host, name: P(l.body.name) }))); });
-    result.official.forEach(function (o) { findings.push(line("pass", t("fOfficial", { host: o.host, name: P(o.body.name) }))); });
-    result.unknown.forEach(function (u) { findings.push(line("info", t("fUnknown", { host: u }))); });
-
+  function findings(result) {
+    var P = S.pick;
+    var out = [];
+    out.push(line("info", result.hosts.length ? t("fLinks", { list: result.hosts.join(listSep()) }) : t("fNoLinks")));
+    if (result.phones.length) out.push(line("info", t("fPhones", { list: result.phones.join(listSep()) })));
+    out.push(line("info", result.claimed ? t("fClaim", { name: P(result.claimed.name) }) : t("fNoClaim")));
+    if (result.listed.length) out.push(line("flag", t("fListed", { list: result.listed.join(listSep()) })));
+    result.lookalike.forEach(function (l) { out.push(line("flag", t("fLookalike", { host: l.host, name: P(l.body.name) }))); });
+    result.official.forEach(function (o) { out.push(line("pass", t("fOfficial", { host: o.host, name: P(o.body.name) }))); });
+    result.unknown.forEach(function (u) { out.push(line("info", t("fUnknown", { host: u }))); });
     result.matchedNumbers.forEach(function (n) {
-      findings.push(line("pass", t("fNumberMatch", { number: n, name: P(result.claimed.name) })));
+      out.push(line("pass", t("fNumberMatch", { number: n, name: P(result.claimed.name) })));
     });
     result.unpublishedNumbers.forEach(function (n) {
-      findings.push(line("flag", t("fNumberUnknown", {
-        number: n,
-        name: P(result.claimed.name),
-        list: result.published.join(listSep())
-      })));
+      out.push(line("flag", t("fNumberUnknown", { number: n, name: P(result.claimed.name), list: result.published.join(listSep()) })));
+    });
+    if (result.broken.length) {
+      result.broken.forEach(function (b) { out.push(line("flag", t("fPolicy", { text: P(b.policy.text) }), b.policy.source)); });
+    } else {
+      out.push(line("pass", t("fNoPolicy")));
+    }
+    out.push(result.pressure ? line("flag", t("fPressure")) : line("pass", t("fNoPressure")));
+    return out;
+  }
+
+  var VERDICTS = {
+    listed: ["vListed", "vListedWhy", "adviceBad"],
+    impersonation: ["vImpersonation", "vImpersonationWhy", "adviceBad"],
+    official: ["vOfficial", "vOfficialWhy", "adviceOfficial"],
+    unverified: ["vUnverified", "vUnverifiedWhy", "adviceUnknown"]
+  };
+
+  /*
+    mount(root, options)
+      options.samples   sample messages to offer as one tap fills (home page)
+      options.headingLevel  level of the result's own headings
+  */
+  function mount(rootEl, options) {
+    var opts = options || {};
+    var h = S.h;
+    var state = { channel: "sms", result: null, empty: false, motion: false };
+    var level = opts.headingLevel || 2;
+
+    var textarea = h("textarea", { id: rootEl.id + "-text", rows: "5", dir: "auto", spellcheck: "false", "aria-describedby": rootEl.id + "-state" });
+    var labelText = h("label", { className: "field-label", for: textarea.id });
+    var channelLabel = h("p", { className: "field-label", id: rootEl.id + "-channel-label" });
+    var channels = h("div", { className: "chips", role: "radiogroup", "aria-labelledby": channelLabel.id });
+    var samplesLabel = opts.samples ? h("p", { className: "field-label", id: rootEl.id + "-samples-label" }) : null;
+    var samples = opts.samples ? h("div", { className: "chips samples", role: "group", "aria-labelledby": samplesLabel.id }) : null;
+    var runButton = h("button", { type: "submit", className: "btn primary" });
+    var clearButton = h("button", { type: "button", className: "btn quiet" });
+    var dataState = h("p", { className: "data-state", id: rootEl.id + "-state", "aria-live": "polite" });
+    var form = h("form", { className: "check-form", autocomplete: "off", novalidate: true }, [
+      h("div", { className: "field" }, [labelText, textarea]),
+      h("div", { className: "field" }, [channelLabel, channels]),
+      samples ? h("div", { className: "field" }, [samplesLabel, samples]) : null,
+      h("div", { className: "form-actions" }, [runButton, clearButton, dataState])
+    ]);
+    var resultBox = h("section", { className: "result", "aria-live": "polite", hidden: true });
+    S.mount(rootEl, [form, resultBox]);
+
+    function renderChannels() {
+      S.mount(channels, CHANNELS.map(function (c) {
+        return h("button", {
+          type: "button",
+          className: "chip",
+          role: "radio",
+          "aria-checked": c.id === state.channel ? "true" : "false",
+          text: c[S.lang],
+          on: { click: function () { state.channel = c.id; renderChannels(); } }
+        });
+      }));
+    }
+
+    function renderSamples() {
+      if (!samples) return;
+      S.mount(samples, opts.samples.map(function (s) {
+        return h("button", {
+          type: "button",
+          className: "chip sample",
+          text: S.pick(s.label),
+          on: {
+            click: function () {
+              textarea.value = s.text;
+              state.channel = s.channel;
+              renderChannels();
+              run(true);
+            }
+          }
+        });
+      }));
+    }
+
+    function renderDataState() {
+      dataState.classList.toggle("is-warn", dataFailed);
+      if (dataFailed) dataState.textContent = t("offline");
+      else if (data) dataState.textContent = t("ready", { bodies: S.count(data.bodies.length, BODIES) });
+      else dataState.textContent = t("loading");
+    }
+
+    function renderResult() {
+      if (state.empty) {
+        resultBox.hidden = false;
+        S.mount(resultBox, [h("p", { className: "todo", text: t("empty") })]);
+        return;
+      }
+      if (!state.result) { resultBox.hidden = true; return; }
+      var r = state.result;
+      var v = VERDICTS[r.verdict];
+      var bad = r.verdict === "listed" || r.verdict === "impersonation";
+      resultBox.hidden = false;
+      S.mount(resultBox, [
+        h("div", { className: "verdict-head" }, [
+          h("h" + level, { className: "result-label", text: t("verdict") }),
+          h("p", { className: "stamp v-" + r.verdict + (state.motion ? " stamp-in" : ""), text: t(v[0]) })
+        ]),
+        h("p", { className: "verdict-why", text: t(v[1]) }),
+        h("h" + (level + 1), { className: "result-label", text: t("todo") }),
+        h("p", { className: "todo", text: t(v[2]) }),
+        bad ? h("p", { className: "next-steps" }, [
+          h("a", { href: "help.html", text: t("nextHelp") }),
+          h("a", { href: "report.html", text: t("nextReport") })
+        ]) : null,
+        h("h" + (level + 1), { className: "result-label", text: t("checks") }),
+        h("ol", { className: "checks" }, findings(r))
+      ]);
+      state.motion = false;
+    }
+
+    function run(fromSample) {
+      var text = textarea.value.trim();
+      if (!text) {
+        state.result = null;
+        state.empty = true;
+        renderResult();
+        textarea.focus();
+        return;
+      }
+      state.empty = false;
+      load().then(function () {
+        state.result = C.check({ text: text, channel: state.channel }, data);
+        state.motion = !S.reduceMotion;
+        renderDataState();
+        renderResult();
+        if (!fromSample || root.innerWidth < 900) resultBox.scrollIntoView({ behavior: S.reduceMotion ? "auto" : "smooth", block: "nearest" });
+      });
+    }
+
+    form.addEventListener("submit", function (ev) { ev.preventDefault(); run(false); });
+    clearButton.addEventListener("click", function () {
+      textarea.value = "";
+      state.result = null;
+      state.empty = false;
+      renderResult();
+      textarea.focus();
     });
 
-    if (result.broken.length) {
-      result.broken.forEach(function (b) { findings.push(line("flag", t("fPolicy", { text: P(b.policy.text) }), b.policy.source)); });
-    } else {
-      findings.push(line("pass", t("fNoPolicy")));
-    }
-    findings.push(result.pressure ? line("flag", t("fPressure")) : line("pass", t("fNoPressure")));
+    S.onLang(function () {
+      labelText.textContent = t("labelText");
+      textarea.setAttribute("placeholder", t("placeholder"));
+      channelLabel.textContent = t("labelChannel");
+      if (samplesLabel) samplesLabel.textContent = t("samples");
+      runButton.textContent = t("run");
+      clearButton.textContent = t("clear");
+      renderChannels();
+      renderSamples();
+      renderDataState();
+      renderResult();
+    });
 
-    mount(box, [
-      h("div", { className: "verdict-head" }, [
-        h("p", { className: "small-label", text: t("verdict") }),
-        h("p", { className: "stamp stamp-in v-" + result.verdict, text: t(verdictMap[0]) })
-      ]),
-      h("p", { className: "verdict-why", text: t(verdictMap[1]) }),
-      h("p", { className: "small-label", text: t("checks") }),
-      h("ol", { className: "checks" }, findings),
-      h("p", { className: "small-label", text: t("todo") }),
-      h("p", { className: "todo", text: t(verdictMap[2]) })
-    ]);
-    box.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    load().then(renderDataState);
+    return { run: run, textarea: textarea };
   }
 
-  function run(event) {
-    event.preventDefault();
-    var text = doc.getElementById("text").value.trim();
-    var box = doc.getElementById("result");
-    if (!text) {
-      box.hidden = false;
-      mount(box, [h("p", { className: "todo", text: t("empty") })]);
-      return;
-    }
-    render(window.AsliChecker.check({ text: text, channel: state.channel }, state.data || { bodies: [], feed: {} }));
+  /* The check page: its own words, then the component. */
+  function initPage() {
+    var rootEl = root.document.getElementById("check-root");
+    if (!rootEl) return;
+    S.onLang(function () {
+      root.document.title = t("title") + " | " + (S.lang === "ar" ? "أَصْلي" : "Asli");
+      root.document.querySelectorAll("[data-c]").forEach(function (n) { n.textContent = t(n.getAttribute("data-c")); });
+    });
+    mount(rootEl, { headingLevel: 2 });
   }
 
-  function applyLang() {
-    doc.documentElement.setAttribute("lang", lang);
-    doc.documentElement.setAttribute("dir", lang === "ar" ? "rtl" : "ltr");
-    doc.title = t("title") + " | " + (lang === "ar" ? "أَصْلي" : "Asli");
-    doc.querySelectorAll("[data-t]").forEach(function (n) { n.textContent = t(n.getAttribute("data-t")); });
-    doc.querySelectorAll("[data-t-placeholder]").forEach(function (n) { n.setAttribute("placeholder", t(n.getAttribute("data-t-placeholder"))); });
-    doc.querySelectorAll("[data-t-aria]").forEach(function (n) { n.setAttribute("aria-label", t(n.getAttribute("data-t-aria"))); });
-    doc.getElementById("lang").setAttribute("lang", lang === "ar" ? "en" : "ar");
-    renderChannels();
-    renderDataLinks();
-    showDataState();
-    doc.getElementById("result").hidden = true;
-  }
-
-  doc.getElementById("lang").addEventListener("click", function () {
-    lang = lang === "ar" ? "en" : "ar";
-    try { window.localStorage.setItem("asli.lang", lang); } catch (e) { /* ignore */ }
-    try {
-      var url = new URL(window.location.href);
-      url.searchParams.set("lang", lang);
-      window.history.replaceState(null, "", url.pathname + url.search);
-    } catch (e) { /* ignore */ }
-    applyLang();
-  });
-
-  doc.getElementById("form").addEventListener("submit", run);
-  doc.getElementById("clear").addEventListener("click", function () {
-    doc.getElementById("text").value = "";
-    doc.getElementById("result").hidden = true;
-    doc.getElementById("text").focus();
-  });
-
-  applyLang();
-  loadData();
-})();
+  root.AsliCheckUI = { mount: mount, t: t };
+  initPage();
+})(window);

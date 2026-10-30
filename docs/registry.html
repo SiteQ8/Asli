@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>سجل القنوات الرسمية | أَصْلي</title>
+<meta name="description" content="سجل مفتوح للقنوات الرسمية الأصلية في الكويت، بنطاقات كل جهة وما تنشره من أرقام وسياسات، مع مصدر وتاريخ تحقق لكل منها.">
+<meta name="author" content="Ali AlEnezi">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#EEF3F1" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0D1B18" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="https://asli.3li.info/registry.html">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Asli">
+<meta property="og:title" content="سجل القنوات الرسمية | Registry of official channels">
+<meta property="og:description" content="Kuwait's genuine official channels: the domains, numbers and policies each body publishes, each with a source and a verification date.">
+<meta property="og:url" content="https://asli.3li.info/registry.html">
+<meta property="og:image" content="https://asli.3li.info/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@700&amp;family=Markazi+Text:wght@400..700&amp;display=swap">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="pages.css">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+</head>
+<body class="tool-page">
+<!-- shell:header -->
+<a class="skip" href="#main" data-s="skip">انتقل إلى المحتوى</a>
+<header class="masthead">
+  <div class="bar">
+    <a class="brand" href="./" data-s-aria="homeLabel" aria-label="أَصْلي، الصفحة الرئيسية"><span class="brand-ar" lang="ar">أَصْلي</span><span class="brand-en" lang="en">Asli</span></a>
+    <nav class="site-nav" data-s-aria="navLabel" aria-label="أقسام الموقع">
+      <a href="report.html" data-s="navReport">أبلغ عن احتيال</a>
+      <a href="help.html" data-s="navHelp">وقع الاحتيال بالفعل</a>
+      <a href="registry.html" data-s="navRegistry">السجل</a>
+      <a href="about.html" data-s="navAbout">عن المشروع</a>
+    </nav>
+    <div class="bar-end">
+      <button id="lang" class="lang" type="button" lang="en" data-s-aria="langLabel" aria-label="اعرض الصفحة بالإنجليزية"><span data-s="lang">English</span></button>
+      <a class="bar-action" href="check.html" data-s="navCheck">افحص رسالة</a>
+    </div>
+  </div>
+</header>
+<!-- /shell:header -->
+
+<main id="main" class="wrap page">
+  <header class="page-head">
+    <h1 data-r="title">سجل القنوات الرسمية</h1>
+    <p class="lead" data-r="lead"></p>
+  </header>
+
+  <div class="registry-tools" role="search">
+    <div class="field">
+      <label class="field-label" for="reg-q" data-r="searchLabel"></label>
+      <input id="reg-q" class="text-input" type="search" autocomplete="off" spellcheck="false">
+    </div>
+    <div class="field" role="group" aria-labelledby="reg-sector-label">
+      <p id="reg-sector-label" class="field-label" data-r="sectorLabel"></p>
+      <div id="reg-sectors" class="chips"></div>
+    </div>
+    <p id="reg-count" class="data-state" aria-live="polite"></p>
+    <p id="reg-note" class="reg-note" hidden></p>
+  </div>
+
+  <div id="reg-list" class="registry"></div>
+
+  <noscript>
+    <p class="noscript" lang="ar" dir="rtl">تُرسم القائمة بجافاسكربت من الملف <a href="data/registry.json">data/registry.json</a>، ويمكنك فتحه مباشرة.</p>
+    <p class="noscript" lang="en" dir="ltr">The list is drawn with JavaScript from <a href="data/registry.json">data/registry.json</a>, which you can open directly.</p>
+  </noscript>
+
+  <section id="data" class="aside-block" aria-labelledby="data-title">
+    <h2 id="data-title" data-r="dataTitle"></h2>
+    <p data-r="dataLead"></p>
+    <ul id="data-files" class="data-files"></ul>
+    <p class="data-mcp"><span data-r="mcp"></span> <a href="https://github.com/SiteQ8/Asli/tree/main/mcp" data-r="mcpLink"></a></p>
+  </section>
+</main>
+
+<!-- shell:footer -->
+<footer class="foot">
+  <div class="wrap foot-inner">
+    <div class="foot-close">
+      <p class="foot-mark"><span class="brand-ar" lang="ar">أَصْلي</span><span class="brand-en" lang="en">Asli</span></p>
+      <p class="foot-line" data-s="footLine">مشروع درع الكويت المفتوح ضد الاحتيال.</p>
+      <p class="foot-by" data-s="footBy">مشروع مفتوح المصدر من علي العنزي.</p>
+    </div>
+    <nav class="foot-nav" data-s-aria="footNavLabel" aria-label="روابط المشروع">
+      <a href="check.html" data-s="navCheck">افحص رسالة</a>
+      <a href="report.html" data-s="navReport">أبلغ عن احتيال</a>
+      <a href="help.html" data-s="navHelp">وقع الاحتيال بالفعل</a>
+      <a href="registry.html" data-s="navRegistry">السجل</a>
+      <a href="about.html" data-s="navAbout">عن المشروع</a>
+      <a href="registry.html#data" data-s="footData">البيانات المفتوحة</a>
+      <a href="https://github.com/SiteQ8/Asli/blob/main/PROJECT.ar.md" data-href-ar="https://github.com/SiteQ8/Asli/blob/main/PROJECT.ar.md" data-href-en="https://github.com/SiteQ8/Asli/blob/main/PROJECT.md" data-s="footText">النص الكامل</a>
+      <a href="https://github.com/SiteQ8/Asli/blob/main/LISTING-POLICY.md" data-s="footPolicy">سياسة الإدراج</a>
+      <a href="https://github.com/SiteQ8/Asli/blob/main/APPEALS.md" data-s="footAppeals">الاعتراض على إدراج</a>
+      <a href="https://github.com/SiteQ8/Asli/blob/main/PRIVACY.md" data-s="footPrivacy">إشعار الخصوصية</a>
+      <a href="https://github.com/SiteQ8/Asli" data-s="footSource">الشيفرة المصدرية</a>
+    </nav>
+    <div class="foot-small">
+      <p data-s="footLicence">الشيفرة منشورة بترخيص MIT، أما السجل والتغذية فمنشوران بترخيص CC BY 4.0.</p>
+      <p data-meta="build"></p>
+    </div>
+  </div>
+</footer>
+<!-- /shell:footer -->
+
+<script src="site.js"></script>
+<script src="registry.js"></script>
+<script src="offline.js"></script>
+</body>
+</html>

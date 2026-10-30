@@ -14,10 +14,6 @@
   var DIRAYA = "https://www.cbk.gov.kw/en/cbk-news/announcements-and-press-releases/press-releases/2021/02/202102031030-diraya-campaign-launches-video-addressing-e-crimes";
 
   var T = {
-    skip: { ar: "انتقل إلى الخطوات", en: "Skip to the steps" },
-    lang: { ar: "English", en: "العربية" },
-    check: { ar: "افحص رسالة", en: "Check a message" },
-    report: { ar: "أبلغ", en: "Report" },
     title: { ar: "وقع الاحتيال بالفعل", en: "It already happened" },
     lead: {
       ar: "ابدأ من الأعلى ولا تنتظر الصباح، فالساعة الأولى هي التي يمكن أن يُسترد فيها المال، ولا تلُم نفسك لأن هذه الرسائل مصممة لتنجح مع الناس العاديين المشغولين.",
@@ -103,26 +99,14 @@
     limits: {
       ar: "أَصْلي مشروع مجتمعي مفتوح المصدر وليس جهة حكومية ولا بنكًا، فلا يسترد مالًا ولا يفتح بلاغًا رسميًا نيابة عنك ولا يتصل بأحد بدلًا منك، وكل ما يفعله أنه يوضح ما إذا كانت القناة أصلية ويوجّهك إلى الجهة الصحيحة بسرعة.",
       en: "Asli is an open-source community project, not a government body and not a bank. It cannot recover money, file an official report for you or call anyone on your behalf. What it does is show whether a channel is genuine and point you to the right place quickly."
-    },
-    footer: {
-      ar: "أَصْلي مشروع مفتوح المصدر من علي العنزي، وكل رقم في هذه الصفحة مأخوذ من الجهة التي نشرته.",
-      en: "Asli is an open-source project by Ali AlEnezi. Every number on this page comes from the body that published it."
-    },
-    source: { ar: "الشيفرة المصدرية", en: "Source code" }
+    }
   };
 
-  var lang = initialLang();
+  var S = window.AsliSite;
+  var lang = S.lang;
 
-  function initialLang() {
-    try {
-      var q = new URLSearchParams(window.location.search).get("lang");
-      if (q === "ar" || q === "en") return q;
-    } catch (e) { /* ignore */ }
-    try {
-      var saved = window.localStorage.getItem("asli.lang");
-      if (saved === "ar" || saved === "en") return saved;
-    } catch (e) { /* ignore */ }
-    return "ar";
+  function telHref(number) {
+    return number.length <= 4 ? "tel:" + number : "tel:+965" + number;
   }
 
   function t(key) {
@@ -193,17 +177,19 @@
     var host = doc.getElementById("numbers");
     host.textContent = "";
     host.appendChild(h("li", { text: t("numbersLoading") }));
-    fetch("data/registry.json", { cache: "no-cache" })
-      .then(function (r) { return r.json(); })
+    S.json("data/registry.json")
       .then(function (d) {
         var rows = [];
         (d.bodies || []).forEach(function (body) {
           (body.hotlines || []).forEach(function (line) {
             rows.push(
               h("li", {}, [
-                h("a", { href: "tel:+965" + line.number, dir: "ltr", text: line.number }),
-                h("span", { text: " " + P(body.name) + (line.label ? ", " + P(line.label) : "") }),
-                sourceLink(line.source)
+                h("a", { className: "number", href: telHref(line.number), dir: "ltr", text: line.number }),
+                h("div", {}, [
+                  h("p", { className: "number-who", text: P(body.name) }),
+                  line.label ? h("p", { text: P(line.label) }) : null,
+                  sourceLink(line.source)
+                ])
               ])
             );
           });
@@ -216,26 +202,12 @@
   }
 
   function applyLang() {
-    doc.documentElement.setAttribute("lang", lang);
-    doc.documentElement.setAttribute("dir", lang === "ar" ? "rtl" : "ltr");
     doc.title = t("title") + " | " + (lang === "ar" ? "أَصْلي" : "Asli");
     doc.querySelectorAll("[data-t]").forEach(function (n) { n.textContent = t(n.getAttribute("data-t")); });
-    doc.getElementById("lang").setAttribute("lang", lang === "ar" ? "en" : "ar");
     renderUrgent();
     renderSteps();
     renderNumbers();
   }
 
-  doc.getElementById("lang").addEventListener("click", function () {
-    lang = lang === "ar" ? "en" : "ar";
-    try { window.localStorage.setItem("asli.lang", lang); } catch (e) { /* ignore */ }
-    try {
-      var url = new URL(window.location.href);
-      url.searchParams.set("lang", lang);
-      window.history.replaceState(null, "", url.pathname + url.search);
-    } catch (e) { /* ignore */ }
-    applyLang();
-  });
-
-  applyLang();
+  S.onLang(function (next) { lang = next; applyLang(); });
 })();

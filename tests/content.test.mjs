@@ -10,6 +10,7 @@ import { join, relative } from "node:path";
 import { ROOT, read, loadContent, loadChecker } from "../tools/lib.mjs";
 import { readRegistry } from "../tools/build-data.mjs";
 import { buildText, FILES } from "../tools/build-project-md.mjs";
+import { pages as shellPages, stamp } from "../tools/build-shell.mjs";
 
 const { C, E } = loadContent();
 
@@ -23,9 +24,6 @@ const LATIN_ALLOWED = new Set([
   "CertStream", "OpenSquat", "KWTCyberWatch", "MEA", "Tech", "Watch", "ARY", "News",
   "example", "English"
 ]);
-
-/* Keys whose English value is deliberately written in Arabic: the language switch label. */
-const EN_MAY_BE_ARABIC = new Set(["t.nav.lang"]);
 
 function pairs() {
   const found = [];
@@ -111,9 +109,7 @@ test("Arabic text uses Arabic punctuation and digits, with a period only at the 
 
 test("each language stays pure", () => {
   for (const { path, pair } of ALL) {
-    if (!EN_MAY_BE_ARABIC.has(path)) {
-      assert.doesNotMatch(pair.en, ARABIC_LETTERS, `${path}: Arabic letters in the English text`);
-    }
+    assert.doesNotMatch(pair.en, ARABIC_LETTERS, `${path}: Arabic letters in the English text`);
     for (const word of pair.ar.replace(/\{\w+\}/g, "").match(/[A-Za-z][A-Za-z0-9]*/g) || []) {
       assert.ok(LATIN_ALLOWED.has(word), `${path}: unexpected Latin word "${word}" in the Arabic text`);
     }
@@ -160,11 +156,19 @@ test("demo samples reach the verdicts the site promises, on the real engine", ()
   assert.ok(verdicts.has("impersonation") && verdicts.has("official"), "the demo must show a fake and a genuine case");
 });
 
-test("there is one detection engine, and the home page loads it", () => {
+test("there is one detection engine, and every page that checks loads it", () => {
   const engine = read("docs/engine.js");
   assert.ok(!/function analyze|function check\b/.test(engine), "engine.js must not decide verdicts");
-  const html = read("docs/index.html");
-  assert.ok(html.includes('src="checker.js"'), "the home page must load the real checker");
+  for (const page of ["index.html", "check.html", "about.html", "report.html"]) {
+    assert.ok(read("docs/" + page).includes('src="checker.js"'), `${page} must load the real checker`);
+  }
+  for (const page of ["index.html", "check.html"]) {
+    assert.ok(read("docs/" + page).includes('src="check.js"'), `${page} must use the shared check component`);
+  }
+  const component = read("docs/check.js");
+  assert.ok(component.includes("root.AsliChecker") && component.includes("C.check("), "the check component must call the real checker");
+  assert.ok(component.includes("data/registry.json") && component.includes("data/feed.json"), "the check component must read the real registry and feed");
+  assert.ok(read("docs/home.js").includes("AsliCheckUI.mount"), "the home page must mount the real check, not a picture of it");
   const app = read("docs/app.js");
   assert.ok(app.includes("window.AsliChecker.check"), "the demo must call the real checker");
   assert.ok(app.includes("data/registry.json"), "the demo must read the real registry");
@@ -238,14 +242,14 @@ test("every external link uses https", () => {
   for (const url of urls) assert.match(url, /^https:\/\//, url);
 });
 
-test("the page uses every text key and only keys that exist", () => {
-  const html = read("docs/index.html");
-  const app = read("docs/app.js");
+test("the pages use every text key and only keys that exist", () => {
+  const html = read("docs/index.html") + read("docs/about.html");
+  const app = read("docs/app.js") + read("docs/home.js");
   const builder = read("tools/build-project-md.mjs");
   const keys = new Set(Object.keys(C.t));
 
   const attrKeys = [...html.matchAll(/data-t(?:-aria)?="([^"]+)"/g)].map((m) => m[1]);
-  const callKeys = [...(app + builder).matchAll(/\bT\("([^"]+)"\)/g)].map((m) => m[1]);
+  const callKeys = [...(app + builder).matchAll(/\bT\("([^"]+)"[,)]/g)].map((m) => m[1]);
   for (const k of [...attrKeys, ...callKeys]) assert.ok(keys.has(k), `missing text key ${k}`);
 
   const literals = new Set([...(html + app + builder).matchAll(/"([a-z]+\.[A-Za-z]+)"/g)].map((m) => m[1]));
@@ -253,9 +257,11 @@ test("the page uses every text key and only keys that exist", () => {
   for (const k of keys) assert.ok(literals.has(k), `text key ${k} is never used`);
 });
 
-test("the index links to every section and nothing else", () => {
-  const html = read("docs/index.html");
-  const toc = html.slice(html.indexOf('<nav class="toc"'), html.indexOf("</nav>"));
+test("the about page index links to every section and nothing else", () => {
+  const html = read("docs/about.html");
+  const start = html.indexOf('<nav class="toc"');
+  assert.ok(start >= 0, "the about page needs its index");
+  const toc = html.slice(start, html.indexOf("</nav>", start));
   const links = [...toc.matchAll(/href="#([^"]+)"/g)].map((m) => m[1]);
   const sections = [...html.matchAll(/<section class="part" id="([^"]+)"/g)].map((m) => m[1]);
   assert.deepEqual(links, sections);
@@ -265,4 +271,36 @@ test("PROJECT.md and PROJECT.ar.md match the content byte for byte", () => {
   for (const [lang, file] of Object.entries(FILES)) {
     assert.equal(read(file), buildText(lang), `${file} is stale. Run: node tools/build-project-md.mjs`);
   }
+});
+
+test("every page carries the shared header and footer, unchanged", () => {
+  const list = shellPages();
+  assert.ok(list.length >= 6, `expected every page, found ${list.length}`);
+  for (const page of list) {
+    const html = read("docs/" + page);
+    assert.equal(stamp(html, page), html, `docs/${page} differs from the shared shell. Run: node tools/build-shell.mjs`);
+    assert.ok(html.includes('src="site.js"'), `${page} must load the shared shell script`);
+    assert.ok(html.includes('<main id="main"'), `${page} needs <main id="main"> for the skip link`);
+  }
+});
+
+test("every page the shell links to exists", () => {
+  const shell = read("tools/shell/header.html") + read("tools/shell/footer.html");
+  const local = [...shell.matchAll(/href="([a-z]+\.html)(?:#[^"]*)?"/g)].map((m) => m[1]);
+  assert.ok(local.length >= 5, "the shell should link the site's pages");
+  for (const page of local) assert.ok(shellPages().includes(page), `the shell links ${page}, which does not exist`);
+});
+
+test("the roadmap and the progress list say where things stand, in order", () => {
+  const order = { done: 0, active: 1, ahead: 2 };
+  let last = 0;
+  for (const p of C.phases) {
+    assert.ok(p.status in order, `phase ${p.n} has an unknown status ${p.status}`);
+    assert.ok(order[p.status] >= last, `phase ${p.n} cannot be ${p.status} after a later phase`);
+    last = order[p.status];
+    for (const g of p.goals) assert.ok(g.text && (g.done === undefined || g.done === true), `phase ${p.n} has a malformed goal`);
+    if (p.status === "done") assert.ok(p.goals.every((g) => g.done), `phase ${p.n} is complete, so every goal must be done`);
+  }
+  assert.ok(C.phases.filter((p) => p.status === "active").length <= 1, "only one phase can be under way");
+  for (const s of C.steps) assert.ok(["done", "active", "todo"].includes(s.status), `a step has an unknown status ${s.status}`);
 });

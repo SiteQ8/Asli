@@ -29,12 +29,14 @@ export function buildText(lang) {
     return items.slice(0, -1).join(T("common.listSep")) + T("common.and") + items[items.length - 1];
   };
   const other = lang === "ar" ? "en" : "ar";
+  const PHASE = { done: "roadmap.done", active: "roadmap.active", ahead: "roadmap.ahead" };
+  const STEP = { done: "status.done", active: "status.active", todo: "status.todo" };
   const out = [];
   const line = (s = "") => out.push(s);
 
   line(`# ${T("meta.title")}`);
   line();
-  line(T("hero.kicker"));
+  line(T("meta.description"));
   line();
   line(`> ${T("md.generated")}`);
   line();
@@ -173,11 +175,11 @@ export function buildText(lang) {
   line(T("roadmap.lead"));
   line();
   for (const p of C.phases) {
-    line(`### ${fill(T("roadmap.phase"), { n: num(p.n) })}: ${P(p.title)}`);
+    line(`### ${fill(T("roadmap.phase"), { n: num(p.n) })}: ${P(p.title)} (${T(PHASE[p.status])})`);
     line();
     line(`${P(p.when)} (${P(p.dates)})`);
     line();
-    for (const g of p.goals) line(`- ${P(g)}`);
+    for (const g of p.goals) line(g.done ? `- **${T(STEP.done)}**: ${P(g.text)}` : `- ${P(g.text)}`);
     line();
     line(`**${T("roadmap.exit")}**: ${P(p.exit)}`);
     line();
@@ -231,7 +233,7 @@ export function buildText(lang) {
   line();
   line(T("next.lead"));
   line();
-  C.steps.forEach((s, i) => line(`${i + 1}. ${P(s)}`));
+  C.steps.forEach((s, i) => line(`${i + 1}. **${T(STEP[s.status])}**: ${P(s.text)}`));
   line();
   line("---");
   line();

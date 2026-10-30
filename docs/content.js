@@ -10,8 +10,8 @@
   "use strict";
 
   var ASLI = {
-    version: "0.4.0",
-    published: "2026-09-23",
+    version: "0.6.0",
+    published: "2026-10-30",
     site: "https://asli.3li.info/",
     repo: "https://github.com/SiteQ8/Asli",
     chosen: "asli",
@@ -26,19 +26,8 @@
         en: "Asli: an open-source registry of Kuwait's genuine official channels and a reviewed feed of scam links and numbers that anyone can check and reuse for free."
       },
 
-      "nav.skip": { ar: "انتقل إلى المحتوى", en: "Skip to the content" },
-      "nav.lang": { ar: "English", en: "العربية" },
-      "nav.langLabel": { ar: "اعرض الصفحة بالإنجليزية", en: "Show this page in Arabic" },
-      "nav.check": { ar: "افحص رسالة", en: "Check a message" },
-      "nav.report": { ar: "أبلغ عن احتيال", en: "Report a scam" },
-      "nav.help": { ar: "وقع الاحتيال بالفعل", en: "It already happened" },
-      "nav.repo": { ar: "المصدر على GitHub", en: "Source on GitHub" },
       "nav.index": { ar: "في هذه الصفحة", en: "On this page" },
 
-      "hero.kicker": {
-        ar: "الإصدار ٠٫٤، سبتمبر ٢٠٢٦، السجل يضم ٣٦ جهة رسمية وصفحة الفحص تعمل دون اتصال، وتبقى تغذية الاحتيال فارغة حتى أول إدراج مُراجَع",
-        en: "Version 0.4, September 2026. The registry holds 36 official bodies, the check page works with no connection, and the scam feed stays empty until the first reviewed listing"
-      },
       "hero.title": { ar: "هل هذه الرسالة أصلية؟", en: "Is this message genuine?" },
       "hero.lead": {
         ar: "يحمي أَصْلي الناس في الكويت من الاحتيال بدرعٍ مفتوح المصدر يراجعه المجتمع، إذ ينشر سجلًا موثّقًا لكل قناة رسمية أصلية وتغذيةً حيّة بروابط الاحتيال وأرقامه المؤكَّدة، فيستطيع أي شخص أن يتحقق من رسالة في ثوانٍ، ويستطيع أي بنك أو شركة اتصالات أو تطبيق أن يربطه بخدماته.",
@@ -48,9 +37,6 @@
         ar: "تعني كلمة أَصْلي بالعربية الحقيقيَّ غير المزيَّف، وتحمل الكلمة نفسها المعنى ذاته في الهندية والأردية.",
         en: "Asli means genuine in Arabic, and the same word means the same thing in Hindi and Urdu."
       },
-      "hero.ctaCheck": { ar: "افحص رسالة الآن", en: "Check a message now" },
-      "hero.ctaStart": { ar: "ابدأ من المشكلة", en: "Start with the problem" },
-      "hero.ctaDemo": { ar: "شاهد فحص رسالة", en: "See a message checked" },
       "hero.langs": {
         ar: "السؤال نفسه باللغات السبع الأولى التي سيتحدث بها أَصْلي",
         en: "The same question in the first seven languages Asli will speak"
@@ -71,7 +57,7 @@
       "sec.measures": { ar: "مقاييس النجاح", en: "Measures of success" },
       "sec.risks": { ar: "المخاطر", en: "Risks" },
       "sec.serves": { ar: "لمن نبنيه", en: "Who it serves" },
-      "sec.next": { ar: "الأسبوعان الأولان", en: "The first two weeks" },
+      "sec.next": { ar: "ما أُنجز", en: "Progress" },
 
       "common.source": { ar: "المصدر", en: "Source" },
       "common.and": { ar: " و", en: " and " },
@@ -110,8 +96,8 @@
 
       "demo.title": { ar: "شاهد فحص رسالة", en: "See a message checked" },
       "demo.lead": {
-        ar: "اختر نموذجًا ليقرأه أَصْلي كما سيقرؤه المدقق في المرحلة ١، فيستخرج الروابط والادعاءات ثم يقارنها بالسجل ويشرح الحكم.",
-        en: "Pick a sample. Asli reads it the way the Phase 1 checker will: it pulls out links and claims, compares them with the registry and explains the verdict."
+        ar: "اختر نموذجًا ليقرأه أَصْلي بالمحرك نفسه الذي تعمل به صفحة الفحص، فيستخرج الروابط والادعاءات ثم يقارنها بالسجل ويشرح الحكم.",
+        en: "Pick a sample. Asli reads it with the same engine the check page runs: it pulls out the links and claims, compares them with the registry and explains the verdict."
       },
       "demo.note": {
         ar: "تأتي النماذج للتوضيح فقط، وتستخدم روابطها النطاق المحجوز example فلا تؤدي إلى أي مكان عدا النطاق الرسمي في نموذج سهل، ويعمل العرض بالمحرك نفسه والسجل نفسه اللذين تعمل بهما صفحة الفحص.",
@@ -224,8 +210,79 @@
       },
       "roadmap.phase": { ar: "المرحلة {n}", en: "Phase {n}" },
       "roadmap.exit": { ar: "اختبار الخروج", en: "Exit test" },
+      "roadmap.current": { ar: "المرحلة الحالية", en: "Current phase" },
+      "roadmap.done": { ar: "اكتملت", en: "Complete" },
+      "roadmap.active": { ar: "جارية", en: "Under way" },
+      "roadmap.ahead": { ar: "قادمة", en: "Ahead" },
+      "status.done": { ar: "تم", en: "Done" },
+      "status.active": { ar: "قيد العمل", en: "In progress" },
+      "status.todo": { ar: "لم يبدأ بعد", en: "Not started yet" },
 
-      "reuse.title": { ar: "مبني على تسعة مشاريع من SiteQ8", en: "Built on nine SiteQ8 projects" },
+      "home.lead": {
+        ar: "الصق أي رسالة وصلتك ليقارنها أَصْلي بسجل القنوات الرسمية الكويتية، ويجري الفحص داخل متصفحك فلا تغادر الرسالة جهازك.",
+        en: "Paste any message you received and Asli compares it with Kuwait's registry of genuine official channels, inside your browser, so the message never leaves your device."
+      },
+      "home.statusTitle": { ar: "ما يعرفه أَصْلي اليوم", en: "What Asli knows today" },
+      "home.statusLead": {
+        ar: "تُبنى هذه الأرقام آليًا من السجل والتغذية ومراقبة الشهادات، ولا يُدرج أي احتيال قبل أن يوافق عليه مراجعان مع أدلته.",
+        en: "These figures are built automatically from the registry, the feed and the certificate watch, and nothing is listed as a scam before two reviewers approve it with evidence."
+      },
+      "home.statusLink": { ar: "اعرض السجل كاملًا", en: "See the full registry" },
+      "home.statBodies": { ar: "الجهات الرسمية", en: "Official bodies" },
+      "home.statDomains": { ar: "النطاقات الرسمية", en: "Official domains" },
+      "home.statNumbers": { ar: "أرقام تنشرها الجهات نفسها", en: "Numbers the bodies publish" },
+      "home.statPolicies": { ar: "سياسات القنوات المنشورة", en: "Published channel policies" },
+      "home.statFeed": { ar: "إدراجات الاحتيال المؤكدة", en: "Confirmed scam listings" },
+      "home.statHeld": { ar: "أسماء مرشحة تنتظر المراجعة", en: "Candidate names awaiting review" },
+      "home.statWatch": { ar: "آخر مراقبة لسجلات الشهادات", en: "Last certificate watch" },
+      "home.watchOk": { ar: "{date}، والمصدر متاح", en: "{date}, source reachable" },
+      "home.watchDegraded": { ar: "{date}، والمصدر متاح جزئيًا", en: "{date}, source partly reachable" },
+      "home.watchDown": { ar: "{date}، وتعذّر الوصول إلى المصدر", en: "{date}, source unreachable" },
+      "home.pathsTitle": { ar: "ماذا تفعل الآن", en: "What to do now" },
+      "home.pathHelp": { ar: "وقع الاحتيال بالفعل؟", en: "Already caught by a scam?" },
+      "home.pathHelpBody": {
+        ar: "خطوات الساعة الأولى بالترتيب، مع الأرقام كما تنشرها البنوك ووزارة الداخلية.",
+        en: "The first hour steps in order, with the numbers as the banks and the Ministry of Interior publish them."
+      },
+      "home.pathReport": { ar: "وصلتك رسالة احتيال؟", en: "Received a scam message?" },
+      "home.pathReportBody": {
+        ar: "حوّلها إلى بلاغ بعد أن تُحذف بياناتك على جهازك، فيستفيد منها غيرك بعد المراجعة.",
+        en: "Turn it into a report after your own details are removed on your device, so it helps others once reviewed."
+      },
+      "home.pathRegistry": { ar: "تبحث عن القناة الرسمية؟", en: "Looking for the official channel?" },
+      "home.pathRegistryBody": {
+        ar: "اعرض النطاقات والأرقام والسياسات التي تنشرها كل جهة في السجل، مع مصدر كل منها.",
+        en: "See the domains, numbers and policies every body in the registry publishes, each with its source."
+      },
+      "home.sectorsTitle": { ar: "من في السجل", en: "Who is in the registry" },
+      "home.sectorsLead": {
+        ar: "كل جهة هنا مسجّلة بنطاقاتها الأصلية مع مصدر وتاريخ تحقق، ويُعاد التحقق منها كل تسعين يومًا.",
+        en: "Every body here is recorded with its genuine domains, a source and a verification date, and is checked again every ninety days."
+      },
+      "home.changesTitle": { ar: "الجديد في أَصْلي", en: "New in Asli" },
+      "home.changesAll": { ar: "كل الإصدارات على GitHub", en: "Every release on GitHub" },
+      "home.changesEmpty": { ar: "تظهر الإصدارات هنا فور نشرها.", en: "Releases appear here as soon as they are published." },
+      "home.relatedTitle": { ar: "أدوات أخرى ذات صلة من SiteQ8", en: "Other related SiteQ8 tools" },
+      "home.relatedLead": {
+        ar: "تتحدّث هذه القائمة آليًا كلما نُشر مستودع جديد يخص مكافحة الاحتيال في الكويت.",
+        en: "This list updates itself whenever a new repository about fighting scams in Kuwait is published."
+      },
+      "home.relatedRepo": { ar: "المستودع", en: "Repository" },
+      "home.whyLink": { ar: "اقرأ كيف يعمل أَصْلي ولماذا", en: "Read how Asli works and why" },
+      "about.title": { ar: "عن أَصْلي", en: "About Asli" },
+      "about.lead": {
+        ar: "كيف يعمل أَصْلي ولماذا بُني بهذه الطريقة، مع الأدلة والقواعد وخارطة الطريق.",
+        en: "How Asli works and why it is built this way, with the evidence, the rules and the roadmap."
+      },
+      "sector.government": { ar: "جهات حكومية", en: "Government" },
+      "sector.bank": { ar: "بنوك", en: "Banks" },
+      "sector.telecom": { ar: "شركات اتصالات", en: "Telecoms" },
+      "sector.courier": { ar: "شركات شحن", en: "Couriers" },
+      "sector.airline": { ar: "طيران", en: "Airlines" },
+      "sector.association": { ar: "اتحادات", en: "Associations" },
+      "sector.utility": { ar: "خدمات عامة", en: "Utilities" },
+
+      "reuse.title": { ar: "مبني على مشاريع مفتوحة من SiteQ8", en: "Built on open SiteQ8 projects" },
       "reuse.lead": {
         ar: "يبدأ أَصْلي مشروعًا جديدًا، لكن معظم محركه موجود بالفعل في مستودعات عامة.",
         en: "Asli is new, but most of its engine already exists in public repositories."
@@ -255,17 +312,17 @@
         en: "These audiences and partners are proposals. No partnership exists yet, and outreach starts in Phase 1."
       },
 
-      "next.title": { ar: "الأسبوعان الأولان", en: "The first two weeks" },
-      "next.lead": { ar: "ما يحدث بعد ذلك بالترتيب.", en: "What happens next, in order." },
+      "next.title": { ar: "ما أُنجز وما بقي", en: "Done and still to do" },
+      "next.lead": {
+        ar: "الخطوات الأولى التي التزم بها المشروع وحال كل منها اليوم.",
+        en: "The first steps the project committed to, and where each one stands today."
+      },
 
       "footer.by": {
-        ar: "مشروع مفتوح المصدر من علي العنزي، والإصدار ٠٫٤ الصادر في سبتمبر ٢٠٢٦ منشور بترخيص MIT، أما السجل والتغذية فمنشوران بترخيص CC BY 4.0.",
-        en: "An open-source project by Ali AlEnezi. Version 0.4, September 2026, released under the MIT licence. The registry and the feed are released under CC BY 4.0."
+        ar: "مشروع مفتوح المصدر من علي العنزي، والشيفرة منشورة بترخيص MIT، أما السجل والتغذية فمنشوران بترخيص CC BY 4.0.",
+        en: "An open-source project by Ali AlEnezi. The code is released under the MIT licence, and the registry and the feed under CC BY 4.0."
       },
       "footer.source": { ar: "الشيفرة المصدرية", en: "Source code" },
-      "footer.text": { ar: "النص الكامل", en: "The full text" },
-      "footer.data": { ar: "البيانات المفتوحة", en: "The open data" },
-      "footer.policy": { ar: "سياسة الإدراج", en: "Listing policy" },
 
       "md.live": { ar: "الموقع التفاعلي", en: "Interactive site" },
       "md.otherLang": { ar: "النسخة الإنجليزية", en: "Arabic version" },
@@ -729,8 +786,8 @@
         short: { ar: "أَصْلي", en: "Asli" },
         name: { ar: "أَصْلي، الدرع المفتوح ضد الاحتيال", en: "Asli, the open scam shield" },
         why: {
-          ar: "يلامس كل مقيم ويحوّل الانفتاح إلى ثقة، ويعيد استخدام تسعة مشاريع من SiteQ8.",
-          en: "Touches every resident, turns openness into trust and reuses nine SiteQ8 projects."
+          ar: "يلامس كل مقيم ويحوّل الانفتاح إلى ثقة، ويعيد استخدام مشاريع قائمة من SiteQ8.",
+          en: "Touches every resident, turns openness into trust and reuses existing SiteQ8 projects."
         },
         scores: { reach: 5, harm: 5, open: 5, feas: 4, lev: 5 }
       },
@@ -789,14 +846,15 @@
     phases: [
       {
         n: 0,
+        status: "done",
         title: { ar: "الأساس", en: "Foundations" },
         when: { ar: "الأسبوعان ١ و٢", en: "Weeks 1 and 2" },
         dates: { ar: "٤ إلى ١٥ أكتوبر ٢٠٢٦", en: "4 to 15 October 2026" },
         goals: [
-          { ar: "اعتماد الاسم والنطاق والتراخيص", en: "Approve the name, scope and licences" },
-          { ar: "نشر سياسة الإدراج وإشعار الخصوصية", en: "Publish the listing policy and the privacy notice" },
-          { ar: "مخطط السجل بإصداره ١ مع اختبارات تفرضه", en: "Registry schema version 1, enforced by tests" },
-          { ar: "إدخال أول ٢٥ جهة رسمية مع مصادرها", en: "Seed the first 25 official bodies with sources" }
+          { text: { ar: "اعتماد الاسم والنطاق والتراخيص", en: "Approve the name, scope and licences" }, done: true },
+          { text: { ar: "نشر سياسة الإدراج وإشعار الخصوصية", en: "Publish the listing policy and the privacy notice" }, done: true },
+          { text: { ar: "مخطط السجل بإصداره ١ مع اختبارات تفرضه", en: "Registry schema version 1, enforced by tests" }, done: true },
+          { text: { ar: "إدخال أول ٢٥ جهة رسمية مع مصادرها", en: "Seed the first 25 official bodies with sources" }, done: true }
         ],
         exit: {
           ar: "نجاح اختبارات المخطط، ووجود مصدر وتاريخ تحقق لكل قيد مُدخل.",
@@ -805,14 +863,15 @@
       },
       {
         n: 1,
+        status: "active",
         title: { ar: "التغذية وصفحة الفحص", en: "Feed and check page" },
         when: { ar: "الأسابيع ٣ إلى ٨", en: "Weeks 3 to 8" },
         dates: { ar: "١٨ أكتوبر إلى ٢٦ نوفمبر ٢٠٢٦", en: "18 October to 26 November 2026" },
         goals: [
-          { ar: "رصد كل ساعة من سجلات الشهادات والنطاقات الجديدة", en: "Hourly detection from certificate logs and new domains" },
-          { ar: "قائمة مراجعة بموافقتين لكل إدراج", en: "A review queue with two approvals per listing" },
-          { ar: "نشر التغذية موقّعةً بـ٨ صيغ", en: "The feed published and signed in 8 formats" },
-          { ar: "صفحة الفحص بالعربية والإنجليزية", en: "The check page in Arabic and English" }
+          { text: { ar: "رصد كل ساعة من سجلات الشهادات والنطاقات الجديدة", en: "Hourly detection from certificate logs and new domains" } },
+          { text: { ar: "قائمة مراجعة بموافقتين لكل إدراج", en: "A review queue with two approvals per listing" } },
+          { text: { ar: "نشر التغذية موقّعةً بـ٨ صيغ", en: "The feed published and signed in 8 formats" } },
+          { text: { ar: "صفحة الفحص بالعربية والإنجليزية", en: "The check page in Arabic and English" }, done: true }
         ],
         exit: {
           ar: "أن يقل الوسيط الزمني من الرصد إلى الإدراج عن ٦ ساعات، وأن تقل الإيجابيات الكاذبة المراجَعة عن ١٪.",
@@ -821,14 +880,15 @@
       },
       {
         n: 2,
+        status: "ahead",
         title: { ar: "الوصول", en: "Reach" },
         when: { ar: "الأسابيع ٩ إلى ١٦", en: "Weeks 9 to 16" },
         dates: { ar: "٢٩ نوفمبر ٢٠٢٦ إلى ٢١ يناير ٢٠٢٧", en: "29 November 2026 to 21 January 2027" },
         goals: [
-          { ar: "إضافة متصفح تعمل على Chromium وFirefox", en: "A browser extension for Chromium and Firefox" },
-          { ar: "بوت على تيليجرام", en: "A Telegram bot" },
-          { ar: "٧ لغات مع اختبارات تفرض اكتمالها", en: "7 languages, with completeness enforced by tests" },
-          { ar: "نموذج بلاغ يحمي الخصوصية أولًا", en: "A report form that puts privacy first" }
+          { text: { ar: "إضافة متصفح تعمل على Chromium وFirefox", en: "A browser extension for Chromium and Firefox" } },
+          { text: { ar: "بوت على تيليجرام", en: "A Telegram bot" } },
+          { text: { ar: "٧ لغات مع اختبارات تفرض اكتمالها", en: "7 languages, with completeness enforced by tests" } },
+          { text: { ar: "نموذج بلاغ يحمي الخصوصية أولًا", en: "A report form that puts privacy first" }, done: true }
         ],
         exit: {
           ar: "اجتياز اللغات السبع اختبارات الاكتمال، وإتاحة الإضافة في المتجرين.",
@@ -837,14 +897,15 @@
       },
       {
         n: 3,
+        status: "ahead",
         title: { ar: "الوكلاء والتكامل", en: "Agents and integrations" },
         when: { ar: "الأشهر ٥ إلى ٩", en: "Months 5 to 9" },
         dates: { ar: "فبراير إلى يونيو ٢٠٢٧", en: "February to June 2027" },
         goals: [
-          { ar: "وكيل فرز يخضع لاعتماد بشري", en: "A triage agent with human sign-off" },
-          { ar: "خادم MCP وواجهة البنوك وشركات الاتصالات", en: "The MCP server and the bank and telco API" },
-          { ar: "ملفات طلب الإيقاف لمسجلي النطاقات ومزودي الاستضافة", en: "Takedown packets for registrars and hosting providers" },
-          { ar: "الاستعداد لاحتيال التبرعات قبل رمضان ٢٠٢٧", en: "Readiness for charity scams before Ramadan 2027" }
+          { text: { ar: "وكيل فرز يخضع لاعتماد بشري", en: "A triage agent with human sign-off" } },
+          { text: { ar: "خادم MCP وواجهة البنوك وشركات الاتصالات", en: "The MCP server and the bank and telco API" } },
+          { text: { ar: "ملفات طلب الإيقاف لمسجلي النطاقات ومزودي الاستضافة", en: "Takedown packets for registrars and hosting providers" } },
+          { text: { ar: "الاستعداد لاحتيال التبرعات قبل رمضان ٢٠٢٧", en: "Readiness for charity scams before Ramadan 2027" } }
         ],
         exit: {
           ar: "أن تستهلك جهتان على الأقل التغذية في بيئة الإنتاج.",
@@ -853,13 +914,14 @@
       },
       {
         n: 4,
+        status: "ahead",
         title: { ar: "الرعاية المستدامة", en: "Stewardship" },
         when: { ar: "الأشهر ١٠ إلى ١٢", en: "Months 10 to 12" },
         dates: { ar: "يوليو إلى سبتمبر ٢٠٢٧", en: "July to September 2027" },
         goals: [
-          { ar: "ميثاق حوكمة وجهة راعية محايدة", en: "A governance charter and a neutral steward" },
-          { ar: "نموذج رعاية لا يشتري إدراجًا ولا حذفًا", en: "A sponsorship model that cannot buy listings or removals" },
-          { ar: "أول تقرير شفافية سنوي", en: "The first annual transparency report" }
+          { text: { ar: "ميثاق حوكمة وجهة راعية محايدة", en: "A governance charter and a neutral steward" } },
+          { text: { ar: "نموذج رعاية لا يشتري إدراجًا ولا حذفًا", en: "A sponsorship model that cannot buy listings or removals" } },
+          { text: { ar: "أول تقرير شفافية سنوي", en: "The first annual transparency report" } }
         ],
         exit: {
           ar: "نشر تقرير الشفافية، وعمل المشروع شهرًا كاملًا دون مؤسسه.",
@@ -1049,13 +1111,13 @@
     ],
 
     steps: [
-      { ar: "اعتماد اسم أَصْلي والنطاق والتراخيص.", en: "Approve the name Asli, the scope and the licences." },
-      { ar: "نشر سياسة الإدراج وآلية الاعتراض وإشعار الخصوصية.", en: "Publish the listing policy, the appeal process and the privacy notice." },
-      { ar: "تعريف مخطط السجل بإصداره ١ والاختبارات التي تفرضه.", en: "Define registry schema version 1 and the tests that enforce it." },
-      { ar: "إدخال أول ٢٥ جهة رسمية مع مصدر وتاريخ لكل حقل.", en: "Seed the first 25 official bodies, with a source and a date for every field." },
-      { ar: "نقل مراقب الشهادات من KWTCyberWatch إلى مهمة مجدولة في GitHub Actions.", en: "Move the KWTCyberWatch certificate watcher into a scheduled GitHub Actions job." },
-      { ar: "فتح قائمة المراجعة بنماذج الطلبات في GitHub ودعوة مراجعَين اثنين.", en: "Open the review queue with GitHub issue forms and invite two reviewers." },
-      { ar: "طلب مراجعة قانونية لسياسة الإدراج.", en: "Ask counsel to review the listing policy." }
+      { status: "done", text: { ar: "اعتماد اسم أَصْلي والنطاق والتراخيص.", en: "Approve the name Asli, the scope and the licences." } },
+      { status: "done", text: { ar: "نشر سياسة الإدراج وآلية الاعتراض وإشعار الخصوصية.", en: "Publish the listing policy, the appeal process and the privacy notice." } },
+      { status: "done", text: { ar: "تعريف مخطط السجل بإصداره ١ والاختبارات التي تفرضه.", en: "Define registry schema version 1 and the tests that enforce it." } },
+      { status: "done", text: { ar: "إدخال أول ٢٥ جهة رسمية مع مصدر وتاريخ لكل حقل.", en: "Seed the first 25 official bodies, with a source and a date for every field." } },
+      { status: "done", text: { ar: "نقل مراقب الشهادات من KWTCyberWatch إلى مهمة مجدولة في GitHub Actions.", en: "Move the KWTCyberWatch certificate watcher into a scheduled GitHub Actions job." } },
+      { status: "active", text: { ar: "فتح قائمة المراجعة بنماذج الطلبات في GitHub ودعوة مراجعَين اثنين.", en: "Open the review queue with GitHub issue forms and invite two reviewers." } },
+      { status: "todo", text: { ar: "طلب مراجعة قانونية لسياسة الإدراج.", en: "Ask counsel to review the listing policy." } }
     ]
   };
 

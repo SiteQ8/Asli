@@ -1,0 +1,282 @@
+/*
+  Styles for the report, help and registry pages.
+  Everything shared, including the checker form and the verdict, is in style.css.
+*/
+
+/* Report */
+
+.text-input#from,
+.text-input#seen { max-width: 420px; }
+
+.cleaned {
+  margin: var(--s-2) 0 0;
+  padding: 14px var(--s-4);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--paper);
+  font-family: inherit;
+  font-size: 0.97em;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.result .todo { font-weight: 600; }
+.result .form-actions { margin-top: var(--s-5); }
+
+/* Help: the page for someone already hit. Order and reach matter more than polish. */
+
+.urgent-call {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: 14px;
+  max-width: 880px;
+  margin-top: var(--s-5);
+}
+
+.urgent-card {
+  padding: var(--s-4);
+  border: 1.5px solid var(--fake);
+  border-radius: var(--radius);
+  background: var(--fake-bg);
+}
+
+.urgent-what {
+  font-size: 1.2em;
+  font-weight: 700;
+  color: var(--fake);
+}
+
+.urgent-why {
+  margin-top: 6px;
+  font-size: 0.95em;
+}
+
+.urgent-number {
+  font-size: 1.15em;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+/* The steps are numbered because their order is the advice. */
+.steps {
+  max-width: 880px;
+  margin-top: var(--s-6);
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+
+.step {
+  position: relative;
+  padding-block: var(--s-4);
+  padding-inline-start: 52px;
+  border-top: 1px solid var(--rule);
+  counter-increment: step;
+}
+
+.step::before {
+  content: counter(step);
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block-start: 20px;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1.5px solid var(--foil);
+  border-radius: 50%;
+  color: var(--ink);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+html[lang="ar"] .step::before { content: counter(step, arabic-indic); }
+
+.step h2 { font-size: 1.25em; }
+.step p { margin-top: 6px; }
+.step .btn { margin-top: var(--s-3); }
+
+.numbers {
+  margin: var(--s-4) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.numbers li {
+  display: grid;
+  grid-template-columns: minmax(7ch, auto) minmax(0, 1fr);
+  gap: var(--s-1) var(--s-4);
+  align-items: baseline;
+  padding-block: var(--s-3);
+  border-top: 1px solid var(--rule);
+}
+
+.numbers li:last-child { border-bottom: 1px solid var(--rule); }
+.numbers li p { margin-top: 0; color: var(--ink); }
+.numbers .number-who { font-weight: 700; }
+.numbers .src { margin-top: 2px; }
+
+.number {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Registry */
+
+.registry-tools {
+  display: grid;
+  gap: var(--s-4);
+  max-width: 880px;
+  margin-top: var(--s-6);
+  padding: var(--s-5);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--paper-2);
+}
+
+.registry-tools .field + .field { margin-top: 0; }
+.registry-tools .text-input { max-width: 520px; }
+
+.reg-note {
+  max-width: var(--measure);
+  font-size: 0.88em;
+  color: var(--ink-2);
+}
+
+.registry { margin-top: var(--s-4); }
+
+.sector {
+  margin-top: var(--s-7);
+  scroll-margin-top: calc(var(--bar-h) + var(--s-4));
+}
+
+.sector h2 {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-3);
+  font-size: clamp(24px, 2.4vw, 30px);
+}
+
+.sector h2 .sector-count {
+  font-size: 0.7em;
+  font-weight: 600;
+}
+
+.entries {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 440px), 1fr));
+  gap: 0 var(--s-7);
+}
+
+.entry {
+  padding-block: var(--s-5);
+  border-bottom: 1px solid var(--rule);
+  scroll-margin-top: calc(var(--bar-h) + var(--s-4));
+}
+
+.entry:target { background: var(--line-soft); }
+
+.entry-head h3 { font-size: 1.2em; }
+
+.entry-alt {
+  font-size: 0.9em;
+  color: var(--ink-2);
+}
+
+.entry-facts {
+  display: grid;
+  grid-template-columns: minmax(8rem, auto) minmax(0, 1fr);
+  gap: var(--s-2) var(--s-4);
+  margin: var(--s-3) 0 0;
+}
+
+.entry-facts dt {
+  font-size: 0.9em;
+  color: var(--ink-2);
+}
+
+.entry-facts dd { margin: 0; }
+
+.inline-list,
+.plain-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.inline-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-1) var(--s-3);
+}
+
+.plain-list {
+  display: grid;
+  gap: var(--s-2);
+}
+
+.plain-list li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--s-1) var(--s-3);
+}
+
+.domain { font-weight: 700; }
+.app-name { font-weight: 600; }
+.src-link { font-size: 0.85em; }
+
+.entry-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-1) var(--s-4);
+  margin-top: var(--s-3);
+  font-size: 0.85em;
+  color: var(--ink-2);
+}
+
+.entry-note {
+  margin-top: var(--s-2);
+  font-size: 0.85em;
+  color: var(--ink-2);
+}
+
+.empty {
+  max-width: var(--measure);
+  margin-top: var(--s-5);
+  color: var(--ink-2);
+}
+
+.data-files {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr));
+  gap: 0 var(--s-6);
+  margin: var(--s-4) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.data-files li {
+  display: flex;
+  flex-direction: column;
+  padding-block: var(--s-2);
+  border-top: 1px solid var(--rule);
+}
+
+.data-files a { font-weight: 700; }
+
+.data-files span {
+  font-size: 0.9em;
+  color: var(--ink-2);
+}
+
+.aside-block .data-mcp { margin-top: var(--s-4); }
+
+@media (max-width: 640px) {
+  .registry-tools { padding: var(--s-4); }
+  .entry-facts { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+  .entry-facts dd + dt { margin-top: var(--s-2); }
+  .numbers li { grid-template-columns: minmax(0, 1fr); }
+}

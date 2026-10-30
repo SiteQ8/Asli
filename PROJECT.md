@@ -1,6 +1,6 @@
 # Asli | Kuwait's open scam shield
 
-Version 0.4, September 2026. The registry holds 36 official bodies, the check page works with no connection, and the scam feed stays empty until the first reviewed listing
+Asli: an open-source registry of Kuwait's genuine official channels and a reviewed feed of scam links and numbers that anyone can check and reuse for free.
 
 > This file is generated from the site's content file. Do not edit it by hand.
 
@@ -83,7 +83,7 @@ Global scam checkers do not know that the Ministry of Interior never sends traff
 
 ## See a message checked
 
-Pick a sample. Asli reads it the way the Phase 1 checker will: it pulls out links and claims, compares them with the registry and explains the verdict.
+Pick a sample. Asli reads it with the same engine the check page runs: it pulls out the links and claims, compares them with the registry and explains the verdict.
 
 ### Fine by text message
 
@@ -220,7 +220,7 @@ Scores are the maintainer's editorial judgment, not measured data.
 
 With these weights, Asli ranks first with 4.85 out of 5.
 
-- **Asli, the open scam shield**: Touches every resident, turns openness into trust and reuses nine SiteQ8 projects.
+- **Asli, the open scam shield**: Touches every resident, turns openness into trust and reuses existing SiteQ8 projects.
 - **Cyber baseline scanner for small businesses**: Strong fit with existing tools, but it reaches businesses rather than residents.
 - **Kuwait developer kit for civil ID, IBAN, address and holiday checks**: Quick to build, but it helps people only indirectly.
 - **Open corpus of Kuwaiti legislation**: Valuable to lawyers and researchers, but collecting and consolidating texts is slow.
@@ -231,40 +231,40 @@ With these weights, Asli ranks first with 4.85 out of 5.
 
 Five phases over twelve months. A phase ends only when its exit test passes.
 
-### Phase 0: Foundations
+### Phase 0: Foundations (Complete)
 
 Weeks 1 and 2 (4 to 15 October 2026)
 
-- Approve the name, scope and licences
-- Publish the listing policy and the privacy notice
-- Registry schema version 1, enforced by tests
-- Seed the first 25 official bodies with sources
+- **Done**: Approve the name, scope and licences
+- **Done**: Publish the listing policy and the privacy notice
+- **Done**: Registry schema version 1, enforced by tests
+- **Done**: Seed the first 25 official bodies with sources
 
 **Exit test**: Schema tests pass, and every seeded entry has a source and a verification date.
 
-### Phase 1: Feed and check page
+### Phase 1: Feed and check page (Under way)
 
 Weeks 3 to 8 (18 October to 26 November 2026)
 
 - Hourly detection from certificate logs and new domains
 - A review queue with two approvals per listing
 - The feed published and signed in 8 formats
-- The check page in Arabic and English
+- **Done**: The check page in Arabic and English
 
 **Exit test**: Median time from detection to listing is under 6 hours, and reviewed false positives are under 1%.
 
-### Phase 2: Reach
+### Phase 2: Reach (Ahead)
 
 Weeks 9 to 16 (29 November 2026 to 21 January 2027)
 
 - A browser extension for Chromium and Firefox
 - A Telegram bot
 - 7 languages, with completeness enforced by tests
-- A report form that puts privacy first
+- **Done**: A report form that puts privacy first
 
 **Exit test**: All seven languages pass the completeness tests, and the extension is live in both stores.
 
-### Phase 3: Agents and integrations
+### Phase 3: Agents and integrations (Ahead)
 
 Months 5 to 9 (February to June 2027)
 
@@ -275,7 +275,7 @@ Months 5 to 9 (February to June 2027)
 
 **Exit test**: At least two institutions consume the feed in production.
 
-### Phase 4: Stewardship
+### Phase 4: Stewardship (Ahead)
 
 Months 10 to 12 (July to September 2027)
 
@@ -285,7 +285,7 @@ Months 10 to 12 (July to September 2027)
 
 **Exit test**: The transparency report is published, and the project runs for a full month without its founder.
 
-## Built on nine SiteQ8 projects
+## Built on open SiteQ8 projects
 
 Asli is new, but most of its engine already exists in public repositories.
 
@@ -354,20 +354,20 @@ These audiences and partners are proposals. No partnership exists yet, and outre
 - **Developers**: Static endpoints and an MCP server to build on.
 - **Educators**: A monthly brief of real patterns for schools and workplaces.
 
-## The first two weeks
+## Done and still to do
 
-What happens next, in order.
+The first steps the project committed to, and where each one stands today.
 
-1. Approve the name Asli, the scope and the licences.
-2. Publish the listing policy, the appeal process and the privacy notice.
-3. Define registry schema version 1 and the tests that enforce it.
-4. Seed the first 25 official bodies, with a source and a date for every field.
-5. Move the KWTCyberWatch certificate watcher into a scheduled GitHub Actions job.
-6. Open the review queue with GitHub issue forms and invite two reviewers.
-7. Ask counsel to review the listing policy.
+1. **Done**: Approve the name Asli, the scope and the licences.
+2. **Done**: Publish the listing policy, the appeal process and the privacy notice.
+3. **Done**: Define registry schema version 1 and the tests that enforce it.
+4. **Done**: Seed the first 25 official bodies, with a source and a date for every field.
+5. **Done**: Move the KWTCyberWatch certificate watcher into a scheduled GitHub Actions job.
+6. **In progress**: Open the review queue with GitHub issue forms and invite two reviewers.
+7. **Not started yet**: Ask counsel to review the listing policy.
 
 ---
 
-An open-source project by Ali AlEnezi. Version 0.4, September 2026, released under the MIT licence. The registry and the feed are released under CC BY 4.0.
+An open-source project by Ali AlEnezi. The code is released under the MIT licence, and the registry and the feed under CC BY 4.0.
 
 [Source code](https://github.com/SiteQ8/Asli)

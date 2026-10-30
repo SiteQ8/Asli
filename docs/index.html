@@ -28,203 +28,166 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-192.png">
 </head>
-<body>
-<a class="skip" href="#content" data-t="nav.skip">انتقل إلى المحتوى</a>
-
+<body class="home">
+<!-- shell:header -->
+<a class="skip" href="#main" data-s="skip">انتقل إلى المحتوى</a>
 <header class="masthead">
-  <a class="brand" href="#top"><span class="brand-ar" lang="ar">أَصْلي</span><span class="brand-en" lang="en">Asli</span></a>
-  <div class="bar-actions">
-    <button id="lang" class="lang" type="button" data-t-aria="nav.langLabel"><span data-t="nav.lang">English</span></button>
-    <a class="repo primary-link" href="check.html" data-t="nav.check">افحص رسالة</a>
-    <a class="repo" href="report.html" data-t="nav.report">أبلغ عن احتيال</a>
-    <a class="repo" href="help.html" data-t="nav.help">وقع الاحتيال بالفعل</a>
-    <a class="repo" href="https://github.com/SiteQ8/Asli" data-t="nav.repo">المصدر على GitHub</a>
+  <div class="bar">
+    <a class="brand" href="./" data-s-aria="homeLabel" aria-label="أَصْلي، الصفحة الرئيسية"><span class="brand-ar" lang="ar">أَصْلي</span><span class="brand-en" lang="en">Asli</span></a>
+    <nav class="site-nav" data-s-aria="navLabel" aria-label="أقسام الموقع">
+      <a href="report.html" data-s="navReport">أبلغ عن احتيال</a>
+      <a href="help.html" data-s="navHelp">وقع الاحتيال بالفعل</a>
+      <a href="registry.html" data-s="navRegistry">السجل</a>
+      <a href="about.html" data-s="navAbout">عن المشروع</a>
+    </nav>
+    <div class="bar-end">
+      <button id="lang" class="lang" type="button" lang="en" data-s-aria="langLabel" aria-label="اعرض الصفحة بالإنجليزية"><span data-s="lang">English</span></button>
+      <a class="bar-action" href="check.html" data-s="navCheck">افحص رسالة</a>
+    </div>
   </div>
 </header>
+<!-- /shell:header -->
 
-<main id="top">
-  <div class="wrap">
-    <section class="hero" aria-labelledby="hero-title">
-      <div class="hero-text">
-        <p class="kicker" data-t="hero.kicker"></p>
-        <h1 id="hero-title" data-t="hero.title"></h1>
-        <p class="hero-lead" data-t="hero.lead"></p>
-        <p class="hero-name" data-t="hero.name"></p>
-        <p class="cta">
-          <a class="btn primary" href="check.html" data-t="hero.ctaCheck"></a>
-          <a class="btn" href="#problem" data-t="hero.ctaStart"></a>
-          <a class="btn" href="#demo" data-t="hero.ctaDemo"></a>
-        </p>
+<main id="main">
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="wrap hero-grid">
+      <div class="hero-main">
+        <h1 id="hero-title" data-t="hero.title">هل هذه الرسالة أصلية؟</h1>
+        <p class="hero-lead" data-t="home.lead"></p>
+        <div id="home-check" class="checker"></div>
       </div>
       <figure class="hero-seal">
         <svg id="seal" viewBox="-212 -212 424 424" role="img" data-t-aria="hero.seal"></svg>
+        <figcaption class="hero-name" data-t="hero.name"></figcaption>
       </figure>
-    </section>
-
-    <section class="tongues" aria-labelledby="tongues-label">
-      <p id="tongues-label" class="small-label" data-t="hero.langs"></p>
-      <ul id="tongues" class="tongues-list"></ul>
-    </section>
-
-    <noscript>
-      <p class="noscript" lang="ar" dir="rtl">تحتاج الأجزاء التفاعلية في هذه الصفحة إلى جافاسكربت، ويمكنك قراءة النص الكامل في الملف <a href="https://github.com/SiteQ8/Asli/blob/main/PROJECT.ar.md">PROJECT.ar.md</a> على GitHub.</p>
-      <p class="noscript" lang="en" dir="ltr">The interactive parts of this page need JavaScript. The full text is in <a href="https://github.com/SiteQ8/Asli/blob/main/PROJECT.md">PROJECT.md</a> on GitHub.</p>
-    </noscript>
-
-    <div class="layout" id="content">
-      <nav class="toc" aria-labelledby="toc-title">
-        <p id="toc-title" class="small-label" data-t="nav.index"></p>
-        <ol>
-          <li><a href="#problem" data-t="sec.problem"></a></li>
-          <li><a href="#idea" data-t="sec.idea"></a></li>
-          <li><a href="#demo" data-t="sec.demo"></a></li>
-          <li><a href="#how" data-t="sec.how"></a></li>
-          <li><a href="#why" data-t="sec.why"></a></li>
-          <li><a href="#roadmap" data-t="sec.roadmap"></a></li>
-          <li><a href="#reuse" data-t="sec.reuse"></a></li>
-          <li><a href="#trust" data-t="sec.trust"></a></li>
-          <li><a href="#measures" data-t="sec.measures"></a></li>
-          <li><a href="#risks" data-t="sec.risks"></a></li>
-          <li><a href="#serves" data-t="sec.serves"></a></li>
-          <li><a href="#next" data-t="sec.next"></a></li>
-        </ol>
-      </nav>
-
-      <div class="parts">
-        <section class="part" id="problem" aria-labelledby="problem-title">
-          <h2 id="problem-title" data-t="problem.title"></h2>
-          <p class="lead" data-t="problem.lead"></p>
-          <ol id="ledger" class="ledger"></ol>
-          <aside class="analysis" aria-labelledby="analysis-label">
-            <p id="analysis-label" class="analysis-label" data-t="problem.analysisLabel"></p>
-            <p data-t="problem.analysis"></p>
-          </aside>
-        </section>
-
-        <section class="part" id="idea" aria-labelledby="idea-title">
-          <h2 id="idea-title" data-t="idea.title"></h2>
-          <p class="lead" data-t="idea.lead"></p>
-          <div class="compare">
-            <div class="compare-col is-block">
-              <h3 data-t="idea.blockTitle"></h3>
-              <ul id="idea-block" class="marks"></ul>
-            </div>
-            <div class="compare-col is-registry">
-              <h3 data-t="idea.regTitle"></h3>
-              <ul id="idea-registry" class="marks"></ul>
-            </div>
-          </div>
-          <h3 class="sub" data-t="idea.openTitle"></h3>
-          <ul id="idea-open" class="reasons"></ul>
-          <h3 class="sub" data-t="idea.localTitle"></h3>
-          <p class="local" data-t="idea.local"></p>
-        </section>
-
-        <section class="part" id="demo" aria-labelledby="demo-title">
-          <h2 id="demo-title" data-t="demo.title"></h2>
-          <p class="lead" data-t="demo.lead"></p>
-          <div class="demo">
-            <div class="demo-pick" role="group" aria-labelledby="demo-pick-label">
-              <p id="demo-pick-label" class="small-label" data-t="demo.samples"></p>
-              <div id="demo-samples" class="chips"></div>
-            </div>
-            <div class="demo-body">
-              <div id="demo-message" class="phone"></div>
-              <div class="demo-result">
-                <p class="small-label" data-t="demo.checks"></p>
-                <ol id="demo-steps" class="checks"></ol>
-                <div id="demo-verdict" class="verdict" aria-live="polite"></div>
-              </div>
-            </div>
-            <p class="note" data-t="demo.note"></p>
-          </div>
-        </section>
-
-        <section class="part" id="how" aria-labelledby="how-title">
-          <h2 id="how-title" data-t="how.title"></h2>
-          <p class="lead" data-t="how.lead"></p>
-          <div id="lanes" class="lanes"></div>
-          <div id="lane-detail" class="lane-detail" aria-live="polite"></div>
-        </section>
-
-        <section class="part" id="why" aria-labelledby="why-title">
-          <h2 id="why-title" data-t="why.title"></h2>
-          <p class="lead" data-t="why.lead"></p>
-          <div class="weights" role="group" aria-labelledby="weights-label">
-            <p id="weights-label" class="small-label" data-t="why.weights"></p>
-            <div id="weights" class="weights-grid"></div>
-          </div>
-          <div class="matrix-wrap">
-            <table id="matrix" class="matrix"></table>
-          </div>
-          <p id="matrix-result" class="matrix-result" aria-live="polite"></p>
-          <p class="note"><span data-t="why.note"></span> <button id="matrix-reset" class="text-button" type="button" data-t="why.reset"></button></p>
-        </section>
-
-        <section class="part" id="roadmap" aria-labelledby="roadmap-title">
-          <h2 id="roadmap-title" data-t="roadmap.title"></h2>
-          <p class="lead" data-t="roadmap.lead"></p>
-          <ol id="phases" class="phases"></ol>
-        </section>
-
-        <section class="part" id="reuse" aria-labelledby="reuse-title">
-          <h2 id="reuse-title" data-t="reuse.title"></h2>
-          <p class="lead" data-t="reuse.lead"></p>
-          <ul id="reuse-list" class="reuse"></ul>
-        </section>
-
-        <section class="part" id="trust" aria-labelledby="trust-title">
-          <h2 id="trust-title" data-t="trust.title"></h2>
-          <p class="lead" data-t="trust.lead"></p>
-          <ul id="trust-list" class="grid"></ul>
-        </section>
-
-        <section class="part" id="measures" aria-labelledby="measures-title">
-          <h2 id="measures-title" data-t="measures.title"></h2>
-          <p class="lead" data-t="measures.lead"></p>
-          <table id="measures-table" class="register"></table>
-        </section>
-
-        <section class="part" id="risks" aria-labelledby="risks-title">
-          <h2 id="risks-title" data-t="risks.title"></h2>
-          <table id="risks-table" class="register"></table>
-        </section>
-
-        <section class="part" id="serves" aria-labelledby="serves-title">
-          <h2 id="serves-title" data-t="serves.title"></h2>
-          <p class="lead" data-t="serves.note"></p>
-          <ul id="serves-list" class="grid"></ul>
-        </section>
-
-        <section class="part" id="next" aria-labelledby="next-title">
-          <h2 id="next-title" data-t="next.title"></h2>
-          <p class="lead" data-t="next.lead"></p>
-          <ol id="next-steps" class="numbered"></ol>
-        </section>
-      </div>
     </div>
-  </div>
+  </section>
+
+  <section class="tongues" aria-labelledby="tongues-title">
+    <div class="wrap">
+      <h2 id="tongues-title" class="tongues-title" data-t="hero.langs"></h2>
+      <ul id="tongues" class="tongues-list"></ul>
+    </div>
+  </section>
+
+  <noscript>
+    <div class="wrap">
+      <p class="noscript" lang="ar" dir="rtl">يحتاج الفحص في هذه الصفحة إلى جافاسكربت، ويمكنك قراءة النص الكامل في الملف <a href="https://github.com/SiteQ8/Asli/blob/main/PROJECT.ar.md">PROJECT.ar.md</a> على GitHub.</p>
+      <p class="noscript" lang="en" dir="ltr">The check on this page needs JavaScript. The full text is in <a href="https://github.com/SiteQ8/Asli/blob/main/PROJECT.md">PROJECT.md</a> on GitHub.</p>
+    </div>
+  </noscript>
+
+  <section class="band" id="paths" aria-labelledby="paths-title">
+    <div class="wrap">
+      <h2 id="paths-title" data-t="home.pathsTitle"></h2>
+      <ul class="paths">
+        <li class="path is-urgent">
+          <a href="help.html">
+            <h3 data-t="home.pathHelp"></h3>
+            <p data-t="home.pathHelpBody"></p>
+          </a>
+        </li>
+        <li class="path">
+          <a href="report.html">
+            <h3 data-t="home.pathReport"></h3>
+            <p data-t="home.pathReportBody"></p>
+          </a>
+        </li>
+        <li class="path">
+          <a href="registry.html">
+            <h3 data-t="home.pathRegistry"></h3>
+            <p data-t="home.pathRegistryBody"></p>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="band" id="status" aria-labelledby="status-title">
+    <div class="wrap band-grid">
+      <div class="band-head">
+        <h2 id="status-title" data-t="home.statusTitle"></h2>
+        <p class="band-lead" data-t="home.statusLead"></p>
+        <p class="band-link"><a href="registry.html" data-t="home.statusLink"></a></p>
+      </div>
+      <dl id="status-list" class="facts" aria-live="polite"></dl>
+    </div>
+  </section>
+
+  <section class="band" id="sectors" aria-labelledby="sectors-title">
+    <div class="wrap band-grid">
+      <div class="band-head">
+        <h2 id="sectors-title" data-t="home.sectorsTitle"></h2>
+        <p class="band-lead" data-t="home.sectorsLead"></p>
+      </div>
+      <ul id="sector-list" class="sectors"></ul>
+    </div>
+  </section>
+
+  <section class="band" id="changes" aria-labelledby="changes-title">
+    <div class="wrap band-grid">
+      <div class="band-head">
+        <h2 id="changes-title" data-t="home.changesTitle"></h2>
+        <p class="band-link"><a href="https://github.com/SiteQ8/Asli/releases" data-t="home.changesAll"></a></p>
+      </div>
+      <ol id="change-list" class="changes"></ol>
+    </div>
+  </section>
+
+  <section class="band" id="related" aria-labelledby="related-title" hidden>
+    <div class="wrap band-grid">
+      <div class="band-head">
+        <h2 id="related-title" data-t="home.relatedTitle"></h2>
+        <p class="band-lead" data-t="home.relatedLead"></p>
+      </div>
+      <ul id="related-list" class="related"></ul>
+    </div>
+  </section>
+
+  <section class="band closing" aria-labelledby="closing-title">
+    <div class="wrap">
+      <h2 id="closing-title" data-t="about.title"></h2>
+      <p class="closing-text" data-t="hero.lead"></p>
+      <p class="band-link"><a href="about.html" data-t="home.whyLink"></a></p>
+    </div>
+  </section>
 </main>
 
+<!-- shell:footer -->
 <footer class="foot">
-  <div class="wrap">
-    <p data-t="footer.by"></p>
-    <p class="foot-links">
-      <a href="https://github.com/SiteQ8/Asli" data-t="footer.source"></a>
-      <a id="full-text" href="https://github.com/SiteQ8/Asli/blob/main/PROJECT.ar.md" data-t="footer.text"></a>
-      <a href="report.html" data-t="nav.report"></a>
-      <a href="help.html" data-t="nav.help"></a>
-      <a href="data/registry.json" data-t="footer.data"></a>
-      <a href="https://github.com/SiteQ8/Asli/blob/main/LISTING-POLICY.md" data-t="footer.policy"></a>
-    </p>
+  <div class="wrap foot-inner">
+    <div class="foot-close">
+      <p class="foot-mark"><span class="brand-ar" lang="ar">أَصْلي</span><span class="brand-en" lang="en">Asli</span></p>
+      <p class="foot-line" data-s="footLine">مشروع درع الكويت المفتوح ضد الاحتيال.</p>
+      <p class="foot-by" data-s="footBy">مشروع مفتوح المصدر من علي العنزي.</p>
+    </div>
+    <nav class="foot-nav" data-s-aria="footNavLabel" aria-label="روابط المشروع">
+      <a href="check.html" data-s="navCheck">افحص رسالة</a>
+      <a href="report.html" data-s="navReport">أبلغ عن احتيال</a>
+      <a href="help.html" data-s="navHelp">وقع الاحتيال بالفعل</a>
+      <a href="registry.html" data-s="navRegistry">السجل</a>
+      <a href="about.html" data-s="navAbout">عن المشروع</a>
+      <a href="registry.html#data" data-s="footData">البيانات المفتوحة</a>
+      <a href="https://github.com/SiteQ8/Asli/blob/main/PROJECT.ar.md" data-href-ar="https://github.com/SiteQ8/Asli/blob/main/PROJECT.ar.md" data-href-en="https://github.com/SiteQ8/Asli/blob/main/PROJECT.md" data-s="footText">النص الكامل</a>
+      <a href="https://github.com/SiteQ8/Asli/blob/main/LISTING-POLICY.md" data-s="footPolicy">سياسة الإدراج</a>
+      <a href="https://github.com/SiteQ8/Asli/blob/main/APPEALS.md" data-s="footAppeals">الاعتراض على إدراج</a>
+      <a href="https://github.com/SiteQ8/Asli/blob/main/PRIVACY.md" data-s="footPrivacy">إشعار الخصوصية</a>
+      <a href="https://github.com/SiteQ8/Asli" data-s="footSource">الشيفرة المصدرية</a>
+    </nav>
+    <div class="foot-small">
+      <p data-s="footLicence">الشيفرة منشورة بترخيص MIT، أما السجل والتغذية فمنشوران بترخيص CC BY 4.0.</p>
+      <p data-meta="build"></p>
+    </div>
   </div>
 </footer>
+<!-- /shell:footer -->
 
 <script src="content.js"></script>
-<script src="engine.js"></script>
 <script src="checker.js"></script>
 <script src="seal.js"></script>
-<script src="app.js"></script>
+<script src="site.js"></script>
+<script src="check.js"></script>
+<script src="home.js"></script>
 <script src="offline.js"></script>
 </body>
 </html>
