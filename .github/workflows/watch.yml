@@ -53,7 +53,7 @@ jobs:
       - name: Record what has been checked, as hashes, and drop expired listings
         run: |
           node tools/build-data.mjs
-          git config user.name "SiteQ8"
+          git config user.name "Ali AlEnezi"
           git config user.email "311682+SiteQ8@users.noreply.github.com"
           git add watch/seen.json docs/data
           if git diff --cached --quiet; then
