@@ -30,7 +30,7 @@
       "date": "2026-11-12",
       "source": "crt.sh",
       "health": "ok",
-      "queriesRun": 36,
+      "queriesRun": 26,
       "queriesFailed": 0,
       "namesRead": 0
     }
