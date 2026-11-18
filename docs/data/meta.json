@@ -31,7 +31,7 @@
       "source": "crt.sh",
       "health": "degraded",
       "queriesRun": 24,
-      "queriesFailed": 5,
+      "queriesFailed": 4,
       "namesRead": 0
     }
   },
